@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 
+
 client = MongoClient("mongodb+srv://projectwork:SpeSana@cluster0.ajv3ccw.mongodb.net/")
 db = client['SpeSana']
 prodotti = db['Products']

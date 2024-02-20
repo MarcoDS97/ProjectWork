@@ -1,5 +1,16 @@
 import pandas as pd
 from pymongo import MongoClient
+import requests
+from bs4 import BeautifulSoup
+
+
+def search_image_urls(keyword):
+    url = f"https://www.bing.com/images/search?q={keyword}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    image_divs = soup.find_all('div', class_='imgpt')
+    return image_divs
+
 
 percorso = r"csv\prodotti.csv"
 df1 = pd.read_csv(percorso, delimiter=';')
@@ -15,16 +26,19 @@ for e in data1:
     if isinstance(categories, str):
         list_categories = categories.split(",")
         e["categories"] = [e.strip() for e in list_categories]
-    list_numbers = {"energy-kcal_100g", "fat_100g","saturated-fat_100g", "carbohydrates_100g", "sugars_100g", "fiber_100g", "proteins_100g", "salt_100g", "sodium_100g"}
+    list_numbers = {"energy-kcal_100g", "fat_100g", "saturated-fat_100g", "carbohydrates_100g", "sugars_100g",
+                    "fiber_100g", "proteins_100g", "salt_100g", "sodium_100g"}
     for string in list_numbers:
         numero_stringa = e[string]
         if isinstance(numero_stringa, str):
-            numero_float = float(numero_stringa.replace(",", "."))
+            numero_float = round(float(numero_stringa.replace(",", ".")), 2)
             e[string] = numero_float
+    # if isinstance(e["image_url"], float):
+    #     keyword = e["product_name"]
+    #     e["image_url"] = search_image_urls(keyword)
 if "Products" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data1)
-
 
 collection = db['Users']
 data2 = df2.to_dict(orient='records')
@@ -36,5 +50,3 @@ for e in data2:
 if "Users" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data2)
-
-
