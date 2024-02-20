@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Product</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function rotateFu() {
             $('.btn-rotate').click(function(e) {
@@ -15,6 +16,16 @@
         };
     </script>
     <style>
+        .hd{
+        background-image: url("static/Img/Sfondo.jpg");
+        }
+
+        .hd1{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        }
+
         .rotate-container {
             position: relative;
             }
@@ -86,9 +97,88 @@
             display: flex;
             justify-content: space-evenly
             }
+
+            footer{
+            background-color: #000000e0;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            animation: slideRightToLeft 25s linear infinite;
+            }
+
+            @keyframes slideRightToLeft {
+                0% {
+                transform: translateX(100%);
+                }
+                100% {
+                transform: translateX(-100%);
+                }
+            }
+
+            .footerLinks{
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            }
+
+            .contenitoreCopyright{
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            }
+
+            html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            }
+
+            body {
+            display: flex;
+            flex-direction: column;
+            }
+
+            .content {
+            flex: 1;
+            }
     </style>
 </head>
 <body onload="rotateFu()">
+
+    <div class="content">
+    <div class="header hd">
+        <div class="container hd1">
+            <img src="static/imgTest/banner-prova1.jpg" alt="Logo">
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <img src="static/imgTest/Carrello.jpg" alt="Logo" width="40" height="40">
+            <a class="navbar-brand" href="/">SpeSana</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                  <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="/product">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+        </div>
+    </nav>
 
     <div class="contCard d-flex flex-wrap">
         {%for elem in prodotti%}
@@ -114,6 +204,23 @@
             </div>
         </section>
         {%endfor%}
+    </div>
+    </div>
+
+    <div style="background-color: Black; border-top: 2px solid blue;">
+        <footer>
+            <ul class="footerLinks">
+                <a href="https://github.com/MarcoDS97/ProjectWork" style="color: white;">GitHub</a>
+                <li>Benedetta Aversano</li>
+                <li>Marco De Sio</li>
+                <li>Armando Izaguirre</li>
+                <li>Stefano Crivella</li>
+                <li>Riccardo Benedetti</li>
+            </ul>
+            <div class="contenitoreCopyright">
+                <p>@copyright 2024</p>
+            </div>
+        </footer>
     </div>
 
 </body>

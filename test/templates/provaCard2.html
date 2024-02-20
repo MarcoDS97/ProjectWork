@@ -5,15 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Test</title>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        function rotateFu() {
-            $('.btn-rotate').click(function(e) {
-             e.preventDefault();
-                $(this).parents('.rotate-container').find('.card-front, .card-back').toggleClass('rotate');
-            });
-        };
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .hd{
@@ -24,78 +16,6 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        }
-
-        .rotate-container {
-        position: relative;
-        }
-
-        .rotate-container .card-front,
-        .rotate-container .card-back {
-        width: 100%;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        transition: all 0.5s linear 0s;
-        }
-
-        .rotate-container .card-front {
-        -webkit-transform: perspective(600px) rotateY(0deg);
-        transform: perspective(600px) rotateY(0deg);
-        }
-
-        .rotate-container .card-back {
-        -webkit-transform: perspective(1600px) rotateY(180deg);
-        transform: perspective(1600px) rotateY(180deg);
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        }
-
-        .rotate-container .card-front.rotate {
-        -webkit-transform: perspective(1600px) rotateY(-180deg);
-        transform: perspective(1600px) rotateY(-180deg);
-        }
-
-        .rotate-container .card-back.rotate {
-        -webkit-transform: perspective(1600px) rotateY(0deg);
-        transform: perspective(1600px) rotateY(0deg);
-        }
-
-        .rotate-container .card-front .btn-rotate,
-        .rotate-container .card-back .btn-rotate {
-        position: static;
-        z-index: 0;
-        }
-
-        /* Demo style only */
-        .demo-content {
-        margin-bottom: 0px;
-        text-align: center;
-        }
-
-        .rotate-container {
-        width: 300px;
-        }
-
-        .card-text{
-        background-image: url("./static/Img/League2.png");
-        background-position: center;
-        background-size: cover;
-        width: 250px;
-        height: 250px;
-        }
-
-        .card-text1{
-        background-position: center;
-        background-size: cover;
-        width: 250px;
-        height: 276px;
-        }
-
-        .contCard{
-        display: flex;
-        justify-content: space-evenly
         }
 
         footer{
@@ -143,7 +63,7 @@
         }
     </style>
 </head>
-<body onload="rotateFu()">
+<body>
 
 <div class="content">
     <div class="header hd">
