@@ -9,5 +9,10 @@ def homepage():
 
     return render_template("provaCard2.html")
 
+@app.route("/action")
+def action():
+
+    return render_template("action.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
