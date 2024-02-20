@@ -2,13 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-def calculate_tdee(height, weight, age, gender, activity_level):
+def calculate_tdee(height, weight, age, gender, activity_level, goal):
 
     activity_factors = {
-        "sedentary": 1.2,
-        "lightly_active": 1.375,
-        "moderately_active": 1.55,
-        "hard_worker": 1.725
+        "sedentario": 1.2,
+        "leggermente_attivo": 1.375,
+        "moderatamente_attivo": 1.55,
+        "molto_attivo": 1.725
+    }
+
+    goal_factors = {
+        "dimagrire": 0.8,  # Sottrai il 20%
+        "mantenersi_in_forma": 1.0,  # Nessuna variazione
+        "aumentare_massa_muscolare": 1.15  # Aggiungi il 15%
     }
 
     if gender == "M":
@@ -16,7 +22,8 @@ def calculate_tdee(height, weight, age, gender, activity_level):
     else:
         bmr = 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age)
 
-    tdee = round(bmr * activity_factors.get(activity_level), 2)
+    tdee_base = round(bmr * activity_factors.get(activity_level))
+    tdee = round(tdee_base * goal_factors[goal])
     return tdee
 
 # Route per la pagina di registrazione
@@ -29,8 +36,8 @@ def registrazione():
         age = int(request.form['age'])
         gender = request.form['gender']
         activity_level = request.form['activity_level']
-
-        tdee = calculate_tdee(height, weight, age, gender, activity_level)
+        goal = request.form['goal']
+        tdee = calculate_tdee(height, weight, age, gender, activity_level, goal)
 
         # Aggiungere il TDEE al profilo dell'utente (questo è un esempio, devi implementare la tua logica di storage)
         # profile = get_user_profile()  # Funzione ipotetica per ottenere il profilo dell'utente
