@@ -8,10 +8,10 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-client = pymongo.MongoClient("mongodb+srv://projectwork:SpeSana@cluster0.ajv3ccw.mongodb.net/")
-db = client["SpeSana"]
-products = db["Products"]
-users = db["Users"]
+# client = pymongo.MongoClient("mongodb+srv://projectwork:SpeSana@cluster0.ajv3ccw.mongodb.net/")
+# db = client["SpeSana"]
+# products = db["Products"]
+# users = db["Users"]
 
 
 # print(db)
@@ -19,6 +19,10 @@ users = db["Users"]
 @app.route("/")
 def homepage():
     return render_template("provaCard2.html")
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -44,20 +48,20 @@ def submit():
     obiettivo = request.form.get('peso_signup')
     livello_attivita = request.form.get('peso_signup')
 
-    users.insert_one({
-        'Email': email,
-        'Password': password,
-        'Name': nome,
-        'Surname': cognome,
-        'Gender': sesso,
-        'Age': eta,
-        'Height': altezza,
-        'Weight': peso,
-        'Favorites': [],
-        'Goal': obiettivo,
-        'Activity Level': livello_attivita,
-    }
-    )
+    # users.insert_one({
+    #     'Email': email,
+    #     'Password': password,
+    #     'Name': nome,
+    #     'Surname': cognome,
+    #     'Gender': sesso,
+    #     'Age': eta,
+    #     'Height': altezza,
+    #     'Weight': peso,
+    #     'Favorites': [],
+    #     'Goal': obiettivo,
+    #     'Activity Level': livello_attivita,
+    # }
+    # )
 
     return 'Data inserted successfully!'
 
@@ -71,11 +75,11 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/product")
-def product():
-    prodotti = list(products.find({"brands": "Ferrero"}))
-
-    return render_template("product.html", prodotti=prodotti)
+# @app.route("/product")
+# def product():
+#     prodotti = list(products.find({"brands": "Ferrero"}))
+#
+#     return render_template("product.html", prodotti=prodotti)
 
 
 @app.route("/logout")
