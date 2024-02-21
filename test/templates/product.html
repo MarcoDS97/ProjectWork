@@ -148,6 +148,11 @@
             max-width: 300px
             text-align: center;
             }
+
+            .linkProd {
+            text-decoration: none;
+            color: white;
+            }
     </style>
 </head>
 <body onload="rotateFu()">
@@ -168,14 +173,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
               <ul class="navbar-nav">
+                  <a class="navbar linkProd" href="/product">Prodotti</a>
                 <li class="nav-item dropdown">
                   <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
+                    Account
                   </button>
                   <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="/product">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item" href="/login">Login</a></li>
+                    <li><a class="dropdown-item" href="#">Modifica profilo</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
                   </ul>
                 </li>
               </ul>
