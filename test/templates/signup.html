@@ -73,9 +73,8 @@
         </div>
     </div>
     <h1 style="text-align: center">Registrazione</h1>
-
+    <div class="container-fluid" style="display : flex">
     <form class="row justify-content-center">
-
         <div class="col-md-4">
         </div>
         <div class="col-md-2">
@@ -125,11 +124,11 @@
         <div class="col-md-2">
             <label for="validationServer06" class="form-label">Password</label>
             <input type="password" name="password_signup" style="width: min-content" class="form-control" id="validationServer06"
-                   required>
+                   required data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Disabled popover">
         </div>
         <div class="col-md-4">
         </div>
-        
+
          <div class="col-md-4">
         </div>
         <div class="col-md-2">
@@ -166,7 +165,6 @@
                 <option> Leggermente attivo </option>
                 <option> Moderatamente attivo </option>
                 <option> Molto Attivo </option>
-
             </select>
         </div>
         <div class="col-md-4">
@@ -179,8 +177,11 @@
         </div>
         <div class="col-md-6">
         </div>
+        <a class="btn btn-secondary" href="/login">Torna indietro</a>
     </form>
-    <a class="btn btn-secondary" href="/login">Torna indietro</a>
+    </div>
+
+
 </div>
 
 
