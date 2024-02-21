@@ -1,6 +1,5 @@
 import pandas as pd
 from pymongo import MongoClient
-from bing_image_urls import bing_image_urls
 
 percorso = r"csv\prodotti.csv"
 df1 = pd.read_csv(percorso, delimiter=';')
@@ -23,19 +22,19 @@ for e in data1:
         if isinstance(numero_stringa, str):
             numero_float = round(float(numero_stringa.replace(",", ".")), 2)
             e[string] = numero_float
-    # if isinstance(e["image_url"], float):
-    #     e["image_url"] = bing_image_urls(e["product_name"], limit=1)[0]
+    if isinstance(e["image_url"], float):
+        e["image_url"] = "static/imgTest/img-not-found.jpg"
 if "Products" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data1)
 
-# collection = db['Users']
-# data2 = df2.to_dict(orient='records')
-# for e in data2:
-#     favorites = e["Favorites"]
-#     if isinstance(favorites, str):
-#         list_favorites = favorites.split(",")
-#         e["Favorites"] = [e.strip() for e in list_favorites]
-# if "Users" in db.list_collection_names():
-#     collection.drop()
-# collection.insert_many(data2)
+collection = db['Users']
+data2 = df2.to_dict(orient='records')
+for e in data2:
+    favorites = e["Favorites"]
+    if isinstance(favorites, str):
+        list_favorites = favorites.split(",")
+        e["Favorites"] = [e.strip() for e in list_favorites]
+if "Users" in db.list_collection_names():
+    collection.drop()
+collection.insert_many(data2)
