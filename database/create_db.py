@@ -29,13 +29,13 @@ if "Products" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data1)
 
-# collection = db['Users']
-# data2 = df2.to_dict(orient='records')
-# for e in data2:
-#     favorites = e["Favorites"]
-#     if isinstance(favorites, str):
-#         list_favorites = favorites.split(",")
-#         e["Favorites"] = [e.strip() for e in list_favorites]
-# if "Users" in db.list_collection_names():
-#     collection.drop()
-# collection.insert_many(data2)
+collection = db['Users']
+data2 = df2.to_dict(orient='records')
+for e in data2:
+    favorites = e["Favorites"]
+    if isinstance(favorites, str):
+        list_favorites = favorites.split(",")
+        e["Favorites"] = [e.strip() for e in list_favorites]
+if "Users" in db.list_collection_names():
+    collection.drop()
+collection.insert_many(data2)
