@@ -1,16 +1,5 @@
 import pandas as pd
 from pymongo import MongoClient
-import requests
-from bs4 import BeautifulSoup
-
-
-def search_image_urls(keyword):
-    url = f"https://www.bing.com/images/search?q={keyword}"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    image_divs = soup.find_all('div', class_='imgpt')
-    return image_divs
-
 
 percorso = r"csv\prodotti.csv"
 df1 = pd.read_csv(percorso, delimiter=';')
@@ -33,9 +22,8 @@ for e in data1:
         if isinstance(numero_stringa, str):
             numero_float = round(float(numero_stringa.replace(",", ".")), 2)
             e[string] = numero_float
-    # if isinstance(e["image_url"], float):
-    #     keyword = e["product_name"]
-    #     e["image_url"] = search_image_urls(keyword)
+    if isinstance(e["image_url"], float):
+        e["image_url"] = ""
 if "Products" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data1)
