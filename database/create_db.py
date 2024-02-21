@@ -14,15 +14,15 @@ collection = db['Products']
 data1 = df1.to_dict(orient='records')
 diz = df3.to_dict(orient='records')
 for e in data1:
-    categories = e["categories"]
-    if isinstance(categories, str):
-        list_categories = categories.split(",")
-        list_categories = [e.strip() for e in list_categories]
-        for i, e in enumerate(list_categories):
+    if isinstance(e["categories"], str):
+        categories = e["categories"]
+        categories = categories.split(",")
+        categories = [elem.strip() for elem in categories]
+        for i, a in enumerate(categories):
             for f in diz:
-                if f['original'] == e:
-                    list_categories[i] = f['translate']
-        e["categories"] = list_categories
+                if f['original'] == a:
+                    categories[i] = f["translate"]
+        e['categories'] = categories
     list_numbers = {"energy-kcal_100g", "fat_100g", "saturated-fat_100g", "carbohydrates_100g", "sugars_100g",
                     "fiber_100g", "proteins_100g", "salt_100g", "sodium_100g"}
     for string in list_numbers:
