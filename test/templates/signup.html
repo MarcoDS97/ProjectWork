@@ -73,81 +73,113 @@
         </div>
     </div>
     <h1 style="text-align: center">Registrazione</h1>
-    <form class="row g-2">
-  <div class="col-md-3">
-    <label for="validationServer01" class="form-label">First name</label>
-    <input type="text" style="width: min-content" class="form-control is-valid" id="validationServer01" value="Mark" required>
-    <div class="valid-feedback">
-      Looks good!
-    </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationServer02" class="form-label">Last name</label>
-    <input type="text" style="width: min-content" class="form-control is-valid" id="validationServer02" value="Otto" required>
-    <div class="valid-feedback">
-      Looks good!
-    </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationServerUsername" class="form-label">Username</label>
-    <div class="input-group has-validation">
-      <input type="text" style="width: min-content" class="form-control is-invalid" id="validationServerUsername" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>
-      <div id="validationServerUsernameFeedback" class="invalid-feedback">
-        Please choose a username.
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationServer03" class="form-label">City</label>
-    <input type="text" style="width: min-content" class="form-control is-invalid" id="validationServer03" aria-describedby="validationServer03Feedback" required>
-    <div id="validationServer03Feedback" class="invalid-feedback">
-      Please provide a valid city.
-    </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationServer04" class="form-label">State</label>
-    <select class="form-select is-invalid" style="width: min-content" id="validationServer04" aria-describedby="validationServer04Feedback" required>
-      <option selected disabled value="">Choose...</option>
-      <option>...</option>
-    </select>
-    <div id="validationServer04Feedback" class="invalid-feedback">
-      Please select a valid state.
-    </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationServer05" class="form-label">Zip</label>
-    <input type="text" style="width: min-content" class="form-control is-invalid" id="validationServer05" aria-describedby="validationServer05Feedback" required>
-    <div id="validationServer05Feedback" class="invalid-feedback">
-      Please provide a valid zip.
-    </div>
-  </div>
-    <div class="col-md-3">
-  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-  <label class="form-check-label" for="flexRadioDefault1">
-    Maschio
-  </label>
-</div>
-<div class="col-md-3">
-  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-  <label class="form-check-label" for="flexRadioDefault2">
-    Femmina
-  </label>
-</div>
-  <div class="col-12">
-    <div class="form-check">
-      <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
-      <label class="form-check-label" for="invalidCheck3">
-        Agree to terms and conditions
-      </label>
-      <div id="invalidCheck3Feedback" class="invalid-feedback">
-        You must agree before submitting.
-      </div>
-    </div>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
-  </div>
-</form>
+
+    <form class="row justify-content-center">
+
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer01" class="form-label">Nome</label>
+            <input type="text" name="nome_signup" style="width: min-content" class="form-control" id="validationServer01"
+                   required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer02" class="form-label">Cognome</label>
+            <input type="text" name="cognome_signup" style="width: min-content" class="form-control" id="validationServer02"
+                   required>
+        </div>
+        <div class="col-md-4">
+        </div>
+
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer03" class="form-label">Sesso</label>
+            <select class="form-select" name="genere_signup" style="width: min-content" id="validationServer03"
+                    aria-describedby="validationServer04Feedback" required>
+                <option></option>
+                <option> M</option>
+                <option> F</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer04" class="form-label">Età</label>
+            <select class="form-select" name="eta_signup" style="width: min-content" id="validationServer04"
+                    aria-describedby="validationServer04Feedback" required>
+                <option></option>
+                {% for i in range(18,61) %}
+                <option> {{i}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+        </div>
+
+         <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer05" class="form-label">E-mail</label>
+           <input type="email" name="email_signup" style="width: min-content" class="form-control" id="validationServer05"
+                   required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer06" class="form-label">Password</label>
+            <input type="password" name="password_signup" style="width: min-content" class="form-control" id="validationServer06"
+                   required>
+        </div>
+        <div class="col-md-4">
+        </div>
+        
+         <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer07" class="form-label">Altezza</label>
+           <input type="text" name="altezza_signup" style="width: min-content" class="form-control" id="validationServer07"
+                   required>
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer08" class="form-label">Peso</label>
+            <input type="text" name="peso_signup" style="width: min-content" class="form-control" id="validationServer08"
+                   required>
+        </div>
+        <div class="col-md-4">
+        </div>
+
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer09" class="form-label">Obiettivo</label>
+            <select class="form-select" name="obiettivo_signup" style="width: min-content" id="validationServer09"
+                    aria-describedby="validationServer04Feedback" required>
+                <option></option>
+                <option> Dimagrire </option>
+                <option> Mantenersi in forma </option>
+                <option> Aumentare la massa muscolare </option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="validationServer10" class="form-label">Livello di attività fisica</label>
+            <select class="form-select" name="livello_attivita_signup" style="width: min-content" id="validationServer10"
+                    aria-describedby="validationServer04Feedback" required>
+                <option></option>
+                <option> Sedentario </option>
+                <option> Leggermente attivo </option>
+                <option> Moderatamente attivo </option>
+                <option> Molto Attivo </option>
+
+            </select>
+        </div>
+        <div class="col-md-4">
+        </div>
+
+         <div class="col-md-4">
+        </div>
+        <div class="col-md-2 mt-3">
+            <button class="btn btn-primary" type="submit">Conferma</button>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </form>
     <a class="btn btn-secondary" href="/login">Torna indietro</a>
 </div>
 
