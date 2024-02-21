@@ -61,6 +61,11 @@
         .content {
         flex: 1;
         }
+
+        .linkProd {
+        text-decoration: none;
+        color: white;
+        }
     </style>
 </head>
 <body>
@@ -81,14 +86,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
               <ul class="navbar-nav">
+                  <a class="nav-link linkProd" href="/product">Prodotti</a>
                 <li class="nav-item dropdown">
                   <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Menù
+                    Account
                   </button>
                   <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="/product">Prodotti</a></li>
                     <li><a class="dropdown-item" href="/login">Login</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item" href="#">Modifica profilo</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
                   </ul>
                 </li>
               </ul>
@@ -101,7 +107,7 @@
     </nav>
     </div>
 
-    <h1>Per il momento non ci sta nulla quindi non cacate er c...o</h1>
+    <h1>Home</h1>
 
     <div style="background-color: Black; border-top: 2px solid blue;">
         <footer>
