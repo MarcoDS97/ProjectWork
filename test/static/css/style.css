@@ -298,7 +298,7 @@
 }
 
 .fruite .fruite-item {
-    height: 100%;
+    height: max-content;
     transition: 0.5s;
 }
 .fruite .fruite-item:hover {
@@ -313,6 +313,7 @@
 
 .fruite .fruite-item .fruite-img img {
     transition: 0.5s;
+    height: 350px;
 }
 
 .fruite .fruite-item .fruite-img img:hover {

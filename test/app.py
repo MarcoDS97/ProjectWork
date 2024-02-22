@@ -14,16 +14,17 @@ products = db["Products"]
 users = db["Users"]
 
 
-# print(db)
-
 @app.route("/")
 def homepage():
-    return render_template("provaCard2.html")
+    a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
+    nutriscore_home = [a]
+    best = list(products.find().sort("unique_scans_n", -1).limit(6))
+    return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
-@app.route("/home")
-def home():
-    return render_template("home.html")
+@app.route("/product/<codice>")
+def product_codice(codice):
 
+    return render_template("product_detail.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
