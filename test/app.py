@@ -22,7 +22,9 @@ def homepage():
 
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
+    nutriscore_home = [a]
+    return render_template("home.html", lista_nutriscore=nutriscore_home)
 
 
 @app.route("/login", methods=["POST", "GET"])
