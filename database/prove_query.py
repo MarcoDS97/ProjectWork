@@ -1,8 +1,8 @@
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.ajv3ccw.mongodb.net/")
+client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client['SpeSana']
-prodotti = db['Products']
+prodotti = db['Users']
 # risultato = prodotti.find({"nutriscore_grade": 'a'}).sort("nutriscore_score")
 # collection = db["Nutriscore a"]
 # if "Nutriscore a" in db.list_collection_names():
