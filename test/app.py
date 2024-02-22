@@ -24,7 +24,12 @@ def homepage():
 @app.route("/product/<codice>")
 def product_codice(codice):
 
-    return render_template("product_detail.html")
+    return render_template("product-details.html")
+
+@app.route("/shop")
+def shop():
+
+    return render_template("shop.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -76,7 +81,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/product")
+@app.route("/product/old")
 def product():
     prodotti = list(products.find({"brands": "Ferrero"}))
 
