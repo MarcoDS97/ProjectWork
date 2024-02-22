@@ -8,7 +8,7 @@ df2 = pd.read_csv(percorso, delimiter=';')
 percorso = r"csv\traduzione_categories.csv"
 df3 = pd.read_csv(percorso, delimiter=',')
 
-client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.ajv3ccw.mongodb.net/")
+client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client['SpeSana']
 collection = db['Products']
 data1 = df1.to_dict(orient='records')
@@ -32,7 +32,6 @@ for e in data1:
             e[string] = numero_float
     if isinstance(e["image_url"], float):
         e["image_url"] = "static/imgTest/img-not-found.jpg"
-print(data1[0])
 if "Products" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data1)
