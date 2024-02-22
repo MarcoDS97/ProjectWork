@@ -21,8 +21,8 @@ def homepage():
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
-@app.route("/product/<int:codice>")
-def product_codice():
+@app.route("/product/<codice>")
+def product_codice(codice):
 
     return render_template("product_detail.html")
 
