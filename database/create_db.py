@@ -4,11 +4,11 @@ from pymongo import MongoClient
 percorso = r"csv\prodotti.csv"
 df1 = pd.read_csv(percorso, delimiter=';')
 percorso = r"csv\utenti.csv"
-df2 = pd.read_csv(percorso, delimiter=',')
+df2 = pd.read_csv(percorso, delimiter=';')
 percorso = r"csv\traduzione_categories.csv"
 df3 = pd.read_csv(percorso, delimiter=',')
 
-client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.ajv3ccw.mongodb.net/")
+client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client['SpeSana']
 collection = db['Products']
 data1 = df1.to_dict(orient='records')
@@ -23,7 +23,7 @@ for e in data1:
                 if f['original'] == a:
                     categories[i] = f["translate"]
         e['categories'] = categories
-    list_numbers = {"energy-kcal_100g", "fat_100g", "saturated-fat_100g", "carbohydrates_100g", "sugars_100g",
+    list_numbers = {"energy_kcal_100g", "fat_100g", "saturated_fat_100g", "carbohydrates_100g", "sugars_100g",
                     "fiber_100g", "proteins_100g", "salt_100g", "sodium_100g"}
     for string in list_numbers:
         numero_stringa = e[string]
@@ -39,10 +39,8 @@ collection.insert_many(data1)
 collection = db['Users']
 data2 = df2.to_dict(orient='records')
 for e in data2:
-    favorites = e["Favorites"]
-    if isinstance(favorites, str):
-        list_favorites = favorites.split(",")
-        e["Favorites"] = [e.strip() for e in list_favorites]
+    if isinstance(e["Favorites"], str):
+        e["Favorites"] = [f.strip() for f in e["Favorites"].split(",")]
 if "Users" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data2)

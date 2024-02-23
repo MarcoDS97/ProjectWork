@@ -8,22 +8,35 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.ajv3ccw.mongodb.net/")
+client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client["SpeSana"]
 products = db["Products"]
 users = db["Users"]
 
 
-# print(db)
-
 @app.route("/")
 def homepage():
-    return render_template("provaCard2.html")
+    a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
+    nutriscore_home = [a]
+    best = list(products.find().sort("unique_scans_n", -1).limit(6))
+    return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
-@app.route("/home")
-def home():
-    return render_template("home.html")
+@app.route("/product/<codice>")
+def product_codice(codice):
 
+    p = list(products.find({"code": codice}))
+    # print(p)
+    # print("ciao")
+    return render_template("shop.html")
+    # return render_template("shop.html", css_url=url_for("static", filename="shop.css"))
+
+@app.route("/shop")
+def shop():
+    # p = list(products.find({"code": codice}))
+    # print(p)
+    print("mondo")
+    return render_template("shop.html")
+    # return render_template("shop.html", css_url=url_for("static", filename="shop.css"))
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -75,7 +88,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/product")
+@app.route("/product/old")
 def product():
     prodotti = list(products.find({"brands": "Ferrero"}))
 
