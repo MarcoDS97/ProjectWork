@@ -47,6 +47,15 @@ def login():
 def signup():
     return render_template("signup.html")
 
+@app.route("/gpt", methods=["POST", "GET"])
+def gpt():
+    if request.method == 'POST':
+        prompt = request.form.get('prompt')
+        print(prompt)
+        response = "RISPOSTA"
+
+        return jsonify({'response': response})
+    return render_template('gpt-test.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
