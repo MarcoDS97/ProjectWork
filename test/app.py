@@ -34,10 +34,6 @@ def product_codice(codice):
 def login():
     return render_template("login.html")
 
-@app.route("/login2", methods=["POST", "GET"])
-def login2():
-    return render_template("loginNew.html")
-
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     return render_template("signup.html")

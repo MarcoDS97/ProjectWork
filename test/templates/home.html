@@ -35,9 +35,27 @@
     </style>
 </head>
 <body>
-
+<!-- Spinner Start -->
+        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
 <!-- Navbar start -->
 <div class="container-fluid fixed-top">
+    <div class="container topbar bg-primary d-none d-lg-block">
+                <div class="d-flex justify-content-between">
+                    <div class="top-info ps-2">
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
+                    </div>
+                    <div class="top-link pe-2">
+                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
+                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                    </div>
+                </div>
+            </div>
+
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
             <a href="#" class="navbar-brand"><h1 class="text-primary display-6">SpeSana</h1></a>
@@ -48,7 +66,7 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
                     <a href="/" class="nav-item nav-link active">Home</a>
-                    <a href="/login2" class="nav-item nav-link">New login</a>
+                    <a href="#" class="nav-item nav-link">Categorie</a>
                     <a href="/product" class="nav-item nav-link">Prodotti</a>
                     <a href="/ia" class="nav-item nav-link disabled">SpeSana.IA</a>
                 </div>
@@ -57,7 +75,8 @@
                             data-bs-toggle="modal" data-bs-target="#searchModal"><i
                             class="fas fa-search text-primary"></i></button>
                     <div class="nav-item dropdown">
-                        <a type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        <a type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                           data-bs-display="static" aria-expanded="false">
                             <i class="fas fa-user fa-2x"></i>
                         </a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -667,16 +686,8 @@
     </div>
 </div>
 <!-- Fruits Shop End-->
-<!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop Detail</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Shop Detail</li>
-        </ol>
-    </div>
-<!-- Single Page Header End -->
+
+
 <!-- Footer Start -->
 
 <!-- TAVOLOZZE DI COLORIIIIII-->
