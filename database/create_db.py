@@ -23,7 +23,7 @@ for e in data1:
                 if f['original'] == a:
                     categories[i] = f["translate"]
         e['categories'] = categories
-    list_numbers = {"energy-kcal_100g", "fat_100g", "saturated-fat_100g", "carbohydrates_100g", "sugars_100g",
+    list_numbers = {"energy_kcal_100g", "fat_100g", "saturated_fat_100g", "carbohydrates_100g", "sugars_100g",
                     "fiber_100g", "proteins_100g", "salt_100g", "sodium_100g"}
     for string in list_numbers:
         numero_stringa = e[string]

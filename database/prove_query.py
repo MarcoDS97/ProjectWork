@@ -14,9 +14,9 @@ if "Nutriscore e" in db.list_collection_names():
     collection.drop()
 collection.insert_many(risultato)
 
-risultato = prodotti.find({"categories": "Prodotti spalmabili"}).sort("unique_scans_n", -1).limit(10)
-for e in risultato:
-    print(e)
+# risultato = prodotti.find({"categories": "Prodotti spalmabili"}).sort("unique_scans_n", -1).limit(10)
+# for e in risultato:
+#     print(e)
 # category = "Snacks"
 # # Query per cercare i prodotti di una certa categoria
 # products_in_category = list(prodotti.find({"categories": "Snacks"}))
