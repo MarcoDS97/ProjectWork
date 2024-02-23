@@ -19,29 +19,18 @@ def homepage():
     a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
     nutriscore_home = [a]
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
+
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
 @app.route("/product/<codice>")
 def product_codice(codice):
-
     p = list(products.find({"code": codice}))
-    # print(p)
-    # print("ciao")
-    return render_template("shop.html")
-    # return render_template("shop.html", css_url=url_for("static", filename="shop.css"))
 
-@app.route("/shop")
-def shop():
-    # p = list(products.find({"code": codice}))
-    # print(p)
-    print("mondo")
-    return render_template("shop.html")
-    # return render_template("shop.html", css_url=url_for("static", filename="shop.css"))
+    return render_template("product-detail.html", prodotto=p[0])
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     return render_template("login.html")
-
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
