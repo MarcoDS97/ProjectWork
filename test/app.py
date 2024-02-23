@@ -36,7 +36,7 @@ def login():
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
-    return render_template("user.html")
+    return render_template("signup.html")
 
 @app.route("/gpt", methods=["POST", "GET"])
 def gpt():
@@ -86,7 +86,7 @@ def submit():
     else:
         response = "Email già esistente"
         return jsonify({'response': response})
-    return render_template('signup.html')
+    return render_template('signupOld.html')
 
 
 @app.route("/")
