@@ -1,5 +1,6 @@
 import bcrypt
 import pymongo
+from funzioni_utili import *
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 from flask_session import Session
 
@@ -44,7 +45,7 @@ def login():
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
-    return render_template("signup.html")
+    return render_template("signupOld.html")
 
 
 @app.route('/submit', methods=['POST'])
@@ -54,14 +55,20 @@ def submit():
     nome = request.form.get('nome_signup')
     cognome = request.form.get('cognome_signup')
     sesso = request.form.get('genere_signup')
-    eta = request.form.get('eta_signup')
-    altezza = request.form.get('altezza_signup')
-    peso = request.form.get('peso_signup')
-    obiettivo = request.form.get('peso_signup')
-    livello_attivita = request.form.get('peso_signup')
+    eta = int(request.form.get('eta_signup'))
+    altezza = float(request.form.get('altezza_signup'))
+    peso = float(request.form.get('peso_signup'))
+    obiettivo = request.form.get('obiettivo_signup')
+    livello_attivita = request.form.get('livello_attivita_signup')
+
+    print(livello_attivita)
+    print(obiettivo)
+    # users.create_index(users.createIndex( { "Email": email }, { "unique": "true" } ))
 
     password_scoperta = request.form.get('password_signup')
     password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
+
+    tdee = calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)
 
     users.insert_one({
         'Email': email,
@@ -75,6 +82,7 @@ def submit():
         'Favorites': [],
         'Goal': obiettivo,
         'Activity Level': livello_attivita,
+        'TDEE': tdee
     }
     )
 

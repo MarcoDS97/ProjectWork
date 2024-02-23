@@ -1,6 +1,8 @@
 import json
+import bcrypt
 import mysql.connector
 import pymongo
+from funzioni_utili import *
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 from flask_session import Session
 
@@ -17,66 +19,78 @@ users = db["Users"]
 @app.route("/")
 def homepage():
     a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
-    nutriscore_home = [a]
+    b = list(products.find({"nutriscore_grade": "b"}).sort("nutriscore_score").limit(10))
+    c = list(products.find({"nutriscore_grade": "c"}).sort("nutriscore_score").limit(10))
+    d = list(products.find({"nutriscore_grade": "d"}).sort("nutriscore_score").limit(10))
+    e = list(products.find({"nutriscore_grade": "e"}).sort("nutriscore_score").limit(10))
+    nutriscore_home = [a, b, c, d, e]
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
+
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
 @app.route("/product/<codice>")
 def product_codice(codice):
-
     p = list(products.find({"code": codice}))
-    # print(p)
-    # print("ciao")
-    return render_template("shop.html")
-    # return render_template("shop.html", css_url=url_for("static", filename="shop.css"))
 
-@app.route("/shop")
-def shop():
-    # p = list(products.find({"code": codice}))
-    # print(p)
-    print("mondo")
-    return render_template("shop.html")
-    # return render_template("shop.html", css_url=url_for("static", filename="shop.css"))
+    return render_template("product-detail.html", prodotto=p[0])
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     return render_template("login.html")
 
-
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     return render_template("signup.html")
 
+@app.route("/gpt", methods=["POST", "GET"])
+def gpt():
+    if request.method == 'POST':
+        prompt = request.form.get('prompt')
+        print(prompt)
+        response = "RISPOSTA"
+
+        return jsonify({'response': response})
+    return render_template('gpt-test.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
     email = request.form.get('email_signup')
-    password = request.form.get('password_signup')
-    nome = request.form.get('nome_signup')
-    cognome = request.form.get('cognome_signup')
-    sesso = request.form.get('genere_signup')
-    eta = request.form.get('eta_signup')
-    altezza = request.form.get('altezza_signup')
-    peso = request.form.get('peso_signup')
-    obiettivo = request.form.get('peso_signup')
-    livello_attivita = request.form.get('peso_signup')
+    if len(list(users.find({'Email': email}))) == 0:
+        # password = request.form.get('password_signup')
+        nome = request.form.get('nome_signup')
+        cognome = request.form.get('cognome_signup')
+        sesso = request.form.get('genere_signup')
+        eta = int(request.form.get('eta_signup'))
+        altezza = float(request.form.get('altezza_signup'))
+        peso = float(request.form.get('peso_signup'))
+        obiettivo = request.form.get('obiettivo_signup')
+        livello_attivita = request.form.get('livello_attivita_signup')
 
-    users.insert_one({
-        'Email': email,
-        'Password': password,
-        'Name': nome,
-        'Surname': cognome,
-        'Gender': sesso,
-        'Age': eta,
-        'Height': altezza,
-        'Weight': peso,
-        'Favorites': [],
-        'Goal': obiettivo,
-        'Activity Level': livello_attivita,
-    }
-    )
+        password_scoperta = request.form.get('password_signup')
+        password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
 
-    return 'Data inserted successfully!'
+        tdee = calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)
+
+        users.insert_one({
+            'Email': email,
+            'Password': password_coperta,
+            'Name': nome,
+            'Surname': cognome,
+            'Gender': sesso,
+            'Age': eta,
+            'Height': altezza,
+            'Weight': peso,
+            'Favorites': [],
+            'Goal': obiettivo,
+            'Activity Level': livello_attivita,
+            'TDEE': tdee
+        }
+        )
+        return redirect('/')
+    else:
+        response = "Email già esistente"
+        return jsonify({'response': response})
+    return render_template('signupOld.html')
 
 
 @app.route("/")
