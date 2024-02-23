@@ -19,7 +19,11 @@ users = db["Users"]
 @app.route("/")
 def homepage():
     a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
-    nutriscore_home = [a]
+    b = list(products.find({"nutriscore_grade": "b"}).sort("nutriscore_score").limit(10))
+    c = list(products.find({"nutriscore_grade": "c"}).sort("nutriscore_score").limit(10))
+    d = list(products.find({"nutriscore_grade": "d"}).sort("nutriscore_score").limit(10))
+    e = list(products.find({"nutriscore_grade": "e"}).sort("nutriscore_score").limit(10))
+    nutriscore_home = [a, b, c, d, e]
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
 
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
