@@ -2,17 +2,17 @@ from pymongo import MongoClient
 
 client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client['SpeSana']
-prodotti = db['Users']
-# risultato = prodotti.find({"nutriscore_grade": 'a'}).sort("nutriscore_score")
-# collection = db["Nutriscore a"]
-# if "Nutriscore a" in db.list_collection_names():
-#     collection.drop()
-# collection.insert_many(risultato)
-# risultato = prodotti.find({"nutriscore_grade": 'e'}).sort("nutriscore_score")
-# collection = db["Nutriscore e"]
-# if "Nutriscore e" in db.list_collection_names():
-#     collection.drop()
-# collection.insert_many(risultato)
+prodotti = db['Products']
+risultato = prodotti.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10)
+collection = db["Nutriscore a"]
+if "Nutriscore a" in db.list_collection_names():
+    collection.drop()
+collection.insert_many(risultato)
+risultato = prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}}).sort("nutriscore_score").limit(10)
+collection = db["Nutriscore e"]
+if "Nutriscore e" in db.list_collection_names():
+    collection.drop()
+collection.insert_many(risultato)
 
 risultato = prodotti.find({"categories": "Prodotti spalmabili"}).sort("unique_scans_n", -1).limit(10)
 for e in risultato:
