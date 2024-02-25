@@ -185,7 +185,7 @@
 }
 
 #searchModal .modal-content {
-    background: rgba(255, 255, 255, .8);
+    background: rgba(1,64,23, .8);
 }
 /*** Navbar End ***/
 
@@ -326,7 +326,7 @@
 
 .fruite .fruite-item .fruite-img img {
     transition: 0.5s;
-    height: 350px;
+    height: 240px;
 }
 
 .fruite .fruite-item .fruite-img img:hover {

@@ -33,7 +33,7 @@
 
     <script>
         $(document).ready(function() {
-            $('form').on('submit', function(event) {
+            $('#ia_form').on('submit', function(event) {
                 event.preventDefault();
             // get the CSRF token from the cookie
             var csrftoken = Cookies.get('csrftoken');
@@ -60,13 +60,20 @@
         });
     </script>
     <style>
+        .code-btn{
+        font-size: 1.5em
+        }
+        .px-search{
+            padding-right: 1.5rem !important;
+            padding-left: 4rem !important;
+            }
         .img-best {
         max-width: 100%;
         height: 200px
         }
 
         .maxText {
-        height: 100px;
+        height: 65px;
         }
         .bg-verde-scuro {
         background: #014017
@@ -108,21 +115,23 @@
 </head>
 <body>
 <!-- Spinner Start -->
-        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" role="status"></div>
-        </div>
-        <!-- Spinner End -->
+<div id="spinner"
+     class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+    <div class="spinner-grow text-primary" role="status"></div>
+</div>
+<!-- Spinner End -->
 <!-- Navbar start -->
 <div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
     <div class="container topbar bg-verde-medio d-none d-lg-block">
-                <div class="d-flex justify-content-center">
-                    <h5 class="text-light">Siamo un marchio che ispira e guida le persone verso scelte alimentari migliori! 🌱🍎🥦</h5>
-                </div>
-            </div>
+        <div class="d-flex justify-content-center">
+            <h5 class="text-light">Siamo un marchio che ispira e guida le persone verso scelte alimentari migliori!
+                🌱🍎🥦</h5>
+        </div>
+    </div>
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-<!--            <img src="/static/imgTest/Carrello.jpg" width="50" height="50">-->
+            <!--            <img src="/static/imgTest/Carrello.jpg" width="50" height="50">-->
             <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
@@ -163,15 +172,25 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content rounded-0">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                <h5 class="modal-title bianco" id="exampleModalLabel">Search by keyword</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex align-items-center">
-                <div class="input-group w-75 mx-auto d-flex">
-                    <input type="search" class="form-control p-3" placeholder="keywords"
-                           aria-describedby="search-icon-1">
-                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                </div>
+                <form class="w-75 mx-auto d-flex" method="POST" enctype="multipart/form-data">
+                    <div class="relative">
+                        <label title="Carica codice" for="code_modal" class="cursor-pointer flex items-center">
+                            <div class="w-max relative btn btn-primary border-2 border-secondary px-3 rounded-pill text-white"
+                                 style="padding-top: 0.6rem !important; padding-bottom: 0.6rem !important;">
+                                <i class="bi bi-upc-scan code-btn"></i>
+                            </div>
+                        </label>
+                        <input hidden="" type="file" name="code_modal" id="code_modal">
+                    </div>
+                    <input type="text" class="form-control p-3" placeholder="keywords"
+                           aria-describedby="search-icon-1" id="search_modal" name="search_modal">
+                    <button type="submit" id="search-icon-1" class="input-group-text p-3"><i
+                            class="fa fa-search"></i></button>
+                </form>
             </div>
         </div>
     </div>
@@ -185,33 +204,46 @@
             <div class="col-md-12 col-lg-7">
                 <h4 class="mb-1 ms-2 arancione">Informazioni nutrizionali a portata di clic,</h4>
                 <h1 class="mb-5 display-3" style="color: #014017">Scopri il potere degli alimenti</h1>
-                <div class="position-relative mx-auto">
-                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text"
-                           name="search_home_1" placeholder="Inserisci prodotto">
+                <form class="position-relative mx-auto" method="POST" enctype="multipart/form-data">
+                    <div class="relative">
+                        <label title="Carica codice" for="code_hero" class="cursor-pointer flex items-center">
+                            <div class="w-max relative btn btn-primary border-2 border-secondary px-3 position-absolute rounded-pill text-white"
+                                 style="top: 29.5%; right: 90.4%; padding-top: 0.6rem !important; padding-bottom: 0.6rem !important;">
+                                <i class="bi bi-upc-scan code-btn"></i>
+                            </div>
+                        </label>
+                        <input hidden="" type="file" name="code_hero" id="code_hero">
+                    </div>
+                    <input class="form-control border-2 border-secondary w-75 py-3 px-search rounded-pill" type="text"
+                           name="search_hero" placeholder="Inserisci prodotto">
                     <button type="submit"
-                            class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100"
-                            style="top: 0; right: 25%;">Cerca
+                            class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white"
+                            style="top: 29%; right: 25%;">Cerca
                     </button>
-                </div>
+                </form>
             </div>
             <div class="col-md-12 col-lg-5">
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="static/imgTest/home_start_info.jpeg" class="img-fluid w-100 h-100 bg-secondary rounded"
+                            <img src="static/imgTest/home_start_info.jpeg"
+                                 class="img-fluid w-100 h-100 bg-secondary rounded"
                                  alt="First slide">
                             <a href="#" class="btn px-4 py-2 text-white rounded">Informazione</a>
                         </div>
                         <div class="carousel-item rounded">
-                            <img src="static/imgTest/home_start_ricette.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                            <img src="static/imgTest/home_start_ricette.jpg" class="img-fluid w-100 h-100 rounded"
+                                 alt="Second slide">
                             <a href="#" class="btn px-4 py-2 text-white rounded">Ricette</a>
                         </div>
                         <div class="carousel-item rounded">
-                            <img src="static/imgTest/home_start_consigli.jpeg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                            <img src="static/imgTest/home_start_consigli.jpeg" class="img-fluid w-100 h-100 rounded"
+                                 alt="Second slide">
                             <a href="#" class="btn px-4 py-2 text-white rounded">Consigli</a>
                         </div>
                         <div class="carousel-item rounded">
-                            <img src="static/imgTest/home_start_rapport.jpeg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                            <img src="static/imgTest/home_start_rapport.jpeg" class="img-fluid w-100 h-100 rounded"
+                                 alt="Second slide">
                             <a href="#" class="btn px-4 py-2 text-white rounded">Rapporti</a>
                         </div>
                     </div>
@@ -233,12 +265,12 @@
 <!-- Hero End -->
 
 <!-- Fruits Shop Start-->
-    <div class="container-fluid fruite mb-3">
+<div class="container-fluid fruite mb-3">
     <div class="container py-5">
         <div class="tab-class text-center">
             <div class="row g-4">
                 <div class="col-lg-4 text-start">
-                <!--      LINK NUTRISCORE              -->
+                    <!--      LINK NUTRISCORE              -->
                     <h2><span class="text-secondary">Nutri il tuo benessere,</span> scopri Nutriscore</h2>
                 </div>
                 <div class="col-lg-8 text-end">
@@ -282,21 +314,26 @@
 
                                 <div class="fruite-img">
                                     <img src="{{elem.image_url}}"
-                                         class="img-fluid w-100 rounded-top" alt="">
+                                         class="img-fluid rounded-top" alt="">
                                 </div>
                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                      style="top: 10px; left: 10px;">A
                                 </div>
                                 <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                    <h4 class="maxText">{{elem.product_name}}</h4>
+                                    <h5 class="maxText">{{elem.product_name}}</h5>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                        <a href="#"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
                                             <i class="fa fa-heart me-2 text-secondary"></i>
                                         </a>
-                                        <a href="/product/{{elem.code}}" class="btn border border-secondary rounded-pill text-primary px-3 mx-1 my-2">Info</a>
-                                        <form method="post">
-                                        <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="prompt" type="submit" data-bs-toggle="modal" name="prompt" data-bs-target="#chatModal"
-                                                value="ID user, {{elem.code}}, ricetta/info"><i class="bi bi-stars me-2"></i></button>
+                                        <a href="/product/{{elem.code}}"
+                                           class="btn border border-secondary rounded-pill text-primary px-3 mx-1 my-2">Info</a>
+                                        <form method="post" id="ia_form">
+                                            <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
+                                                    id="prompt" type="submit" data-bs-toggle="modal" name="prompt"
+                                                    data-bs-target="#chatModal"
+                                                    value="ID user, {{elem.code}}, ricetta/info"><i
+                                                    class="bi bi-stars me-2"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -314,18 +351,20 @@
 
                                 <div class="fruite-img">
                                     <img src="{{elem.image_url}}"
-                                         class="img-fluid w-100 rounded-top" alt="">
+                                         class="img-fluid rounded-top" alt="">
                                 </div>
                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                      style="top: 10px; left: 10px;">B
                                 </div>
                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                    <h4 class="maxText mb-0">{{elem.product_name}}</h4>
+                                    <h5 class="maxText mb-0">{{elem.product_name}}</h5>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                        <a href="#"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
                                             <i class="fa fa-heart me-2 text-primary"></i>
                                         </a>
-                                        <a href="/product/{{elem.code}}" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
+                                        <a href="/product/{{elem.code}}"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
                                     </div>
                                 </div>
                             </div>
@@ -342,18 +381,20 @@
 
                                 <div class="fruite-img">
                                     <img src="{{elem.image_url}}"
-                                         class="img-fluid w-100 rounded-top" alt="">
+                                         class="img-fluid rounded-top" alt="">
                                 </div>
                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                      style="top: 10px; left: 10px;">C
                                 </div>
                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                    <h4 class="maxText mb-0">{{elem.product_name}}</h4>
+                                    <h5 class="maxText mb-0">{{elem.product_name}}</h5>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                        <a href="#"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
                                             <i class="fa fa-heart me-2 text-primary"></i>
                                         </a>
-                                        <a href="/product/{{elem.code}}" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
+                                        <a href="/product/{{elem.code}}"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
                                     </div>
                                 </div>
                             </div>
@@ -370,18 +411,20 @@
 
                                 <div class="fruite-img">
                                     <img src="{{elem.image_url}}"
-                                         class="img-fluid w-100 rounded-top" alt="">
+                                         class="img-fluid rounded-top" alt="">
                                 </div>
                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                      style="top: 10px; left: 10px;">D
                                 </div>
                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                    <h4 class="maxText mb-0">{{elem.product_name}}</h4>
+                                    <h5 class="maxText mb-0">{{elem.product_name}}</h5>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                        <a href="#"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
                                             <i class="fa fa-heart me-2 text-primary"></i>
                                         </a>
-                                        <a href="/product/{{elem.code}}" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
+                                        <a href="/product/{{elem.code}}"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
                                     </div>
                                 </div>
                             </div>
@@ -398,18 +441,20 @@
 
                                 <div class="fruite-img">
                                     <img src="{{elem.image_url}}"
-                                         class="img-fluid w-100 rounded-top" alt="">
+                                         class="img-fluid rounded-top" alt="">
                                 </div>
                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                      style="top: 10px; left: 10px;">E
                                 </div>
                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                    <h4 class="maxText mb-0">{{elem.product_name}}</h4>
+                                    <h5 class="maxText mb-0">{{elem.product_name}}</h5>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                        <a href="#"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
                                             <i class="fa fa-heart me-2 text-primary"></i>
                                         </a>
-                                        <a href="/product/{{elem.code}}" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
+                                        <a href="/product/{{elem.code}}"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">Info</a>
                                     </div>
                                 </div>
                             </div>
@@ -431,7 +476,7 @@
         <div class="row g-4">
             <div class="col-md-6 col-lg-3">
                 <div class="featurs-item text-center rounded bg-light p-4">
-                   <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                    <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
                         <i class="bi bi-emoji-sunglasses fa-3x text-white"></i>
                     </div>
                     <div class="featurs-content text-center">
@@ -482,7 +527,7 @@
 <div class="container-fluid">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-4">Prodotti più cercati</h1>
+            <h1 class="display-4">Prodotti più scansionati</h1>
         </div>
         <div class="row g-4">
             {% for elem in best %}
@@ -490,7 +535,8 @@
                 <div class="p-4 rounded bg-light">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <img src="{{elem.image_url}}" class="img-best rounded-top w-100" style="heigth: 220px" alt="">
+                            <img src="{{elem.image_url}}" class="img-best rounded-top w-100" style="heigth: 220px"
+                                 alt="">
                         </div>
                         <div class="col-6">
                             <a href="#" class="h5">{{elem.product_name}}</a>
@@ -503,7 +549,7 @@
                     </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -518,18 +564,20 @@
                     <h1 class="display-3 text-white">Crea una ricetta,</h1>
                     <span class="h2">scopri i segreti degli alimenti.</span>
                     <!--                            <h6 class="fw-light display-3 text-dark mb-4"></h6>-->
-                    <p class="mb-4 mt-2 text-dark">Alimenti analizzati, ricette personalizzate: benvenuti in SpeSana.IA!</p>
-                    <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">PROVALA ORA</a>
+                    <p class="mb-4 mt-2 text-dark">Alimenti analizzati, ricette personalizzate: benvenuti in
+                        SpeSana.IA!</p>
+                    <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">PROVALA
+                        ORA</a>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="position-relative">
                     <img src="static/imgTest/home_banner_ia.png" class="img-fluid w-100 rounded" alt="">
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 <!-- Banner Section End -->
 
 <!-- Fruits Shop Start-->
@@ -727,13 +775,18 @@
                     </div>
                 </div>
             </div>
-             <h5 class="text-light mt-4 mb-3 text-center">Sviluppato da:</h5>
-            <p class="mb-2 text-center"><a class="text-light text-decoration-underline" href="//www.linkedin.com/in/armando-izaguirre-la-rocca/"> Armando Izaguirre </a>-
-                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/benedetta-aversano/"> Benedetta Aversano </a>-
-                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/marco-de-sio-5b87b7196/"> Marco de Sio </a>-
-                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/stefano-crivella/"> Stefano Crivella </a>-
-                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/riccardo-benedetti-44aa70299/"> Riccardo Benedetti </a>
-
+            <h5 class="text-light mt-4 mb-3 text-center">Sviluppato da:</h5>
+            <p class="mb-2 text-center"><a class="text-light text-decoration-underline"
+                                           href="//www.linkedin.com/in/armando-izaguirre-la-rocca/"> Armando
+                Izaguirre </a>-
+                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/benedetta-aversano/">
+                    Benedetta Aversano </a>-
+                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/marco-de-sio-5b87b7196/">
+                    Marco de Sio </a>-
+                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/stefano-crivella/"> Stefano
+                    Crivella </a>-
+                <a class="text-light text-decoration-underline"
+                   href="//www.linkedin.com/in/riccardo-benedetti-44aa70299/"> Riccardo Benedetti </a>
 
 
         </div>
@@ -744,7 +797,8 @@
 <!-- Back to Top -->
 <div class="row">
     <div class="col">
-        <button type="button" class="btn btn-secondary border-3 border-secondary ia-button" data-bs-toggle="modal" data-bs-target="#chatModal">
+        <button type="button" class="btn btn-secondary border-3 border-secondary ia-button" data-bs-toggle="modal"
+                data-bs-target="#chatModal">
             SpeSana.IA<i class="bi bi-stars"></i>
         </button>
     </div>
@@ -754,8 +808,10 @@
     </div>
 </div>
 
+
 <!--SpeSana.IA CHAT-->
-<div class="modal fade modal-bottom-right" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+<div class="modal fade modal-bottom-right" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog position-fixed bottom-0 end-0 mb-5 me-3 modal-dialog-scrollable">
         <div class="modal-content" style="width: 375px;">
             <div class="modal-header">
@@ -764,9 +820,9 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-        <h6>Response:</h6>
-        <div class="container border overflow-auto h-50" id="response"></div>
-    </div>
+                    <h6>Response:</h6>
+                    <div class="container border overflow-auto h-50" id="response"></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudere</button>

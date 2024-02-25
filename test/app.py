@@ -1,14 +1,19 @@
 import json
+import os
 import bcrypt
 import mysql.connector
 import pymongo
 from funzioni_utili import *
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 from flask_session import Session
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
+
 Session(app)
 client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client["SpeSana"]
@@ -27,8 +32,33 @@ def homepage():
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
     if request.method == 'POST':
         prompt = request.form.get('prompt')
-        response = f"Ho ricevuto dati per fare il prompt: {prompt}"
-        return jsonify({'response': response})
+        search_hero = request.form.get('search_hero')
+        search_modal = request.form.get('search_modal')
+
+        if prompt:
+            response = f"Ho ricevuto dati per fare il prompt: {prompt}"
+            return jsonify({'response': response})
+        elif search_modal:
+            print(search_modal)
+        elif search_hero:
+            print(search_hero)
+        elif "code_hero" in request.files:
+            codice = request.files['code_hero']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    print(codice_img(codice.filename))
+                    os.remove(codice.filename)
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    print(codice_img(codice.filename))
+                    os.remove(codice.filename)
 
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
