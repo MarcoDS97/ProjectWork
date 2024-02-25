@@ -1,5 +1,4 @@
 import os
-
 from openai import OpenAI
 key = ""
 client = OpenAI()
