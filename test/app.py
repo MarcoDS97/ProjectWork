@@ -16,7 +16,7 @@ products = db["Products"]
 users = db["Users"]
 
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def homepage():
     a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
     b = list(products.find({"nutriscore_grade": "b"}).sort("nutriscore_score").limit(10))
@@ -25,22 +25,42 @@ def homepage():
     e = list(products.find({"nutriscore_grade": "e"}).sort("nutriscore_score").limit(10))
     nutriscore_home = [a, b, c, d, e]
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
+    if request.method == 'POST':
+        prompt = request.form.get('prompt')
+        response = f"Ho ricevuto dati per fare il prompt: {prompt}"
+        return jsonify({'response': response})
 
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
-@app.route("/product/<codice>")
+
+@app.route("/product/<codice>", methods=["POST", "GET"])
 def product_codice(codice):
     p = list(products.find({"code": codice}))
+    prompt_ricetta = request.form.get('ricetta_p')
+    prompt_info = request.form.get('info_p')
+
+    if request.method == 'POST':
+        print(prompt_ricetta)
+        if prompt_ricetta:
+            response = f"Ho ricevuto dati per fare il prompt: {prompt_ricetta}"
+            return jsonify({'response': response})
+        elif prompt_info:
+            response = f"Ho ricevuto dati per fare il prompt: {prompt_info}"
+            return jsonify({'response': response})
+        # return jsonify({'response': (prompt_ricetta, prompt_info)})
 
     return render_template("product-detail.html", prodotto=p[0])
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     return render_template("login.html")
 
+
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     return render_template("signup.html")
+
 
 @app.route("/gpt", methods=["POST", "GET"])
 def gpt():
@@ -48,9 +68,10 @@ def gpt():
         prompt = request.form.get('prompt')
         print(prompt)
         response = "RISPOSTA"
-
         return jsonify({'response': response})
+
     return render_template('gpt-test.html')
+
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -87,7 +108,7 @@ def submit():
         }
         )
         return redirect('/')
-    else:
+    elif len(list(users.find({'Email': email}))) > 0:
         response = "Email già esistente"
         return jsonify({'response': response})
     return render_template('signupOld.html')
