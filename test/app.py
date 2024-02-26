@@ -34,7 +34,7 @@ def homepage():
     utente = {}
     if session.get('name'):
         flagLog = True
-        utente = list(users.find({'Email': session['name']} ))
+        utente = list(users.find({'Email': session['name']}))
 
     if request.method == 'POST':
         prompt = request.form.get('prompt')
@@ -65,8 +65,10 @@ def homepage():
                     codice.save(filename)
                     print(codice_img(codice.filename))
                     os.remove(codice.filename)
-
-    return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0], flagLog=flagLog)
+    if utente:
+        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog)
 
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
@@ -111,7 +113,10 @@ def login():
         else:
             verifica = False
 
-    return render_template("login.html", utente=utente[0], flagLog=flagLog)
+    if utente:
+        return render_template("login.html", utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("login.html", flagLog=flagLog)
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -159,7 +164,10 @@ def signup():
     elif len(list(users.find({'Email': email}))) > 0:
         response = "Email già esistente"
         return jsonify({'response': response})
-    return render_template("signup.html", utente=utente[0], flagLog=flagLog)
+    if utente:
+        return render_template("signup.html", utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("signup.html", flagLog=flagLog)
 
 
 @app.route("/gpt", methods=["POST", "GET"])
@@ -208,10 +216,10 @@ def submit():
         }
         )
         return redirect('/')
-    elif len(list(users.find({'Email': email}))) > 0:
-        response = "Email già esistente"
-        return jsonify({'response': response})
-    return render_template('signupOld.html')
+    # elif len(list(users.find({'Email': email}))) > 0:
+    #     response = "Email già esistente"
+    #     return jsonify({'response': response})
+    # return render_template('signupOld.html')
 
 @app.route("/product")
 def product():
@@ -222,8 +230,10 @@ def product():
         utente = list(users.find({'Email': session['name']}))
 
     prodotto = list(prodotti.find({"brands": "Ferrero"}))
-
-    return render_template("product.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
+    if utente:
+        return render_template("product.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("product.html", prodotto=prodotto, flagLog=flagLog)
 
 @app.route("/profilo")
 def profilo():
