@@ -379,8 +379,9 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
+                                    {% for elem in prodotto %}
                                     <div class="col-md-6 col-lg-6 col-xl-4">
-                                        {% for elem in prodotto %}
+
                                             <div class="col-md-6 col-lg-4 col-xl-3">
                                                 <div class="rounded position-relative fruite-item d-flex flex-column">
 
@@ -411,9 +412,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {% endfor %}
-                                    </div>
 
+                                    </div>
+{% endfor %}
                                     <div class="col-12">
                                         <div class="pagination d-flex justify-content-center mt-5">
                                             <a href="#" class="rounded">&laquo;</a>
