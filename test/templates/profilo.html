@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shop</title>
+    <title>Profilo</title>
     <meta content="" name="keywords">
     <meta content="" name="description">
 
@@ -74,7 +74,7 @@
         }
 
         .maxText {
-        height: 40px;
+        height: 65px;
         }
         .bg-verde-scuro {
         background: #014017
@@ -115,7 +115,14 @@
     </style>
     </head>
 
-    <body>
+<body>
+
+<!-- Spinner Start -->
+<div id="spinner"
+     class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+    <div class="spinner-grow text-primary" role="status"></div>
+</div>
+<!-- Spinner End -->
 
 <!-- Navbar start -->
 <div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
@@ -152,7 +159,7 @@
                         </a>
                         <div class="dropdown-menu m-0 bg-secondary bianco rounded-0">
                             <a href="/login" class="dropdown-item">Login</a>
-                            <a href="#" class="dropdown-item">Il mio profilo</a>
+                            <a href="/profilo" class="dropdown-item">Il mio profilo</a>
                             <a href="#" class="dropdown-item">Preferiti</a>
                             <a href="/logout" class="dropdown-item">Logout</a>
                         </div>
@@ -194,168 +201,132 @@
 </div>
 <!-- Modal Search End -->
 
-
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Prodotti</h1>
+    <h1 class="text-center text-white display-6">Profilo</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item active text-white">Prodotti</li>
+        <li class="breadcrumb-item active text-white">Profilo</li>
     </ol>
 </div>
 <!-- Single Page Header End -->
 
 
-        <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
+        <!-- Checkout Page Start -->
+        <div class="container-fluid py-5">
             <div class="container py-5">
-                <h1 class="mb-4">Fresh fruits shop</h1>
-                <div class="row g-4">
-                    <div class="col-lg-12">
-                        <div class="row g-4">
-                            <div class="col-xl-3">
-                                <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                                </div>
-                            </div>
-                            <div class="col-6"></div>
-                            <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">Default Sorting:</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                        <option value="volvo">Nothing</option>
-                                        <option value="saab">Popularity</option>
-                                        <option value="opel">Organic</option>
-                                        <option value="audi">Fantastic</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-4">
-                            <div class="col-lg-3">
-                                <div class="row g-4">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Categories</h4>
-                                            <ul class="list-unstyled fruite-categorie">
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                                        <span>(3)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                                        <span>(5)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                                        <span>(2)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                                        <span>(8)</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                                        <span>(5)</span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
+                <h1 class="mb-4">Il mio profilo</h1>
+                <form action="#">
+                    <div class="row g-5">
+                        <div class="col-md-12 col-lg-6 col-xl-7">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Nome<sup>*</sup></label>
+                                        <input type="text" class="form-control">
                                     </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Additional</h4>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
-                                                <label for="Categories-1"> Organic</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
-                                                <label for="Categories-2"> Fresh</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
-                                                <label for="Categories-3"> Sales</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
-                                                <label for="Categories-4"> Discount</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-5" name="Categories-1" value="Beverages">
-                                                <label for="Categories-5"> Expired</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="d-flex justify-content-center my-4">
-                                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
-                                        </div>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Cognome<sup>*</sup></label>
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-9">
-                                <div class="row g-4 justify-content-center">
-                                    {% for elem in prodotto %}
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="rounded position-relative fruite-item d-flex flex-column">
-
-                                <a class="fruite-img" style="text-align: center" href="/product/{{elem.code}}">
-                                    <img src="{{elem.image_url}}"
-                                         class="img-fluid rounded-top" alt="">
-                                </a>
-                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                     style="top: 10px; left: 10px;">A
-                                </div>
-                                <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                    <a class="maxText h6" href="/product/{{elem.code}}">{{elem.product_name}}</a>
-                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#"
-                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
-                                            <i class="fa fa-heart me-2 text-secondary"></i>
-                                        </a>
-                                        <form method="post" id="ia_form">
-                                            <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
-                                                    id="prompt" type="submit" data-bs-toggle="modal" name="prompt"
-                                                    data-bs-target="#chatModal"
-                                                    value="ID user, {{elem.code}}, ricetta/info"><i
-                                                    class="bi bi-stars me-2"></i></button>
-                                        </form>
+                            <div class="form-item">
+                                <label class="form-label my-3">Email<sup>*</sup></label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Sesso<sup>*</sup></label>
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Età<sup>*</sup></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Peso (kg)<sup>*</sup></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="form-item w-100">
+                                        <label class="form-label my-3">Altezza (cm)<sup>*</sup></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">Obiettivo<sup>*</sup></label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">Livello di attività<sup>*</sup></label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">Preferiti<sup>*</sup></label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <hr>
+                            <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                                <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Salva modifiche</button>
                             </div>
                         </div>
-                        {% endfor %}
-                                    <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
-                                            <a href="#" class="rounded">&raquo;</a>
+                        <div class="col-md-12 col-lg-6 col-xl-5">
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Prodotti preferiti
+                                              </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                              <div class="accordion-body">
+                                                  <ul class="list-group">
+                                                      <li class="list-group-item">ciclo for</li>
+                                                    </ul>
+                                              </div>
+                                            </div>
                                         </div>
+                                </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="form-check text-start my-3">
+                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Payments-1" name="Payments" value="Payments">
+                                        <label class="form-check-label" for="Payments-1">Grafici</label>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="form-check text-start my-3">
+                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1" name="Delivery" value="Delivery">
+                                        <label class="form-check-label" for="Delivery-1">Le mie ricette</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                                <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cambio password</button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-        <!-- Fruits Shop End-->
+        <!-- Checkout Page End -->
 
 
 <!-- Footer Start -->

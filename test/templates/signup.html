@@ -227,7 +227,6 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Obiettivo</h6>
-<!--                                        <input type="text" name="obiettivo_signup" class="w-100 form-control border-0 py-1 mb-4" required>-->
                                         <select class="w-100 form-select border-0 py-1 mb-4" name="obiettivo_signup" style="width: min-content" id="validationServer09" aria-describedby="validationServer04Feedback" required>
                                             <option></option>
                                             <option> Dimagrire </option>
@@ -239,7 +238,6 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Livello di attività</h6>
-<!--                                        <input type="text" name="livello_attivita_signup" class="w-100 form-control border-0 py-1 mb-4" required>-->
                                         <select class="w-100 form-select border-0 py-1 mb-3" name="livello_attivita_signup" style="width: min-content" id="validationServer10" aria-describedby="validationServer04Feedback" required>
                                             <option></option>
                                             <option> Sedentario </option>
@@ -251,8 +249,14 @@
                                 </div>
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
-                                        <h6>Prodotti preferiti</h6>
-                                        <input type="text" name="preferiti_signup" class="w-100 form-control border-0 py-1 mb-3" required>
+                                        <h6>Categorie preferite</h6>
+                                        <fieldset>
+                                            <option><input type="checkbox" name="frutta" value="mela"> Mela</option>
+                                            <label><input type="checkbox" name="frutta" value="pera"> Pera</label>
+                                            <label><input type="checkbox" name="frutta" value="banana"> Banana</label>
+                                            <label><input type="checkbox" name="frutta" value="fragola"> Fragola</label>
+                                            <label><input type="checkbox" name="frutta" value="kiwi"> Kiwi</label>
+                                        </fieldset>
                                     </div>
                                 </div>
                                 <button class="w-100 btn btn-secondary border-3 border-secondary bg-verde-scuro text-light py-3" type="submit">Registrati</button>
