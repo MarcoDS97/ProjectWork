@@ -15,13 +15,23 @@ import pandas as pd
 
 client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client['SpeSana']
-users = db['Users']
+prodotti = db['Products']
 
-risultato = utenti.find({})
+pipeline = [
+    {"$match": {"nutriscore_grade": "e", "unique_scans_n": {"$gte": 100}}},
+    {"$sort": {"nutriscore_score": -1}},
+    {"$group": {"_id": "$product_name", "doc": {"$first": "$$ROOT"}}},
+    {"$replaceRoot": {"newRoot": "$doc"}},
+    {"$limit": 20}
+]
 
-utenti = pd.DataFrame(risultato)
+risultati = list(prodotti.aggregate(pipeline))
 
+nutriscore_e = pd.DataFrame(risultati)
 
+# risultato = utenti.find({})
+#
+# utenti = pd.DataFrame(risultato)
 
 
 # risultato = prodotti.find({"categories": "Prodotti spalmabili"}).sort("unique_scans_n", -1).limit(10)
@@ -36,3 +46,6 @@ utenti = pd.DataFrame(risultato)
 # print("Prodotti nella categoria", category)
 # for product in products_in_category[:10]:
 #     print(product["product_name"])
+
+
+
