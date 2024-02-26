@@ -8,28 +8,26 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from flask_session import Session
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
-
 Session(app)
 client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client["SpeSana"]
-products = db["Products"]
+prodotti = db["Products"]
 users = db["Users"]
 
 
 @app.route("/", methods=["POST", "GET"])
 def homepage():
-    a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
-    b = list(products.find({"nutriscore_grade": "b"}).sort("nutriscore_score").limit(10))
-    c = list(products.find({"nutriscore_grade": "c"}).sort("nutriscore_score").limit(10))
-    d = list(products.find({"nutriscore_grade": "d"}).sort("nutriscore_score").limit(10))
-    e = list(products.find({"nutriscore_grade": "e"}).sort("nutriscore_score").limit(10))
+    a = list(prodotti.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
+    b = list(prodotti.find({"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2 }}).sort("nutriscore_score").limit(10))
+    c = list(prodotti.find({"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}}).sort("nutriscore_score").limit(10))
+    d = list(prodotti.find({"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}}).sort("nutriscore_score").limit(10))
+    e = list(prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}}).sort("nutriscore_score").limit(10))
     nutriscore_home = [a, b, c, d, e]
-    best = list(products.find().sort("unique_scans_n", -1).limit(6))
+    best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
     if request.method == 'POST':
         prompt = request.form.get('prompt')
         search_hero = request.form.get('search_hero')
@@ -65,7 +63,7 @@ def homepage():
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
 def product_codice(codice):
-    p = list(products.find({"code": codice}))
+    p = list(prodotti.find({"code": codice}))
     prompt_ricetta = request.form.get('ricetta_p')
     prompt_info = request.form.get('info_p')
 
@@ -84,6 +82,18 @@ def product_codice(codice):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    if request.method == "POST":
+        email = request.form.get("email_login")
+        password = bcrypt.hashpw(request.form.get("password_login").encode('utf-8'), bcrypt.gensalt())
+        verifica = True
+        print(email)
+        print(password)
+
+        if users.find({"Email": email}) and users.find({"Password": password}):
+            return redirect("/")
+        else:
+            verifica = False
+
     return render_template("login.html")
 
 
@@ -143,22 +153,16 @@ def submit():
         return jsonify({'response': response})
     return render_template('signupOld.html')
 
-
-@app.route("/")
-def index():
-    # check if the users exist or not
-    if not session.get("name"):
-        # if not there in the session then redirect to the login page
-        return redirect("/login")
-    return render_template('index.html')
-
-
-@app.route("/product/old")
+@app.route("/product")
 def product():
-    prodotti = list(products.find({"brands": "Ferrero"}))
+    prodotto = list(prodotti.find({"brands": "Ferrero"}))
 
-    return render_template("product.html", prodotti=prodotti)
+    return render_template("product.html", prodotto=prodotto)
 
+@app.route("/profilo")
+def profilo():
+
+    return render_template("profilo.html")
 
 @app.route("/logout")
 def logout():

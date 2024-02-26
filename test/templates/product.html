@@ -1,250 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+
+    <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Product</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Shop</title>
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="static/css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+
     <script>
-        function rotateFu() {
-            $('.btn-rotate').click(function(e) {
-             e.preventDefault();
-                $(this).parents('.rotate-container').find('.card-front, .card-back').toggleClass('rotate');
+        $(document).ready(function() {
+            $('#ia_form').on('submit', function(event) {
+                event.preventDefault();
+            // get the CSRF token from the cookie
+            var csrftoken = Cookies.get('csrftoken');
+
+            // set the CSRF token in the AJAX headers
+            $.ajaxSetup({
+                headers: { 'X-CSRFToken': csrftoken }
             });
-        };
+                // Get the prompt
+                var prompt = $('#prompt').val();
+                var dateTime = new Date();
+                var time = dateTime.toLocaleTimeString();
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    data: {prompt: prompt},
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
+                        $('#response #GFG2').css({"color": "green"});
+                    }
+                });
+            });
+        });
     </script>
     <style>
-        .hd{
-        background-image: url("static/Img/Sfondo.jpg");
+        .code-btn{
+        font-size: 1.5em
+        }
+        .px-search{
+        padding-right: 1.5rem !important;
+        padding-left: 4rem !important;
+        }
+        .img-best {
+        max-width: 100%;
+        height: 200px
         }
 
-        .hd1{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+        .maxText {
+        height: 40px;
+        }
+        .bg-verde-scuro {
+        background: #014017
+        }
+        .verde-scuro {
+        color: #014017
+        }
+         .bg-verde-medio {
+        background: #33A614
+        }
+        .verde-medio {
+        color: #33A614
+        }
+        .bg-verde-chiaro {
+        background: #68D11F
+        }
+        .verde-chiaro {
+        color: #68D11F
+        }
+        .bg-verde-blu {
+        background: #013832
+        }
+        .verde-blu {
+        color: #013832
+        }
+        .bg-bianco {
+        background: #F2F2F2
+        }
+        .bianco {
+        color: #F2F2F2
+        }
+        .arancione{
+        color: #DC4001
         }
 
-        .rotate-container {
-            position: relative;
-            }
+        .modal-backdrop { background-color: transparent; }
 
-            .rotate-container .card-front,
-            .rotate-container .card-back {
-            width: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transition: all 0.5s linear 0s;
-            }
-
-            .rotate-container .card-front {
-            -webkit-transform: perspective(600px) rotateY(0deg);
-            transform: perspective(600px) rotateY(0deg);
-            }
-
-            .rotate-container .card-back {
-            -webkit-transform: perspective(1600px) rotateY(180deg);
-            transform: perspective(1600px) rotateY(180deg);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            }
-
-            .rotate-container .card-front.rotate {
-            -webkit-transform: perspective(1600px) rotateY(-180deg);
-            transform: perspective(1600px) rotateY(-180deg);
-            }
-
-            .rotate-container .card-back.rotate {
-            -webkit-transform: perspective(1600px) rotateY(0deg);
-            transform: perspective(1600px) rotateY(0deg);
-            }
-
-            .rotate-container .card-front .btn-rotate,
-            .rotate-container .card-back .btn-rotate {
-            position: static;
-            z-index: 0;
-            }
-
-            /* Demo style only */
-            .demo-content {
-            margin-bottom: 0px;
-            text-align: center;
-            }
-
-            .rotate-container {
-            width: 300px;
-            }
-
-            .card-text{
-            background-image: url("./static/Img/League2.png");
-            background-position: center;
-            background-size: cover;
-            width: 250px;
-            height: 250px;
-            }
-
-            .card-text1{
-            background-position: center;
-            background-size: cover;
-            width: 250px;
-            height: auto;
-            }
-
-            .contCard{
-            display: flex;
-            justify-content: space-evenly
-            }
-
-            footer{
-            background-color: #000000e0;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            animation: slideRightToLeft 25s linear infinite;
-            }
-
-            @keyframes slideRightToLeft {
-                0% {
-                transform: translateX(100%);
-                }
-                100% {
-                transform: translateX(-100%);
-                }
-            }
-
-            .footerLinks{
-            display: flex;
-            justify-content: space-around;
-            list-style: none;
-            }
-
-            .contenitoreCopyright{
-            display: flex;
-            justify-content: end;
-            align-items: center;
-            }
-
-            html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            }
-
-            body {
-            display: flex;
-            flex-direction: column;
-            }
-
-            .content {
-            flex: 1;
-            }
-
-            .titoloProdotto {
-            margin-left: 5px;
-            margin-right: 5px;
-            max-width: 300px
-            text-align: center;
-            }
-
-            .linkProd {
-            text-decoration: none;
-            color: white;
-            }
     </style>
-</head>
-<body onload="rotateFu()">
+    </head>
 
-    <div class="content">
-    <div class="header hd">
-        <div class="container hd1">
-            <img src="static/imgTest/banner-prova1.jpg" alt="Logo">
+    <body>
+
+<!-- Navbar start -->
+<div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
+    <div class="container topbar bg-verde-medio d-none d-lg-block">
+        <div class="d-flex justify-content-center">
+            <h5 class="text-light">Siamo un marchio che ispira e guida le persone verso scelte alimentari migliori!
+                🌱🍎🥦</h5>
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <img src="static/imgTest/Carrello.jpg" alt="Logo" width="40" height="40">
-            <a class="navbar-brand" href="/">SpeSana</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
+            <!--            <img src="/static/imgTest/Carrello.jpg" width="50" height="50">-->
+            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-              <ul class="navbar-nav">
-                  <a class="nav-link linkProd" href="/product">Prodotti</a>
-                <li class="nav-item dropdown">
-                  <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Account
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="/login">Login</a></li>
-                    <li><a class="dropdown-item" href="#">Modifica profilo</a></li>
-                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                  </ul>
-                </li>
-              </ul>
+            <div class="collapse navbar-collapse bg-verde-scuro" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a href="/" class="nav-item nav-link active">Home</a>
+                    <a href="#" class="nav-item nav-link">Categorie</a>
+                    <a href="/product" class="nav-item nav-link">Prodotti</a>
+                    <a href="/ia" class="nav-item nav-link disabled">SpeSana.IA</a>
+                </div>
+                <div class="d-flex m-3 me-0">
+                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
+                            data-bs-toggle="modal" data-bs-target="#searchModal"><i
+                            class="fas fa-search verde-scuro"></i></button>
+                    <div class="nav-item dropdown">
+                        <a type="button" class="btn bg-verde-chiaro bianco dropdown-toggle" data-bs-toggle="dropdown"
+                           data-bs-display="static" aria-expanded="false">
+                            <i class="fas fa-user bianco fa-2x"></i>
+                        </a>
+                        <div class="dropdown-menu m-0 bg-secondary bianco rounded-0">
+                            <a href="/login" class="dropdown-item">Login</a>
+                            <a href="#" class="dropdown-item">Il mio profilo</a>
+                            <a href="#" class="dropdown-item">Preferiti</a>
+                            <a href="/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-              <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-              </form>
-        </div>
-    </nav>
+        </nav>
+    </div>
+</div>
+<!-- Navbar End -->
 
-    <div class="contCard d-flex flex-wrap">
-        {%for elem in prodotti%}
-        <section class="sezioneCard">
-            <div class="contenitoreArticoli">
-                <div class="demo-content py-3">
-                    <div class="rotate-container mx-auto">
-                        <div class="card card-front border-success">
-                            <div class="text-truncate titoloProdotto">{{elem["product_name"]}}</div>
-                            <div class="card-body">{{elem["brands"]}}
-                                <p class="card-text" style="background-image: url('{{elem['image_url']}}')"></p>
-                                <p>{{elem["quantity"]}}</p>
-                                <button class="btn btn-secondary btn-rotate">Dettagli</button>
+<!-- Modal Search Start -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title bianco" id="exampleModalLabel">Search by keyword</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex align-items-center">
+                <form class="w-75 mx-auto d-flex" method="POST" enctype="multipart/form-data">
+                    <div class="relative">
+                        <label title="Carica codice" for="code_modal" class="cursor-pointer flex items-center">
+                            <div class="w-max relative btn btn-primary border-2 border-secondary px-3 rounded-pill text-white"
+                                 style="padding-top: 0.6rem !important; padding-bottom: 0.6rem !important;">
+                                <i class="bi bi-upc-scan code-btn"></i>
+                            </div>
+                        </label>
+                        <input hidden="" type="file" name="code_modal" id="code_modal">
+                    </div>
+                    <input type="text" class="form-control p-3" placeholder="keywords"
+                           aria-describedby="search-icon-1" id="search_modal" name="search_modal">
+                    <button type="submit" id="search-icon-1" class="input-group-text p-3"><i
+                            class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Search End -->
+
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Prodotti</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active text-white">Prodotti</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+
+        <!-- Fruits Shop Start-->
+        <div class="container-fluid fruite py-5">
+            <div class="container py-5">
+                <h1 class="mb-4">Fresh fruits shop</h1>
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <div class="row g-4">
+                            <div class="col-xl-3">
+                                <div class="input-group w-100 mx-auto d-flex">
+                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6"></div>
+                            <div class="col-xl-3">
+                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                    <label for="fruits">Default Sorting:</label>
+                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
+                                        <option value="volvo">Nothing</option>
+                                        <option value="saab">Popularity</option>
+                                        <option value="opel">Organic</option>
+                                        <option value="audi">Fantastic</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="card card-back" style="height: 426px">
-                            <div class="card-body"><h5>Informazioni nutrizionali:</h5>
-                                <span style="font-weight: bold">Nutriscore: </span>{{elem["nutriscore_grade"]}}<br>
-                                <span style="font-weight: bold">Calorie: </span>{{elem["energy-kcal_100g"]}}<br>
-                                <span style="font-weight: bold">Grassi: </span>{{elem["fat_100g"]}}<br>
-                                <span style="font-weight: bold">Grassi saturi: </span>{{elem["satured-fat_100g"]}}<br>
-                                <span style="font-weight: bold">Carboidrati: </span>{{elem["carbohydrates_100g"]}}<br>
-                                <span style="font-weight: bold">Zuccheri: </span>{{elem["sugars_100g"]}}<br>
-                                <span style="font-weight: bold">Fibre: </span>{{elem["fiber_100g"]}}<br>
-                                <span style="font-weight: bold">Proteine: </span>{{elem["proteins_100g"]}}<br>
-                                <span style="font-weight: bold">Sale: </span>{{elem["salt_100g"]}}<br>
-                                <span style="font-weight: bold">Sodio: </span>{{elem["sodium_100g"]}}<br>
-                                <button class="btn btn-dark btn-rotate" style="margin-bottom: -150px">Go back</button>
+                        <div class="row g-4">
+                            <div class="col-lg-3">
+                                <div class="row g-4">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <h4>Categories</h4>
+                                            <ul class="list-unstyled fruite-categorie">
+                                                <li>
+                                                    <div class="d-flex justify-content-between fruite-name">
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
+                                                        <span>(3)</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex justify-content-between fruite-name">
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
+                                                        <span>(5)</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex justify-content-between fruite-name">
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
+                                                        <span>(2)</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex justify-content-between fruite-name">
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
+                                                        <span>(8)</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex justify-content-between fruite-name">
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
+                                                        <span>(5)</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <h4>Additional</h4>
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
+                                                <label for="Categories-1"> Organic</label>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
+                                                <label for="Categories-2"> Fresh</label>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
+                                                <label for="Categories-3"> Sales</label>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
+                                                <label for="Categories-4"> Discount</label>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2" id="Categories-5" name="Categories-1" value="Beverages">
+                                                <label for="Categories-5"> Expired</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="d-flex justify-content-center my-4">
+                                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row g-4 justify-content-center">
+                                    {% for elem in prodotto %}
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="rounded position-relative fruite-item d-flex flex-column">
+
+                                <a class="fruite-img" style="text-align: center" href="/product/{{elem.code}}">
+                                    <img src="{{elem.image_url}}"
+                                         class="img-fluid rounded-top" alt="">
+                                </a>
+                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                     style="top: 10px; left: 10px;">A
+                                </div>
+                                <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
+                                    <a class="maxText h6" href="/product/{{elem.code}}">{{elem.product_name}}</a>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <a href="#"
+                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                            <i class="fa fa-heart me-2 text-secondary"></i>
+                                        </a>
+                                        <form method="post" id="ia_form">
+                                            <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
+                                                    id="prompt" type="submit" data-bs-toggle="modal" name="prompt"
+                                                    data-bs-target="#chatModal"
+                                                    value="ID user, {{elem.code}}, ricetta/info"><i
+                                                    class="bi bi-stars me-2"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                                    <div class="col-12">
+                                        <div class="pagination d-flex justify-content-center mt-5">
+                                            <a href="#" class="rounded">&laquo;</a>
+                                            <a href="#" class="active rounded">1</a>
+                                            <a href="#" class="rounded">2</a>
+                                            <a href="#" class="rounded">3</a>
+                                            <a href="#" class="rounded">4</a>
+                                            <a href="#" class="rounded">5</a>
+                                            <a href="#" class="rounded">6</a>
+                                            <a href="#" class="rounded">&raquo;</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        {%endfor%}
-    </div>
-    </div>
+        </div>
+        <!-- Fruits Shop End-->
 
-    <div style="background-color: Black; border-top: 2px solid blue;">
-        <footer>
-            <ul class="footerLinks">
-                <a href="https://github.com/MarcoDS97/ProjectWork" style="color: white;">GitHub</a>
-                <li>Benedetta Aversano</li>
-                <li>Marco De Sio</li>
-                <li>Armando Izaguirre</li>
-                <li>Stefano Crivella</li>
-                <li>Riccardo Benedetti</li>
-            </ul>
-            <div class="contenitoreCopyright">
-                <p>@copyright 2024</p>
+
+<!-- Footer Start -->
+
+<div class="container-fluid bg-verde-scuro text-white-50 footer pt-3 mt-5">
+    <div class="container">
+        <div class="pb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <a href="#">
+                        <h1 class="text-light mb-0">SpeSana</h1>
+                        <p class="text-secondary mb-0">Nutri la tua mente e il tuo corpo</p>
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative text-center mx-auto">
+                        <h5 class="text-light mt-2 mb2">Progetto Finale del corso</h5>
+                        <h5 class="text-light">Jr. Data Engineer - DAITA 12.</h5>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="d-flex justify-content-end pt-3">
+                        <img src="static/imgTest/logo-generation.svg">
+                    </div>
+                </div>
             </div>
-        </footer>
-    </div>
+            <h5 class="text-light mt-4 mb-3 text-center">Sviluppato da:</h5>
+            <p class="mb-2 text-center"><a class="text-light text-decoration-underline"
+                                           href="//www.linkedin.com/in/armando-izaguirre-la-rocca/"> Armando
+                Izaguirre </a>-
+                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/benedetta-aversano/">
+                    Benedetta Aversano </a>-
+                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/marco-de-sio-5b87b7196/">
+                    Marco de Sio </a>-
+                <a class="text-light text-decoration-underline" href="//www.linkedin.com/in/stefano-crivella/"> Stefano
+                    Crivella </a>-
+                <a class="text-light text-decoration-underline"
+                   href="//www.linkedin.com/in/riccardo-benedetti-44aa70299/"> Riccardo Benedetti </a>
 
-</body>
+
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-secondary border-3 border-secondary ia-button" data-bs-toggle="modal"
+                data-bs-target="#chatModal">
+            SpeSana.IA<i class="bi bi-stars"></i>
+        </button>
+    </div>
+    <div class="col">
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+                class="fa fa-arrow-up"></i></a>
+    </div>
+</div>
+
+
+<!--SpeSana.IA CHAT-->
+<div class="modal fade modal-bottom-right" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog position-fixed bottom-0 end-0 mb-5 me-3 modal-dialog-scrollable">
+        <div class="modal-content" style="width: 375px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatModalLabel">SpeSana.IA</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <h6>Response:</h6>
+                    <div class="container border overflow-auto h-50" id="response"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudere</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/lib/easing/easing.min.js"></script>
+<script src="static/lib/waypoints/waypoints.min.js"></script>
+<script src="static/lib/lightbox/js/lightbox.min.js"></script>
+<script src="static/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="static/js/main.js"></script>
+    </body>
+
 </html>

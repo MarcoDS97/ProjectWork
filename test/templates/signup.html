@@ -65,6 +65,11 @@
         .arancione{
         color: #DC4001
         }
+        .scrollable-menu {
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
+        }
     </style>
     <body>
 
@@ -180,7 +185,7 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Password</h6>
-                                        <input type="text" name="password_signup" class="w-100 form-control border-0 py-1 mb-3" required>
+                                        <input type="password" name="password_signup" class="w-100 form-control border-0 py-1 mb-3" required>
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +232,6 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Obiettivo</h6>
-<!--                                        <input type="text" name="obiettivo_signup" class="w-100 form-control border-0 py-1 mb-4" required>-->
                                         <select class="w-100 form-select border-0 py-1 mb-4" name="obiettivo_signup" style="width: min-content" id="validationServer09" aria-describedby="validationServer04Feedback" required>
                                             <option></option>
                                             <option> Dimagrire </option>
@@ -239,7 +243,6 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Livello di attività</h6>
-<!--                                        <input type="text" name="livello_attivita_signup" class="w-100 form-control border-0 py-1 mb-4" required>-->
                                         <select class="w-100 form-select border-0 py-1 mb-3" name="livello_attivita_signup" style="width: min-content" id="validationServer10" aria-describedby="validationServer04Feedback" required>
                                             <option></option>
                                             <option> Sedentario </option>
@@ -251,8 +254,30 @@
                                 </div>
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
-                                        <h6>Prodotti preferiti</h6>
-                                        <input type="text" name="preferiti_signup" class="w-100 form-control border-0 py-1 mb-3" required>
+                                        <h6 class="dropdown-toggle" data-bs-toggle="dropdown" aria-labelledby=dropdownMenuButton>Categorie preferite</h6>
+<!--                                        <ul class="dropdown-menu" >-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                          <li class="list-group-item"><label><input type="checkbox" name="frutta" value="pera"> Pera</label></li>-->
+<!--                                        </ul>-->
+                                        <ul class="dropdown-menu scrollable-menu" role="menu">
+                                            <li><label><input type="checkbox" name="categoria1" value="cereali e patate">Cereali e patate</label></li>
+                                            <li><label><input type="checkbox" name="categoria2" value="legumi">Legumi</label></li>
+                                            <li><label><input type="checkbox" name="categoria3" value="pera">Pera</label></li>
+                                            <li><label><input type="checkbox" name="categoria4" value="pera">Pera</label></li>
+                                            <li><label><input type="checkbox" name="categoria5" value="pera">Pera</label></li>
+                                            <li><label><input type="checkbox" name="categoria6" value="pera">Pera</label></li>
+                                            <li><label><input type="checkbox" name="categoria7" value="pera">Pera</label></li>
+                                            <li><label><input type="checkbox" name="categoria8" value="pera">Pera</label></li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <button class="w-100 btn btn-secondary border-3 border-secondary bg-verde-scuro text-light py-3" type="submit">Registrati</button>
