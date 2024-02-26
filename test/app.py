@@ -127,6 +127,7 @@ def submit():
         peso = float(request.form.get('peso_signup'))
         obiettivo = request.form.get('obiettivo_signup')
         livello_attivita = request.form.get('livello_attivita_signup')
+        categorie = [request.form.get(f'categoria{i}') for i in range(8) if request.form.get(f'categoria{i}') is not None]
 
         password_scoperta = request.form.get('password_signup')
         password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
@@ -142,7 +143,7 @@ def submit():
             'Age': eta,
             'Height': altezza,
             'Weight': peso,
-            'Favorites': [],
+            'Favorites': categorie,
             'Goal': obiettivo,
             'Activity Level': livello_attivita,
             'TDEE': tdee
