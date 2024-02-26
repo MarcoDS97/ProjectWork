@@ -1,14 +1,19 @@
 import json
+import os
 import bcrypt
 import mysql.connector
 import pymongo
 from funzioni_utili import *
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 from flask_session import Session
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
+
 Session(app)
 client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client["SpeSana"]
@@ -16,7 +21,7 @@ products = db["Products"]
 users = db["Users"]
 
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def homepage():
     a = list(products.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
     b = list(products.find({"nutriscore_grade": "b"}).sort("nutriscore_score").limit(10))
@@ -25,22 +30,67 @@ def homepage():
     e = list(products.find({"nutriscore_grade": "e"}).sort("nutriscore_score").limit(10))
     nutriscore_home = [a, b, c, d, e]
     best = list(products.find().sort("unique_scans_n", -1).limit(6))
+    if request.method == 'POST':
+        prompt = request.form.get('prompt')
+        search_hero = request.form.get('search_hero')
+        search_modal = request.form.get('search_modal')
+
+        if prompt:
+            response = f"Ho ricevuto dati per fare il prompt: {prompt}"
+            return jsonify({'response': response})
+        elif search_modal:
+            print(search_modal)
+        elif search_hero:
+            print(search_hero)
+        elif "code_hero" in request.files:
+            codice = request.files['code_hero']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    print(codice_img(codice.filename))
+                    os.remove(codice.filename)
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    print(codice_img(codice.filename))
+                    os.remove(codice.filename)
 
     return render_template("home.html", lista_nutriscore=nutriscore_home, best=best)
 
-@app.route("/product/<codice>")
+
+@app.route("/product/<codice>", methods=["POST", "GET"])
 def product_codice(codice):
     p = list(products.find({"code": codice}))
+    prompt_ricetta = request.form.get('ricetta_p')
+    prompt_info = request.form.get('info_p')
+
+    if request.method == 'POST':
+        print(prompt_ricetta)
+        if prompt_ricetta:
+            response = f"Ho ricevuto dati per fare il prompt: {prompt_ricetta}"
+            return jsonify({'response': response})
+        elif prompt_info:
+            response = f"Ho ricevuto dati per fare il prompt: {prompt_info}"
+            return jsonify({'response': response})
+        # return jsonify({'response': (prompt_ricetta, prompt_info)})
 
     return render_template("product-detail.html", prodotto=p[0])
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     return render_template("login.html")
 
+
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     return render_template("signup.html")
+
 
 @app.route("/gpt", methods=["POST", "GET"])
 def gpt():
@@ -48,9 +98,10 @@ def gpt():
         prompt = request.form.get('prompt')
         print(prompt)
         response = "RISPOSTA"
-
         return jsonify({'response': response})
+
     return render_template('gpt-test.html')
+
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -87,7 +138,7 @@ def submit():
         }
         )
         return redirect('/')
-    else:
+    elif len(list(users.find({'Email': email}))) > 0:
         response = "Email già esistente"
         return jsonify({'response': response})
     return render_template('signupOld.html')

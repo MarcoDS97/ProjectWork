@@ -25,6 +25,19 @@
     transition: 0.5s;
     z-index: 99;
 }
+
+.ia-button {
+    position: fixed;
+    right: 80px;
+    bottom: 30px;
+    display: flex;
+    width: 130px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+    z-index: 99;
+}
 /*** Spinner End ***/
 
 
@@ -82,7 +95,7 @@
 }
 
 .topbar {
-    padding: 20px;
+    padding: 10px;
     border-radius: 230px 100px;
 }
 
@@ -132,7 +145,7 @@
 .navbar .navbar-nav .nav-link.active,
 .fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
 .fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+    color: #F2F2F2;
 }
 
 .navbar .dropdown-toggle::after {
@@ -172,7 +185,7 @@
 }
 
 #searchModal .modal-content {
-    background: rgba(255, 255, 255, .8);
+    background: rgba(1,64,23, .8);
 }
 /*** Navbar End ***/
 
@@ -194,7 +207,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 25px;
-    background: linear-gradient(rgba(255, 181, 36, 0.7), rgba(255, 181, 36, 0.7));
+    background: linear-gradient(rgba(1,64,23, 0.7), rgba(1,64,23, 0.7));
 }
 
 .carousel-control-next,
@@ -219,7 +232,7 @@
 
 .page-header {
     position: relative;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/cart-page-header-img.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../imgTest/header-pages.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -257,7 +270,7 @@
     bottom: -10px;
     transform: translate(-50%);
     transform: rotate(45deg);
-    background: var(--bs-secondary);
+    background: #33A614;
     
 }
 /*** featurs End ***/
@@ -313,7 +326,7 @@
 
 .fruite .fruite-item .fruite-img img {
     transition: 0.5s;
-    height: 350px;
+    height: 240px;
 }
 
 .fruite .fruite-item .fruite-img img:hover {

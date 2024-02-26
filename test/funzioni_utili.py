@@ -1,5 +1,8 @@
-def calculate_tdee(height, weight, age, gender, activity_level, goal):
+import cv2
+from pyzbar import pyzbar
 
+
+def calculate_tdee(height, weight, age, gender, activity_level, goal):
     activity_factors = {
         "Sedentario": 1.2,
         "Leggermente attivo": 1.375,
@@ -21,3 +24,20 @@ def calculate_tdee(height, weight, age, gender, activity_level, goal):
     tdee_base = round(bmr * activity_factors.get(activity_level))
     tdee = round(tdee_base * goal_factors[goal])
     return tdee
+
+
+def correct_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def codice_img(file):
+    img = cv2.imread(file)
+    barcodes = pyzbar.decode(img)
+    for barcode in barcodes:
+        barcode_info = barcode.data.decode('utf-8')
+        if barcode_info.isdigit():
+            return barcode_info
+
+    return None
