@@ -164,11 +164,11 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/product/old")
-def product():
-    prodotti = list(products.find({"brands": "Ferrero"}))
+@app.route("/prodotti")
+def prodotti():
+    prodotto = list(products.find({"brands": "Ferrero"}))
 
-    return render_template("product.html", prodotti=prodotti)
+    return render_template("shop.html", prodotto=prodotto)
 
 
 @app.route("/logout")
