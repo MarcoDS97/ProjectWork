@@ -8,11 +8,9 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from flask_session import Session
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-
 
 Session(app)
 client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
@@ -88,10 +86,11 @@ def login():
         email = request.form.get("email_login")
         password = bcrypt.hashpw(request.form.get("password_login").encode('utf-8'), bcrypt.gensalt())
         verifica = True
-        
-        if email == True and password == True:
-            pass
-            #redirect to home with login
+        print(email)
+        print(password)
+
+        if users.find({"Email": email}) and users.find({"Password": password}):
+            return redirect("/")
         else:
             verifica = False
 
