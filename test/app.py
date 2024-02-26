@@ -84,6 +84,17 @@ def product_codice(codice):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    if request.method == "POST":
+        email = request.form.get("email_login")
+        password = bcrypt.hashpw(request.form.get("password_login").encode('utf-8'), bcrypt.gensalt())
+        verifica = True
+        
+        if email == True and password == True:
+            pass
+            #redirect to home with login
+        else:
+            verifica = False
+
     return render_template("login.html")
 
 
