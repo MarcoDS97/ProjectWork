@@ -353,11 +353,6 @@
                                     {% for elem in prodotto %}
                         <div class="col-md-6 col-lg-4 col-xl-3">
                             <div class="rounded position-relative fruite-item d-flex flex-column">
-
-<!--                                <a class="fruite-img" style="text-align: center" href="/product/{{elem.code}}">-->
-<!--                                    <img src="{{elem.image_url}}"-->
-<!--                                         class="img-fluid rounded-top" alt="">-->
-<!--                                </a>-->
                                 <a class="fruite-img" style="text-align: center" href="/product/{{elem.code}}">
                                     {% if "https" in elem.image_url %}
                                     <img src="{{elem.image_url}}"

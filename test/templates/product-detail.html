@@ -269,8 +269,14 @@
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div class="border rounded imgProd">
-                                    <a href="#">
-                                        <img src="{{prodotto.image_url}}" class="img-fluid rounded" alt="Image">
+                                    <a class="fruite-img" style="text-align: center" href="/product/{{prodotto.code}}">
+                                    {% if "https" in prodotto.image_url %}
+                                    <img src="{{prodotto.image_url}}"
+                                         class="img-fluid rounded-top" alt="">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='imgTest/img-not-found.jpg') }}"
+                                         class="img-fluid rounded-top" alt="">
+                                    {% endif %}
                                     </a>
                                 </div>
                             </div>
