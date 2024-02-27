@@ -405,6 +405,7 @@
                                 <div class="mb-4">
                                     <h4>Categorie</h4>
                                     <ul class="list-unstyled fruite-categorie">
+                                        {% if len(prodotto.categories) > 0 %}
                                         {% for elem in prodotto.categories[:5] %}
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
@@ -412,6 +413,7 @@
                                             </div>
                                         </li>
                                         {% endfor %}
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>

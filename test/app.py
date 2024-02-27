@@ -113,9 +113,9 @@ def product_codice(codice):
             return jsonify({'response': response})
         # return jsonify({'response': (prompt_ricetta, prompt_info)})
     if utente:
-        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog)
+        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len)
     else:
-        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog)
+        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -239,6 +239,19 @@ def logout():
     session["name"] = None
     return redirect("/")
 
+@app.route("/nutriscore")
+def nutriscore():
+
+    flagLog = False
+    utente = {}
+    if session.get('name'):
+        flagLog = True
+        utente = list(users.find({'Email': session['name']}))
+
+    if utente:
+        return render_template("nutriscore.html", utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("nutriscore.html", flagLog=flagLog)
 
 if __name__ == '__main__':
     app.run(debug=True)
