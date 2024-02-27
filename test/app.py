@@ -22,11 +22,11 @@ users = db["Users"]
 
 @app.route("/", methods=["POST", "GET"])
 def homepage():
-    a = list(prodotti.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
-    b = list(prodotti.find({"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2 }}).sort("nutriscore_score").limit(10))
-    c = list(prodotti.find({"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}}).sort("nutriscore_score").limit(10))
-    d = list(prodotti.find({"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}}).sort("nutriscore_score").limit(10))
-    e = list(prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}}).sort("nutriscore_score").limit(10))
+    a = list(prodotti.find({"nutriscore_grade": "a", "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    b = list(prodotti.find({"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2 }, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    c = list(prodotti.find({"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    d = list(prodotti.find({"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    e = list(prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
     nutriscore_home = [a, b, c, d, e]
     best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
 
@@ -91,6 +91,7 @@ def product_codice(codice):
             response = f"Ho ricevuto dati per fare il prompt: {prompt_info}"
             return jsonify({'response': response})
         # return jsonify({'response': (prompt_ricetta, prompt_info)})
+
     if utente:
         return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog)
     else:
@@ -129,45 +130,43 @@ def signup():
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
 
-    if request.method == "POST":
-        email = request.form.get('email_signup')
+    email = request.form.get('email_signup')
+    if len(list(users.find({'Email': email}))) == 0:
+        nome = request.form.get('nome_signup')
+        cognome = request.form.get('cognome_signup')
+        sesso = request.form.get('genere_signup')
+        eta = int(request.form.get('eta_signup'))
+        altezza = float(request.form.get('altezza_signup'))
+        peso = float(request.form.get('peso_signup'))
+        obiettivo = request.form.get('obiettivo_signup')
+        livello_attivita = request.form.get('livello_attivita_signup')
+        categorie = [request.form.get(f'categoria{i}') for i in range(8) if
+                     request.form.get(f'categoria{i}') is not None]
 
-        if len(list(users.find({'Email': email}))) == 0:
-            nome = request.form.get('nome_signup')
-            cognome = request.form.get('cognome_signup')
-            sesso = request.form.get('genere_signup')
-            eta = int(request.form.get('eta_signup'))
-            altezza = float(request.form.get('altezza_signup'))
-            peso = float(request.form.get('peso_signup'))
-            obiettivo = request.form.get('obiettivo_signup')
-            livello_attivita = request.form.get('livello_attivita_signup')
-            categorie = [request.form.get(f'categoria{i}') for i in range(8) if
-                         request.form.get(f'categoria{i}') is not None]
+        password_scoperta = request.form.get('password_signup')
+        password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
 
-            password_scoperta = request.form.get('password_signup')
-            password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
+        tdee = calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)
 
-            tdee = calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)
-
-            users.insert_one({
-                'Email': email,
-                'Password': password_coperta,
-                'Name': nome,
-                'Surname': cognome,
-                'Gender': sesso,
-                'Age': eta,
-                'Height': altezza,
-                'Weight': peso,
-                'Favorites': categorie,
-                'Goal': obiettivo,
-                'activity_level': livello_attivita,
-                'TDEE': tdee
-            }
-            )
-            return redirect('/')
-        elif len(list(users.find({'Email': email}))) > 0:
-            response = "Email già esistente"
-            return jsonify({'response': response})
+        users.insert_one({
+            'Email': email,
+            'Password': password_coperta,
+            'Name': nome,
+            'Surname': cognome,
+            'Gender': sesso,
+            'Age': eta,
+            'Height': altezza,
+            'Weight': peso,
+            'Favorites': categorie,
+            'Goal': obiettivo,
+            'activity_level': livello_attivita,
+            'TDEE': tdee
+        }
+        )
+        return redirect('/')
+    elif len(list(users.find({'Email': email}))) > 0:
+        response = "Email già esistente"
+        return jsonify({'response': response})
     if utente:
         return render_template("signup.html", utente=utente[0], flagLog=flagLog)
     else:
@@ -184,6 +183,46 @@ def gpt():
 
     return render_template('gpt-test.html')
 
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    email = request.form.get('email_signup')
+    if len(list(users.find({'Email': email}))) == 0:
+        nome = request.form.get('nome_signup')
+        cognome = request.form.get('cognome_signup')
+        sesso = request.form.get('genere_signup')
+        eta = int(request.form.get('eta_signup'))
+        altezza = float(request.form.get('altezza_signup'))
+        peso = float(request.form.get('peso_signup'))
+        obiettivo = request.form.get('obiettivo_signup')
+        livello_attivita = request.form.get('livello_attivita_signup')
+        categorie = [request.form.get(f'categoria{i}') for i in range(8) if request.form.get(f'categoria{i}') is not None]
+
+        password_scoperta = request.form.get('password_signup')
+        password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
+
+        tdee = calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)
+
+        users.insert_one({
+            'Email': email,
+            'Password': password_coperta,
+            'Name': nome,
+            'Surname': cognome,
+            'Gender': sesso,
+            'Age': eta,
+            'Height': altezza,
+            'Weight': peso,
+            'Favorites': categorie,
+            'Goal': obiettivo,
+            'activity_level': livello_attivita,
+            'TDEE': tdee
+        }
+        )
+        return redirect('/')
+    # elif len(list(users.find({'Email': email}))) > 0:
+    #     response = "Email già esistente"
+    #     return jsonify({'response': response})
+    # return render_template('signupOld.html')
 
 @app.route("/product")
 def product():
