@@ -269,8 +269,14 @@
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div class="border rounded imgProd">
-                                    <a href="#">
-                                        <img src="{{prodotto.image_url}}" class="img-fluid rounded" alt="Image">
+                                    <a class="fruite-img" style="text-align: center" href="/product/{{prodotto.code}}">
+                                    {% if "https" in prodotto.image_url %}
+                                    <img src="{{prodotto.image_url}}"
+                                         class="img-fluid rounded-top" alt="">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='imgTest/img-not-found.jpg') }}"
+                                         class="img-fluid rounded-top" alt="">
+                                    {% endif %}
                                     </a>
                                 </div>
                             </div>
@@ -287,13 +293,13 @@
                                     <div class="p-1">
                                         <form method="post" id="f_ricetta">
                                         <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="ricetta_p" type="submit" data-bs-toggle="modal" name="ricetta_p" data-bs-target="#chatModal"
-                                                value="ID user, {{prodotto.code}}, ricetta">Ricetta per te<i class="bi bi-stars me-2"></i></button>
+                                                {% if flagLog %} value="{{ utente.Email }}, {{prodotto.code}}, ricetta" {% else %} onclick="Gologin()" {% endif %}>Ricetta per te<i class="bi bi-stars me-2"></i></button>
                                         </form>
                                     </div>
                                     <div class="p-1">
                                         <form method="post" id="f_info">
                                         <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="info_p" type="submit" data-bs-toggle="modal" name="info_p" data-bs-target="#chatModal"
-                                                value="ID user, {{prodotto.code}}, info">info<i class="bi bi-stars me-2"></i></button>
+                                                {% if flagLog %} value="{{ utente.Email }}, {{prodotto.code}}, info" {% else %} onclick="Gologin()" {% endif %}>info<i class="bi bi-stars me-2"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -519,6 +525,12 @@
 
 <!-- Template Javascript -->
 <link rel="stylesheet" href="{{ url_for('static', filename='js/main.js') }}">
+
+<script>
+  function Gologin() {
+    window.location.href="/login";
+  }
+</script>
 </body>
 
 </html>
