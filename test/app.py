@@ -30,7 +30,7 @@ def homepage():
     nutriscore_home = [a, b, c, d, e]
     best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
 
-    nome = ["Prodotti A Base Di Carne", "Cibi A Base Di Frutta E Verdura", "Latticini", "Snack Dolci"]
+    nome = ["Prodotti A Base Di Carne", "Bevande", "Latticini", "Snack Dolci"]
     categorie = [list(prodotti.find({"categories": n}).sort("unique_scans_n", -1).limit(10)) for n in nome]
 
     flagLog = False
@@ -58,9 +58,11 @@ def homepage():
                     filename = secure_filename(codice.filename)
                     codice.save(filename)
                     codice_barre = codice_img(codice.filename)
-
                     os.remove(codice.filename)
-                    return redirect(f"/search/{codice_barre}")
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        pass
 
         elif 'code_modal' in request.files:
             codice = request.files['code_modal']
@@ -113,9 +115,9 @@ def product_codice(codice):
             return jsonify({'response': response})
         # return jsonify({'response': (prompt_ricetta, prompt_info)})
     if utente:
-        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog)
+        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len)
     else:
-        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog)
+        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -182,7 +184,9 @@ def signup():
                 'Favorites': categorie,
                 'Goal': obiettivo,
                 'activity_level': livello_attivita,
-                'TDEE': tdee
+                'TDEE': tdee,
+                'products_favorites': [],
+                'recipes': []
             }
             )
             return redirect('/')
@@ -239,6 +243,19 @@ def logout():
     session["name"] = None
     return redirect("/")
 
+@app.route("/nutriscore")
+def nutriscore():
+
+    flagLog = False
+    utente = {}
+    if session.get('name'):
+        flagLog = True
+        utente = list(users.find({'Email': session['name']}))
+
+    if utente:
+        return render_template("nutriscore.html", utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("nutriscore.html", flagLog=flagLog)
 
 if __name__ == '__main__':
     app.run(debug=True)

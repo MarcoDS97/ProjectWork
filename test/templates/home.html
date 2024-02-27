@@ -93,6 +93,29 @@
             });
         });
     </script>
+       <script>
+        $(document).ready(function() {
+            $('.fav-btn').on('click', function(event) {
+                event.preventDefault();
+                var buttonVal = $(this).val();
+
+            var csrftoken = Cookies.get('csrftoken');
+
+            $.ajaxSetup({
+                headers: { 'X-CSRFToken': csrftoken }
+            });
+
+
+            var favProd = buttonVal;
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: {prompt: prompt},
+                dataType: 'json',
+                });
+            });
+        });
+    </script>
     <style>
         .ia_form{}
         .code-btn{
@@ -169,7 +192,7 @@
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -213,7 +236,7 @@
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -597,7 +620,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab2-2">
-                                <span class="text-dark" style="width: 130px;">Frutta e Verdura</span>
+                                <span class="text-dark" style="width: 130px;">Bevande</span>
                             </a>
                         </li>
                         <li class="nav-item">

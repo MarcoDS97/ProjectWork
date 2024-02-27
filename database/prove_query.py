@@ -15,13 +15,28 @@ import pandas as pd
 
 client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
 db = client['SpeSana']
-prodotti = db['Products']
+utenti = db['Users']
 
-parola_cercata = "nutella"
-risultato = list(prodotti.find({"product_name": {"$regex": f".*{parola_cercata}.*", "$options": "i"}}).sort("unique_scans_n", -1))
-print(risultato)
-print(len(risultato))
+# parola_cercata = "nutella"
+# risultato = list(prodotti.find({"product_name": {"$regex": f".*{parola_cercata}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+# print(risultato)
+# print(len(risultato))
+new_field = "recipes"
+default_value = []
 
+# Aggiornamento dei documenti nella collezione per aggiungere il nuovo campo con il valore predefinito
+utenti.update_many(
+    {},
+    {"$set": {new_field: default_value}},
+    upsert=True
+)
+new_field = "products_favorites"
+default_value = []
+utenti.update_many(
+    {},
+    {"$set": {new_field: default_value}},
+    upsert=True
+)
 # risultato = utenti.find({})
 #
 # utenti = pd.DataFrame(risultato)
