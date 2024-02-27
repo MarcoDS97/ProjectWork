@@ -535,8 +535,8 @@
         <div class="row g-4">
             {% for elem in best %}
             <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
+                <div class="rounded bg-light" style="margin-bottom: 20px">
+                    <div class="row align-items-center p-3">
                         <div class="col-6">
                             <a href="product/{{elem.code}}">
                                 <img src="{{elem.image_url}}" class="img-best rounded-top"
@@ -546,29 +546,30 @@
                         <div class="col-6">
                             <a href="product/{{elem.code}}" class="h5">{{elem.product_name}}</a>
                             <h6 class="mb-3">{{elem.brands}}</h6>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
-                                <i class="fa fa-heart me-2 text-secondary"></i>
-                            </a>
-                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <form method="post" class="ia_form">
-                                            <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-0 my-2"
-                                                    type="submit" data-bs-toggle="modal" name="prompt"
-                                                    data-bs-target="#chatModal"
-                                                    {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}, ricetta"
-                                                    {% else %} onclick="Gologin()" {% endif %}><i
-                                                    class="fas fa-drumstick-bite"></i><i
-                                                    class="bi bi-stars me-2"></i></button>
-                                        </form>
-                                        <form method="post" class="ia_form">
-                                            <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
-                                                    type="submit" data-bs-toggle="modal" name="prompt"
-                                                    data-bs-target="#chatModal"
-                                                    {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}, info" {%
-                                                    else %} onclick="Gologin()" {% endif %}><i
-                                                    class="bi bi-info-circle"></i><i
-                                                    class="bi bi-stars me-2"></i></button>
-                                        </form>
-                                    </div>
+
+                            <div class="d-flex  flex-lg-wrap">
+                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                    <i class="fa fa-heart me-2 text-secondary"></i>
+                                </a>
+                                <form method="post" class="ia_form">
+                                    <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-0 my-2"
+                                            type="submit" data-bs-toggle="modal" name="prompt"
+                                            data-bs-target="#chatModal"
+                                            {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}, ricetta"
+                                            {% else %} onclick="Gologin()" {% endif %}><i
+                                            class="fas fa-drumstick-bite"></i><i
+                                            class="bi bi-stars me-2"></i></button>
+                                </form>
+                                <form method="post" class="ia_form">
+                                    <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
+                                            type="submit" data-bs-toggle="modal" name="prompt"
+                                            data-bs-target="#chatModal"
+                                            {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}, info" {%
+                                            else %} onclick="Gologin()" {% endif %}><i
+                                            class="bi bi-info-circle"></i><i
+                                            class="bi bi-stars me-2"></i></button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
