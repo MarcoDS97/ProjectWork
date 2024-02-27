@@ -22,11 +22,11 @@ users = db["Users"]
 
 @app.route("/", methods=["POST", "GET"])
 def homepage():
-    a = list(prodotti.find({"nutriscore_grade": "a"}).sort("nutriscore_score").limit(10))
-    b = list(prodotti.find({"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2 }}).sort("nutriscore_score").limit(10))
-    c = list(prodotti.find({"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}}).sort("nutriscore_score").limit(10))
-    d = list(prodotti.find({"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}}).sort("nutriscore_score").limit(10))
-    e = list(prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}}).sort("nutriscore_score").limit(10))
+    a = list(prodotti.find({"nutriscore_grade": "a", "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    b = list(prodotti.find({"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2 }, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    c = list(prodotti.find({"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    d = list(prodotti.find({"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    e = list(prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
     nutriscore_home = [a, b, c, d, e]
     best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
 
@@ -45,9 +45,9 @@ def homepage():
             response = f"Ho ricevuto dati per fare il prompt: {prompt}"
             return jsonify({'response': response})
         elif search_modal:
-            print(search_modal)
+            return redirect(f"/search/{search_modal}")
         elif search_hero:
-            print(search_hero)
+            return redirect(f"/search/{search_hero}")
         elif "code_hero" in request.files:
             codice = request.files['code_hero']
             if codice and codice != "":
@@ -70,6 +70,18 @@ def homepage():
     else:
         return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog)
 
+@app.route("/search/<term>")
+def search_term(term):
+    flagLog = False
+    utente = {}
+    if session.get('name'):
+        flagLog = True
+        utente = list(users.find({'Email': session['name']}))
+    risultato = list(prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+    if utente:
+        return render_template("search.html", prodotto=risultato, utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("search.html", prodotto=risultato, flagLog=flagLog)
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
 def product_codice(codice):
@@ -195,9 +207,9 @@ def product():
 
     prodotto = list(prodotti.find({"brands": "Ferrero"}))
     if utente:
-        return render_template("product.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
+        return render_template("search.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
     else:
-        return render_template("product.html", prodotto=prodotto, flagLog=flagLog)
+        return render_template("search.html", prodotto=prodotto, flagLog=flagLog)
 
 @app.route("/profilo")
 def profilo():
