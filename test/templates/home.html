@@ -93,6 +93,29 @@
             });
         });
     </script>
+       <script>
+        $(document).ready(function() {
+            $('.fav-btn').on('click', function(event) {
+                event.preventDefault();
+                var buttonVal = $(this).val();
+
+            var csrftoken = Cookies.get('csrftoken');
+
+            $.ajaxSetup({
+                headers: { 'X-CSRFToken': csrftoken }
+            });
+
+
+            var favProd = buttonVal;
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: {prompt: prompt},
+                dataType: 'json',
+                });
+            });
+        });
+    </script>
     <style>
         .ia_form{}
         .code-btn{
