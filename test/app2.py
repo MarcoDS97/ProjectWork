@@ -27,16 +27,16 @@ def product_codice(codice):
     p = list(products.find({"code": codice}))
     # print(p)
     # print("ciao")
-    return render_template("product.html")
-    # return render_template("product.html", css_url=url_for("static", filename="shop.css"))
+    return render_template("search.html")
+    # return render_template("search.html", css_url=url_for("static", filename="shop.css"))
 
 @app.route("/shop")
 def shop():
     # p = list(products.find({"code": codice}))
     # print(p)
     print("mondo")
-    return render_template("product.html")
-    # return render_template("product.html", css_url=url_for("static", filename="shop.css"))
+    return render_template("search.html")
+    # return render_template("search.html", css_url=url_for("static", filename="shop.css"))
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -102,7 +102,7 @@ def index():
 def product():
     prodotti = list(products.find({"brands": "Ferrero"}))
 
-    return render_template("product.html", prodotti=prodotti)
+    return render_template("search.html", prodotti=prodotti)
 
 
 @app.route("/logout")
