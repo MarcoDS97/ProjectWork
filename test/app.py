@@ -41,11 +41,15 @@ def homepage():
 
     if request.method == 'POST':
         prompt = request.form.get('prompt')
+        favorites = request.form.get('fav')
         search_hero = request.form.get('search_hero')
         search_modal = request.form.get('search_modal')
 
         if prompt:
             response = f"Ho ricevuto dati per fare il prompt: {prompt}"
+            return jsonify({'response': response})
+        elif favorites:
+            response = f"Ho aggiunto questo a i tuoi favoriti: {favorites}"
             return jsonify({'response': response})
         elif search_modal:
             return redirect(f"/search/{search_modal}")
@@ -63,7 +67,6 @@ def homepage():
                         return redirect(f"/search/{codice_barre}")
                     else:
                         pass
-
         elif 'code_modal' in request.files:
             codice = request.files['code_modal']
             if codice and codice != "":
