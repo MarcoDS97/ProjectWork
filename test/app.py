@@ -58,9 +58,11 @@ def homepage():
                     filename = secure_filename(codice.filename)
                     codice.save(filename)
                     codice_barre = codice_img(codice.filename)
-
                     os.remove(codice.filename)
-                    return redirect(f"/search/{codice_barre}")
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        pass
 
         elif 'code_modal' in request.files:
             codice = request.files['code_modal']
@@ -182,7 +184,9 @@ def signup():
                 'Favorites': categorie,
                 'Goal': obiettivo,
                 'activity_level': livello_attivita,
-                'TDEE': tdee
+                'TDEE': tdee,
+                'products_favorites': [],
+                'recipes': []
             }
             )
             return redirect('/')
