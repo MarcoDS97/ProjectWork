@@ -57,8 +57,10 @@ def homepage():
                 if correct_file(codice.filename):
                     filename = secure_filename(codice.filename)
                     codice.save(filename)
-                    print(codice_img(codice.filename))
+                    codice_barre = codice_img(codice.filename)
+
                     os.remove(codice.filename)
+                    return redirect(f"/search/{codice_barre}")
 
         elif 'code_modal' in request.files:
             codice = request.files['code_modal']
@@ -80,7 +82,11 @@ def search_term(term):
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
-    risultato = list(prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+    if term.isdigit():
+        risultato = list(prodotti.find({"code": term}))
+    else:
+        risultato = list(prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+
     if utente:
         return render_template("search.html", prodotto=risultato, utente=utente[0], flagLog=flagLog)
     else:
