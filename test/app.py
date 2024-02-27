@@ -30,6 +30,9 @@ def homepage():
     nutriscore_home = [a, b, c, d, e]
     best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
 
+    nome = ["Prodotti A Base Di Carne", "Cibi A Base Di Frutta E Verdura", "Latticini", "Snack Dolci"]
+    categorie = [list(prodotti.find({"categories": n}).sort("unique_scans_n", -1).limit(10)) for n in nome]
+
     flagLog = False
     utente = {}
     if session.get('name'):
@@ -66,9 +69,9 @@ def homepage():
                     print(codice_img(codice.filename))
                     os.remove(codice.filename)
     if utente:
-        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0], flagLog=flagLog)
+        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0], flagLog=flagLog, categorie=categorie)
     else:
-        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog)
+        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog, categorie=categorie)
 
 @app.route("/search/<term>")
 def search_term(term):
