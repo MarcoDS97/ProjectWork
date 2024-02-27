@@ -40,13 +40,26 @@ def homepage():
         utente = list(users.find({'Email': session['name']}))
 
     if request.method == 'POST':
-        prompt = request.form.get('prompt')
+        dati_prompt = request.form.get('prompt')
         favorites = request.form.get('fav')
         search_hero = request.form.get('search_hero')
         search_modal = request.form.get('search_modal')
 
-        if prompt:
-            response = f"Ho ricevuto dati per fare il prompt: {prompt}"
+        if dati_prompt:
+            dati_prompt = dati_prompt.split(", ")
+            prodotto = list(prodotti.find({"code": dati_prompt[1]}))
+            if dati_prompt[2] == "info":
+                prompt = f"""
+                Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]}
+                mi dici un vantaggio e uno svantaggio nel comprare questo prodotto: {prodotto[0]["product_name"]}?
+                """
+            else:
+                prompt = f"""
+                Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]} 
+                mi dici una ricetta corta per fare con {prodotto[0]["product_name"]}?
+                """
+
+            response = spesana_ia(prompt)
             return jsonify({'response': response})
         elif favorites:
             response = f"Ho aggiunto questo a i tuoi favoriti: {favorites}"

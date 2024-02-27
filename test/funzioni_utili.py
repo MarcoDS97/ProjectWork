@@ -1,6 +1,17 @@
 import cv2
 from pyzbar import pyzbar
+from openai import OpenAI
 
+def spesana_ia(prompt):
+    key = "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"
+    client = OpenAI(api_key=key)
+
+    chat_completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return str(chat_completion.choices[0].message.content)
 
 def calculate_tdee(height, weight, age, gender, activity_level, goal):
     activity_factors = {
