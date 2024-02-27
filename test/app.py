@@ -30,7 +30,7 @@ def homepage():
     nutriscore_home = [a, b, c, d, e]
     best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
 
-    nome = ["Prodotti A Base Di Carne", "Cibi A Base Di Frutta E Verdura", "Latticini", "Snack Dolci"]
+    nome = ["Prodotti A Base Di Carne", "Bevande", "Latticini", "Snack Dolci"]
     categorie = [list(prodotti.find({"categories": n}).sort("unique_scans_n", -1).limit(10)) for n in nome]
 
     flagLog = False
