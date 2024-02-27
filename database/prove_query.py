@@ -17,17 +17,10 @@ client = MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb
 db = client['SpeSana']
 prodotti = db['Products']
 
-pipeline = [
-    {"$match": {"nutriscore_grade": "e", "unique_scans_n": {"$gte": 100}}},
-    {"$sort": {"nutriscore_score": -1}},
-    {"$group": {"_id": "$product_name", "doc": {"$first": "$$ROOT"}}},
-    {"$replaceRoot": {"newRoot": "$doc"}},
-    {"$limit": 20}
-]
-
-risultati = list(prodotti.aggregate(pipeline))
-
-nutriscore_e = pd.DataFrame(risultati)
+parola_cercata = "nutella"
+risultato = list(prodotti.find({"product_name": {"$regex": f".*{parola_cercata}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+print(risultato)
+print(len(risultato))
 
 # risultato = utenti.find({})
 #
