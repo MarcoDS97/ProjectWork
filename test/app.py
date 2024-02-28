@@ -114,7 +114,8 @@ def search_term(term):
     if term.isdigit():
         products = list(prodotti.find({"code": term}).sort("unique_scans_n", -1))
     else:
-        products = list(prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+        products = list(
+            prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
     page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
     per_page = 8  # Numero di elementi per pagina
     total_products = len(products)  # Numero totale di prodotti
@@ -123,9 +124,11 @@ def search_term(term):
     products = products[offset:offset + per_page]
 
     if utente:
-        return render_template("search.html", prodotto=products, utente=utente[0], flagLog=flagLog, term=term, current_page=page, total_pages=total_pages, max=max, min=min)
+        return render_template("search.html", prodotto=products, utente=utente[0], flagLog=flagLog, term=term,
+                               current_page=page, total_pages=total_pages, max=max, min=min)
     else:
-        return render_template("search.html", prodotto=products, flagLog=flagLog, current_page=page, term=term, total_pages=total_pages, max=max, min=min)
+        return render_template("search.html", prodotto=products, flagLog=flagLog, current_page=page, term=term,
+                               total_pages=total_pages, max=max, min=min)
 
 
 @app.route("/product")
@@ -143,9 +146,11 @@ def product():
     offset = (page - 1) * per_page
     products = prodotto[offset:offset + per_page]
     if utente:
-        return render_template("products.html", prodotto=products, utente=utente[0], flagLog=flagLog, current_page=page, total_pages=total_pages, max=max, min=min)
+        return render_template("products.html", prodotto=products, utente=utente[0], flagLog=flagLog, current_page=page,
+                               total_pages=total_pages, max=max, min=min)
     else:
-        return render_template("products.html", prodotto=products, flagLog=flagLog, current_page=page, total_pages=total_pages, max=max, min=min)
+        return render_template("products.html", prodotto=products, flagLog=flagLog, current_page=page,
+                               total_pages=total_pages, max=max, min=min)
 
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
@@ -160,6 +165,11 @@ def product_codice(codice):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
 
+    current_categories = p[0].get("categories", [])
+    related_products = prodotti.find({
+        "code": {"$ne": codice},
+        "categories": {"$in": current_categories}
+    }).sort("unique_scans_n", -1).limit(3)
     if request.method == 'POST':
         if prompt_ricetta:
             response = f"Ho ricevuto dati per fare il prompt: {prompt_ricetta}"
@@ -169,9 +179,9 @@ def product_codice(codice):
             return jsonify({'response': response})
         # return jsonify({'response': (prompt_ricetta, prompt_info)})
     if utente:
-        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len)
+        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len, related_products=related_products)
     else:
-        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len)
+        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len, related_products=related_products)
 
 
 @app.route("/login", methods=["POST", "GET"])
