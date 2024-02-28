@@ -2,6 +2,7 @@ import cv2
 from pyzbar import pyzbar
 from openai import OpenAI
 
+
 def spesana_ia(prompt):
     key = "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"
     client = OpenAI(api_key=key)
@@ -12,6 +13,7 @@ def spesana_ia(prompt):
         messages=[{"role": "user", "content": prompt}]
     )
     return str(chat_completion.choices[0].message.content)
+
 
 def calculate_tdee(height, weight, age, gender, activity_level, goal):
     activity_factors = {
@@ -52,4 +54,3 @@ def codice_img(file):
             return barcode_info
 
     return None
-
