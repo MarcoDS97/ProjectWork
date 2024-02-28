@@ -418,20 +418,19 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <h4 class="mb-4">Prodotti Simili</h4>
-                                <div class="d-flex align-items-center justify-content-start">
+                                <h4 class="mb-4">Prodotti Consigliati</h4>
+                                {% for elem in related_products%}
+                                <div class="d-flex align-items-center justify-content-start mb-5">
                                     <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-1.jpg" class="img-fluid rounded" alt="Image">
+                                        <a href="/product/{{elem.code}}">
+                                        <img src="{{elem.image_url}}" class="img-fluid rounded" alt="Image">
+                                        </a>
                                     </div>
                                     <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                        </div>
+                                        <a class="mb-2 h6" href="/product/{{elem.code}}"> {{elem.product_name}} </a>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-center my-4">
-                                    <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
+                                    </div>
+                                {% endfor %}
                                 </div>
                             </div>
                         </div>
