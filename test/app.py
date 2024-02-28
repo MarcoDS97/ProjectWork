@@ -61,13 +61,18 @@ def homepage():
                 Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]}
                 mi dici un vantaggio e uno svantaggio nel comprare questo prodotto: {prodotto[0]["product_name"]}?
                 """
+                response = spesana_ia(prompt)
             else:
                 prompt = f"""
                 Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]} 
                 mi dici una ricetta corta per fare con {prodotto[0]["product_name"]}?
                 """
+                response = spesana_ia(prompt)
+                users.update_one(
+                    {'Email': utente[0]["Email"]},  # Filtra il documento in base all'ID
+                    {'$push': {'recipes': response}})
 
-            response = spesana_ia(prompt)
+
             return jsonify({'response': response})
         elif favorites:
             favorites = favorites.split(", ")
@@ -77,7 +82,7 @@ def homepage():
             # Utilizza il metodo update_one per aggiungere l'elemento all'array
             users.update_one(
                 {'Email': favorites[0]},  # Filtra il documento in base all'ID
-                {'$push': {'products_favorites': nuovo_elemento }})
+                {'$push': {'products_favorites': nuovo_elemento}})
 
             response = f"Ho aggiunto questo a i tuoi favoriti: {favorites}"
             print(response)
@@ -360,7 +365,8 @@ def profilo():
                         "Favorites": categorie,
                         "Goal": obiettivo,
                         "activity_level": livello_attivita,
-                        "TDEE": calculate_tdee(float(altezza), float(peso), int(eta), sesso, livello_attivita, obiettivo)}
+                        "TDEE": calculate_tdee(float(altezza), float(peso), int(eta), sesso, livello_attivita,
+                                               obiettivo)}
 
             if new_data["Email"] != utente[0]["Email"]:
                 if len(list(users.find({'Email': email}))) > 0:
@@ -380,12 +386,12 @@ def profilo():
                 session["name"] = email
                 cambio_dati = True
 
-
     categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
                  "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
 
     if utente:
-        return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie, cambio_password=cambio_password, cambio_dati=cambio_dati)
+        return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie,
+                               cambio_password=cambio_password, cambio_dati=cambio_dati)
     else:
         return redirect("/")
 
