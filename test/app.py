@@ -76,9 +76,10 @@ def homepage():
             return jsonify({'response': response})
         elif favorites:
             favorites = favorites.split(", ")
-            code = favorites[1]
+            code = favorites[2]
+            name = favorites[1]
+            nuovo_elemento = [code, name]
             # Nuovo elemento da inserire nell'array
-            nuovo_elemento = code
             # Utilizza il metodo update_one per aggiungere l'elemento all'array
             users.update_one(
                 {'Email': favorites[0]},  # Filtra il documento in base all'ID
@@ -391,7 +392,7 @@ def profilo():
 
     if utente:
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie,
-                               cambio_password=cambio_password, cambio_dati=cambio_dati)
+                               cambio_password=cambio_password, cambio_dati=cambio_dati, len=len)
     else:
         return redirect("/")
 
