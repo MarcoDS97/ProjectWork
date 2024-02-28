@@ -70,7 +70,18 @@ def homepage():
             response = spesana_ia(prompt)
             return jsonify({'response': response})
         elif favorites:
+            favorites = favorites.split(", ")
+
+            code = favorites[1]
+            # Nuovo elemento da inserire nell'array
+            nuovo_elemento = {'products_favorites': code}
+            # Utilizza il metodo update_one per aggiungere l'elemento all'array
+            users.update_one(
+                {'Email': favorites[0]},  # Filtra il documento in base all'ID
+                {'products_favorites': nuovo_elemento})
+
             response = f"Ho aggiunto questo a i tuoi favoriti: {favorites}"
+            print(response)
             return jsonify({'response': response})
         elif search_modal:
             return redirect(f"/search/{search_modal}")
