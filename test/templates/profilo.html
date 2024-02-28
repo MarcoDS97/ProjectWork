@@ -60,6 +60,13 @@
             });
         });
     </script>
+    <script>
+        window.onload = (event) => {
+        const toastLiveExample = document.getElementById('liveToast');
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
+        };
+    </script>
     <style>
         .code-btn{
         font-size: 1.5em
@@ -254,6 +261,60 @@
 </div>
 <!-- Single Page Header End -->
 
+{% if cambio_password == True %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio password</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Password cambiata con successo </h6>
+        </div>
+    </div>
+</div>
+{% elif cambio_password == False %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio password</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Errore nel inserimento dei dati, password non cambiata </h6>
+        </div>
+    </div>
+</div>
+{% elif cambio_dati == True %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio dati</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>I dati sono stati modificati correttamente </h6>
+        </div>
+    </div>
+</div>
+{% elif cambio_dati == False %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio dati</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Email già esistente, dati non aggiornati</h6>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 
 <!-- Profile info Start -->
 <div class="container-fluid py-5">
@@ -264,20 +325,22 @@
                 <form method="post">
                     <div class="row">
                         <div class="form-item">
-                        <label class="form-label my-3">Email<sup>*</sup></label>
-                        <input type="email" class="form-control" style="border: 1px solid #ced4da" value="{{utente.Email}}" name="email_profilo">
-                    </div>
+                            <label class="form-label my-3">Email<sup>*</sup></label>
+                            <input type="email" class="form-control" style="border: 1px solid #ced4da"
+                                   value="{{utente.Email}}" name="email_profilo" required>
+                        </div>
                         <div class="col-md-12 col-lg-6">
                             <div class="form-item w-100">
                                 <label class="form-label my-3">Nome<sup>*</sup></label>
-                                <input type="text" name="nome_profilo" class="form-control" value="{{utente.Name}}">
+                                <input type="text" name="nome_profilo" class="form-control" value="{{utente.Name}}"
+                                       required>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-6">
                             <div class="form-item w-100">
                                 <label class="form-label my-3">Cognome<sup>*</sup></label>
                                 <input type="text" name="cognome_profilo" class="form-control"
-                                       value="{{utente.Surname}}">
+                                       value="{{utente.Surname}}" required>
                             </div>
                         </div>
                     </div>
@@ -285,7 +348,8 @@
                         <div class="col-md-12 col-lg-6">
                             <div class="form-item w-100">
                                 <label class="form-label my-3">Sesso<sup>*</sup></label>
-                                <select class="form-select" style="border: 1px solid #ced4da" name="genere_profilo">
+                                <select class="form-select" style="border: 1px solid #ced4da" name="genere_profilo"
+                                        required>
                                     <option>{{utente.Gender}}</option>
                                     <option {% if utente.Gender==
                                     'M' %} hidden {% endif %}> M</option>
@@ -297,7 +361,8 @@
                         <div class="col-md-12 col-lg-6">
                             <div class="form-item w-100">
                                 <label class="form-label my-3">Età<sup>*</sup></label>
-                                <select class="form-select" style="border: 1px solid #ced4da" name="eta_profilo">
+                                <select class="form-select" style="border: 1px solid #ced4da" name="eta_profilo"
+                                        required>
                                     <option>{{utente.Age}}</option>
                                     {% for i in range(18,61) %}
                                     <option> {{i}}</option>
@@ -310,20 +375,21 @@
                         <div class="col-md-12 col-lg-6">
                             <div class="form-item w-100">
                                 <label class="form-label my-3">Peso (kg)<sup>*</sup></label>
-                                <input type="number" class="form-control" value="{{utente.Weight}}" name="peso_profilo">
+                                <input type="number" class="form-control" value="{{utente.Weight}}" name="peso_profilo"
+                                       required>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-6">
                             <div class="form-item w-100">
                                 <label class="form-label my-3">Altezza (cm)<sup>*</sup></label>
                                 <input type="number" class="form-control" value="{{utente.Height}}"
-                                       name="altezza_profilo">
+                                       name="altezza_profilo" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Obiettivo<sup>*</sup></label>
-                        <select class="form-select" style="border: 1px solid #ced4da" name="obiettivo_profilo">
+                        <select class="form-select" style="border: 1px solid #ced4da" name="obiettivo_profilo" required>
                             <option>{{utente.Goal}}</option>
                             <option {% if utente.Goal==
                             'Dimagrire' %} hidden {% endif %}> Dimagrire </option>
@@ -335,7 +401,7 @@
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Livello di attività<sup>*</sup></label>
-                        <select class="form-select" style="border: 1px solid #ced4da" name="livello_profilo">
+                        <select class="form-select" style="border: 1px solid #ced4da" name="livello_profilo" required>
                             <option>{{utente.activity_level}}</option>
                             <option {% if utente.activity_level==
                             'Sedentario' %} hidden {% endif %}> Sedentario </option>
@@ -365,7 +431,7 @@
                                                                                   name="categoria{{loop.index}}_profilo"
                                                                                   value="{{elem}}" {% if elem in
                                                                                   utente.Favorites %} checked {% endif
-                                                                                  %}>{{elem}}</label></li>
+                                                                                  %} required>{{elem}}</label></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -425,10 +491,41 @@
                     </div>
                 </div>
                 <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                    <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
-                        Cambio
-                        password
+                    <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary"
+                            data-bs-toggle="modal" data-bs-target="#passwordModal">
+                        Cambio password
                     </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-verde-chiaro">
+                                    <h5 class="modal-title text-white" id="passwordModalLabel">Modifica Password</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body text-start">
+                                        <label class="form-label my-3 px-2 verde-scuro">Password
+                                            vecchia<sup>*</sup></label>
+                                        <input type="password" class="form-control" style="border: 1px solid #ced4da"
+                                               name="password_old" required>
+                                        <label class="form-label my-3 px-2 verde-scuro">Password
+                                            nuova<sup>*</sup></label>
+                                        <input type="password" class="form-control" style="border: 1px solid #ced4da"
+                                               name="password_new" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">chiude
+                                        </button>
+                                        <button type="submit" class="btn btn-secondary">cambia password</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
