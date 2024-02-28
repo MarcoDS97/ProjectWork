@@ -2,10 +2,6 @@ import cv2
 import pymongo
 from pyzbar import pyzbar
 from openai import OpenAI
-import os
-
-# key = os.getenv("OPENAI_API_KEY")
-# print(key)
 
 def spesana_ia(prompt):
     client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
