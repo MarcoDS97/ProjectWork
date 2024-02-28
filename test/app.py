@@ -8,7 +8,6 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from flask_session import Session
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -22,11 +21,20 @@ users = db["Users"]
 
 @app.route("/", methods=["POST", "GET"])
 def homepage():
-    a = list(prodotti.find({"nutriscore_grade": "a", "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
-    b = list(prodotti.find({"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2 }, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
-    c = list(prodotti.find({"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
-    d = list(prodotti.find({"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
-    e = list(prodotti.find({"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}, "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    a = list(
+        prodotti.find({"nutriscore_grade": "a", "unique_scans_n": {"$gte": 100}}).sort("nutriscore_score").limit(10))
+    b = list(prodotti.find(
+        {"nutriscore_grade": "b", "nutriscore_score": {"$gte": 0, "$lte": 2}, "unique_scans_n": {"$gte": 100}}).sort(
+        "nutriscore_score").limit(10))
+    c = list(prodotti.find(
+        {"nutriscore_grade": "c", "nutriscore_score": {"$gte": 3, "$lte": 10}, "unique_scans_n": {"$gte": 100}}).sort(
+        "nutriscore_score").limit(10))
+    d = list(prodotti.find(
+        {"nutriscore_grade": "d", "nutriscore_score": {"$gte": 11, "$lte": 18}, "unique_scans_n": {"$gte": 100}}).sort(
+        "nutriscore_score").limit(10))
+    e = list(prodotti.find(
+        {"nutriscore_grade": "e", "nutriscore_score": {"$gte": 19}, "unique_scans_n": {"$gte": 100}}).sort(
+        "nutriscore_score").limit(10))
     nutriscore_home = [a, b, c, d, e]
     best = list(prodotti.find().sort("unique_scans_n", -1).limit(6))
 
@@ -89,9 +97,12 @@ def homepage():
                     print(codice_img(codice.filename))
                     os.remove(codice.filename)
     if utente:
-        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0], flagLog=flagLog, categorie=categorie)
+        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0],
+                               flagLog=flagLog, categorie=categorie)
     else:
-        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog, categorie=categorie)
+        return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog,
+                               categorie=categorie)
+
 
 @app.route("/search/<term>")
 def search_term(term):
@@ -101,14 +112,20 @@ def search_term(term):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
     if term.isdigit():
-        risultato = list(prodotti.find({"code": term}))
+        products = list(prodotti.find({"code": term}).sort("unique_scans_n", -1))
     else:
-        risultato = list(prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+        products = list(prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+    page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
+    per_page = 8  # Numero di elementi per pagina
+    total_products = len(products)  # Numero totale di prodotti
+    total_pages = (total_products + per_page - 1) // per_page
+    offset = (page - 1) * per_page
+    products = products[offset:offset + per_page]
 
     if utente:
-        return render_template("search.html", prodotto=risultato, utente=utente[0], flagLog=flagLog)
+        return render_template("search.html", prodotto=products, utente=utente[0], flagLog=flagLog, term=term, current_page=page, total_pages=total_pages, max=max, min=min)
     else:
-        return render_template("search.html", prodotto=risultato, flagLog=flagLog)
+        return render_template("search.html", prodotto=products, flagLog=flagLog, current_page=page, term=term, total_pages=total_pages, max=max, min=min)
 
 
 @app.route("/product")
@@ -118,12 +135,17 @@ def product():
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
-
-    prodotto = list(prodotti.find({"brands": "Ferrero"}))
+    prodotto = list(prodotti.find())
+    page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
+    per_page = 8  # Numero di elementi per pagina
+    total_products = len(prodotto)  # Numero totale di prodotti
+    total_pages = (total_products + per_page - 1) // per_page
+    offset = (page - 1) * per_page
+    products = prodotto[offset:offset + per_page]
     if utente:
-        return render_template("search.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
+        return render_template("products.html", prodotto=products, utente=utente[0], flagLog=flagLog, current_page=page, total_pages=total_pages, max=max, min=min)
     else:
-        return render_template("search.html", prodotto=prodotto, flagLog=flagLog)
+        return render_template("products.html", prodotto=products, flagLog=flagLog, current_page=page, total_pages=total_pages, max=max, min=min)
 
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
@@ -154,7 +176,6 @@ def product_codice(codice):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-
     signup_success = request.args.get("signup_success")
     verifica = True
     flagLog = False
@@ -176,7 +197,8 @@ def login():
                 verifica = False
 
     if utente:
-        return render_template("login.html", utente=utente[0], flagLog=flagLog, signup_success=signup_success, verifica=verifica)
+        return render_template("login.html", utente=utente[0], flagLog=flagLog, signup_success=signup_success,
+                               verifica=verifica)
     else:
         return render_template("login.html", flagLog=flagLog, signup_success=signup_success, verifica=verifica)
 
@@ -244,8 +266,9 @@ def profilo():
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
-
+        print(utente[0])
     if request.method == "POST":
+        email = request.form.get('email_profilo')
         nome = request.form.get('nome_profilo')
         cognome = request.form.get('cognome_profilo')
         sesso = request.form.get('genere_profilo')
@@ -254,10 +277,12 @@ def profilo():
         peso = float(request.form.get('peso_profilo'))
         obiettivo = request.form.get('obiettivo_profilo')
         livello_attivita = request.form.get('livello_profilo')
-        categorie = [request.form.get(f'categoria{i}_profilo') for i in range(8) if request.form.get(f'categoria{i}_profilo') is not None]
+        categorie = [request.form.get(f'categoria{i}_profilo') for i in range(8) if
+                     request.form.get(f'categoria{i}_profilo') is not None]
 
         new_data = {"Name": nome,
                     "Surname": cognome,
+                    "Email": email,
                     "Gender": sesso,
                     "Age": eta,
                     "Height": altezza,
@@ -267,31 +292,31 @@ def profilo():
                     "activity_level": livello_attivita,
                     "TDEE": calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)}
 
-        filtro = {"Email": utente["Email"]}
+        filtro = {"_id": utente[0]["_id"]}
         for key in new_data.keys():
 
-            if utente[key] != new_data[key]:
+            if utente[0][key] != new_data[key]:
                 aggiornamento = {"$set": {key: new_data[key]}}
                 users.update_one(filtro, aggiornamento)
+        session["name"] = email
+        return redirect("/profilo")
 
-
-
-
-
-    categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne", "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
+    categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
+                 "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
     if utente:
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie)
     else:
         return redirect("/")
+
 
 @app.route("/logout")
 def logout():
     session["name"] = None
     return redirect("/")
 
+
 @app.route("/nutriscore")
 def nutriscore():
-
     flagLog = False
     utente = {}
     if session.get('name'):
@@ -302,6 +327,7 @@ def nutriscore():
         return render_template("nutriscore.html", utente=utente[0], flagLog=flagLog)
     else:
         return render_template("nutriscore.html", flagLog=flagLog)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

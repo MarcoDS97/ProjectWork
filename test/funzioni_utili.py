@@ -52,3 +52,4 @@ def codice_img(file):
             return barcode_info
 
     return None
+
