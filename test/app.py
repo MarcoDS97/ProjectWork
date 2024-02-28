@@ -349,6 +349,7 @@ def profilo():
 
     categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
                  "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
+
     if utente:
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie, cambio_password=cambio_password, cambio_dati=cambio_dati)
     else:
