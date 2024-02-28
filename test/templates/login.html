@@ -27,6 +27,15 @@
 
         <!-- Template Stylesheet -->
         <link href="static/css/style.css" rel="stylesheet">
+
+        <script>
+        window.onload = (event) => {
+        const toastLiveExample = document.getElementById('liveToast');
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
+        };
+        </script>
+
         <style>
         .maxText {
         height: 100px;
@@ -199,12 +208,46 @@
     </div>
     <!-- Single Page Header End -->
 
+<!-- Login fail Notification start -->
+{%  if not verifica %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">Login</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>email o password sbagliato </h6>
+        </div>
+    </div>
+</div>
+{% elif signup_success %}
+<!-- login fail Notification end -->
+<!-- Success Notification start -->
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">Signup</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Registrazione completata con successo </h6>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- Success Notification end -->
+
+
+
         <!-- Login Start -->
         <div class="d-flex justify-content-center py-5">
             <div class="d-flex flex-row bg-verde-chiaro rounded form-login">
                 <form class="col p-3 mt-3 mb-3" style="border-right: 2px solid white" method="POST">
                     <h6>Email</h6>
-                    <input type="text" name="email_login" class="w-100 form-control border-0 py-1 mb-4" required>
+                    <input type="email" name="email_login" class="w-100 form-control border-0 py-1 mb-4" required>
                     <h6>Password</h6>
                     <input type="password" name="password_login" class="w-100 form-control border-0 py-1 mb-4" required>
                     <button class="w-100 btn form-control border-secondary bg-white text-primary " type="submit">Login</button>
@@ -259,6 +302,9 @@
     </div>
 </div>
 <!-- Footer End -->
+
+
+
         
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

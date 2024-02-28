@@ -28,6 +28,15 @@
         <!-- Template Stylesheet -->
         <link href="static/css/style.css" rel="stylesheet">
     </head>
+
+     <script>
+        window.onload = (event) => {
+        const toastLiveExample = document.getElementById('liveToast');
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
+        };
+        </script>
+
     <style>
         .maxText {
         height: 100px;
@@ -201,6 +210,22 @@
         </div>
         <!-- Single Page Header End -->
 
+<!-- signup fail Notification start -->
+{%  if not verifica %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">Signup</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Email già esistente</h6>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- signup fail Notification end -->
 
         <!-- signup Start -->
         <div class="container-fluid contact py-1">
@@ -225,7 +250,7 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Email</h6>
-                                        <input type="text" name="email_signup" class="w-100 form-control border-0 py-1 mb-3" required>
+                                        <input type="email" name="email_signup" class="w-100 form-control border-0 py-1 mb-3" required>
                                     </div>
                                 </div>
                                 <div class="p-1 rounded mb-2 bg-white">
@@ -262,13 +287,13 @@
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Peso (Kg)</h6>
-                                        <input type="text" name="peso_signup" class="w-100 form-control border-0 py-1 mb-3" required>
+                                        <input type="number" name="peso_signup" class="w-100 form-control border-0 py-1 mb-3" required>
                                     </div>
                                 </div>
                                 <div class="p-1 rounded mb-2 bg-white">
                                     <div>
                                         <h6>Altezza (cm)</h6>
-                                        <input type="text" name="altezza_signup" class="w-100 form-control border-0 py-1 mb-3" required>
+                                        <input type="number" name="altezza_signup" class="w-100 form-control border-0 py-1 mb-3" required>
                                     </div>
                                 </div>
                             </div>
