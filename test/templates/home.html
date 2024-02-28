@@ -59,11 +59,7 @@
     <!--            });-->
     <!--        });-->
     <!--    </script>-->
-    <script>
-        function getvalue() {
-          window.location.href="/login";
-        }
-    </script>
+
     <script>
         $(document).ready(function() {
             $('.ia-btn').on('click', function(event) {
@@ -92,7 +88,6 @@
                 });
             });
         });
-
         $(document).ready(function() {
             $('.fav-btn').on('click', function(event) {
                 event.preventDefault();
@@ -113,16 +108,12 @@
                 data: {fav: favProd},
                 dataType: 'json',
                 success: function(data) {
-
                 buttonFav.addClass('btn-secondary');
-                $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
-                $('#response #GFG2').css({"color": "green"});
                     }
                 });
             });
         });
     </script>
-
     <style>
         .ia_form{}
         .code-btn{
@@ -434,7 +425,7 @@
                                     <a class="h6 maxText" href="/product/{{elem.code}}">{{elem.product_name}}</a>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                         <form method="post">
-                                        <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
+                                        <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
                                         {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
                                             <i class="fa fa-heart me-2 text-secondary"></i>
                                         </button>
@@ -548,9 +539,12 @@
                             <h6 class="mb-3">{{elem.brands}}</h6>
 
                             <div class="d-flex  flex-lg-wrap">
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
-                                    <i class="fa fa-heart me-2 text-secondary"></i>
-                                </a>
+                                 <form method="post">
+                                        <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
+                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
+                                            <i class="fa fa-heart me-2 text-secondary"></i>
+                                        </button>
+                                            </form>
                                 <form method="post" class="ia_form">
                                     <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-0 my-2"
                                             type="submit" data-bs-toggle="modal" name="prompt"
@@ -671,10 +665,12 @@
                                 <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
                                     <a class="h6 maxText" href="/product/{{elem.code}}">{{elem.product_name}}</a>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                        <a href="#"
-                                           class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
+                                         <form method="post">
+                                        <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
+                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
                                             <i class="fa fa-heart me-2 text-secondary"></i>
-                                        </a>
+                                        </button>
+                                            </form>
                                         <form method="post" class="ia_form">
                                             <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
                                                     type="submit" data-bs-toggle="modal" name="prompt"

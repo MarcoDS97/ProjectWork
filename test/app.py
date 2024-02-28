@@ -70,7 +70,18 @@ def homepage():
             response = spesana_ia(prompt)
             return jsonify({'response': response})
         elif favorites:
+            favorites = favorites.split(", ")
+
+            code = favorites[1]
+            # Nuovo elemento da inserire nell'array
+            nuovo_elemento = {'products_favorites': code}
+            # Utilizza il metodo update_one per aggiungere l'elemento all'array
+            users.update_one(
+                {'Email': favorites[0]},  # Filtra il documento in base all'ID
+                {'products_favorites': nuovo_elemento})
+
             response = f"Ho aggiunto questo a i tuoi favoriti: {favorites}"
+            print(response)
             return jsonify({'response': response})
         elif search_modal:
             return redirect(f"/search/{search_modal}")
@@ -373,6 +384,7 @@ def profilo():
 
     categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
                  "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
+
     if utente:
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie, cambio_password=cambio_password, cambio_dati=cambio_dati)
     else:
