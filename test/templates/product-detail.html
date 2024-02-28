@@ -169,7 +169,7 @@
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -213,7 +213,7 @@
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -249,11 +249,11 @@
 
 
 <!-- Single Page Header start -->
-<div class="container-fluid page-header py-5" style="margin-top: 100px !important">
+<div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Prodotti</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Products</a></li>
+        <li class="breadcrumb-item"><a href="/prodotti">Prodotti</a></li>
         <li class="breadcrumb-item active text-white">{{prodotto.product_name}}</li>
     </ol>
 </div>
@@ -398,10 +398,6 @@
                     <div class="col-lg-4 col-xl-3">
                         <div class="row g-4 fruite">
                             <div class="col-lg-12">
-                                <div class="input-group w-100 mx-auto d-flex mb-4">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                                </div>
                                 <div class="mb-4">
                                     <h4>Categorie</h4>
                                     <ul class="list-unstyled fruite-categorie">
@@ -409,7 +405,7 @@
                                         {% for elem in prodotto.categories[:5] %}
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="bi bi-tag-fill me-2"></i>{{elem}}</a>
+                                                <p class="verde-scuro"><i class="bi bi-tag-fill me-2"></i>{{elem}}</p>
                                             </div>
                                         </li>
                                         {% endfor %}
@@ -418,20 +414,19 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <h4 class="mb-4">Prodotti Simili</h4>
-                                <div class="d-flex align-items-center justify-content-start">
+                                <h4 class="mb-4">Prodotti Consigliati</h4>
+                                {% for elem in related_products%}
+                                <div class="d-flex align-items-center justify-content-start mb-5">
                                     <div class="rounded" style="width: 100px; height: 100px;">
-                                        <img src="img/featur-1.jpg" class="img-fluid rounded" alt="Image">
+                                        <a href="/product/{{elem.code}}">
+                                        <img src="{{elem.image_url}}" class="img-fluid rounded" alt="Image" style="width: 100px; height: 100px;">
+                                        </a>
                                     </div>
                                     <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                        </div>
+                                        <a class="mb-2 h6" href="/product/{{elem.code}}"> {{elem.product_name}} </a>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-center my-4">
-                                    <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
+                                    </div>
+                                {% endfor %}
                                 </div>
                             </div>
                         </div>

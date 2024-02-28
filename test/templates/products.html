@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shop</title>
+    <title>Prodotti</title>
     <meta content="" name="keywords">
     <meta content="" name="description">
 
@@ -251,7 +251,7 @@
 <!-- Fruits Shop Start-->
 <div class="container-fluid fruite py-5">
     <div class="container py-5">
-        <h1 class="mb-4"> Risultati della ricerca "{{term}}" </h1>
+        <h1 class="mb-4"> Tutti i prodotti </h1>
         <div class="row g-4">
             <div class="col-lg-12">
                 <div class="row g-4">
@@ -344,18 +344,22 @@
                             <div class="col-12">
                                 <div class="pagination d-flex justify-content-center mt-5">
                                     {% if current_page > 1 %}
-                                    <a href="/search/{{term}}?page=1" class="rounded"><i class="bi bi-arrow-return-left"></i></a>
-                                    <a href="/search/{{term}}?page={{ current_page - 1 }}" class="rounded"><i class="bi bi-arrow-left"></i></a>
+                                    <a href="/product?page=1" class="rounded"><i
+                                            class="bi bi-arrow-return-left"></i></a>
+                                    <a href="/product?page={{ current_page - 1 }}" class="rounded"><i
+                                            class="bi bi-arrow-left"></i></a>
                                     {% endif %}
                                     {% for page_num in range(max(1, current_page - 1), min(total_pages + 1, current_page
                                     + 10)) %}
-                                    <a href="/search/{{term}}?page={{ page_num }}"
+                                    <a href="/product?page={{ page_num }}"
                                        class="rounded{% if page_num == current_page %} active{% endif %}">{{ page_num
                                         }}</a>
                                     {% endfor %}
                                     {% if current_page < total_pages %}
-                                    <a href="/search/{{term}}?page={{ current_page + 1 }}" class="rounded"><i class="bi bi-arrow-right"></i></a>
-                                    <a href="/search/{{term}}?page={{ total_pages }}" class="rounded"><i class="bi bi-arrow-return-right"></i></a>
+                                    <a href="/product?page={{ current_page + 1 }}" class="rounded"><i
+                                            class="bi bi-arrow-right"></i></a>
+                                    <a href="/product?page={{ total_pages }}" class="rounded"><i
+                                            class="bi bi-arrow-return-right"></i></a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -467,9 +471,9 @@
       window.location.href="/login";
     }
 
-      document.getElementById('fruits').addEventListener('change', function() {
+    document.getElementById('fruits').addEventListener('change', function() {
         var sortBy = this.value;
-        window.location.href = '/search/{{term}}?page=1&sortBy=' + sortBy;
+        window.location.href = '/product?page=1&sortBy=' + sortBy;
     });
 </script>
 </body>

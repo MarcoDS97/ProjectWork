@@ -56,4 +56,3 @@ utenti.update_many(
 #     print(product["product_name"])
 
 
-

@@ -1,5 +1,25 @@
 import cv2
+import pymongo
 from pyzbar import pyzbar
+from openai import OpenAI
+
+def spesana_ia(prompt):
+    client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
+    db = client["SpeSana"]
+    chat = db["Chat.Ia"]
+    risultato = list(chat.find())
+    key = risultato[0]["key"]
+    print(key)
+    if key is None:
+        raise ValueError("L'API Key di OpenAI non è stata configurata correttamente.")
+    client = OpenAI(api_key=key)
+
+    chat_completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return str(chat_completion.choices[0].message.content)
 
 
 def calculate_tdee(height, weight, age, gender, activity_level, goal):

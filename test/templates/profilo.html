@@ -59,6 +59,12 @@
                 });
             });
         });
+
+        window.onload = (event) => {
+        const toastLiveExample = document.getElementById('liveToast');
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
+        };
     </script>
     <style>
         .code-btn{
@@ -113,7 +119,7 @@
         .modal-backdrop { background-color: transparent; }
 
     </style>
-    </head>
+</head>
 
 <body>
 
@@ -136,7 +142,7 @@
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -180,7 +186,7 @@
 
     <div class="container px-0">
         <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="#" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
+            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -254,158 +260,278 @@
 </div>
 <!-- Single Page Header End -->
 
+{% if cambio_password == True %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio password</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Password cambiata con successo </h6>
+        </div>
+    </div>
+</div>
+{% elif cambio_password == False %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio password</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Errore nel inserimento dei dati, password non cambiata </h6>
+        </div>
+    </div>
+</div>
+{% elif cambio_dati == True %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio dati</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>I dati sono stati modificati correttamente </h6>
+        </div>
+    </div>
+</div>
+{% elif cambio_dati == False %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">cambio dati</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Email già esistente, dati non aggiornati</h6>
+        </div>
+    </div>
+</div>
+{% endif %}
 
-        <!-- Checkout Page Start -->
-        <div class="container-fluid py-5">
-            <div class="container py-5">
-                <h1 class="mb-4">Il mio profilo</h1>
-                <form action="#">
-                    <div class="row g-5">
-                        <div class="col-md-12 col-lg-6 col-xl-7">
-                            <div class="row">
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Nome<sup>*</sup></label>
-                                        <input type="text" class="form-control" value="{{utente.Name}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Cognome<sup>*</sup></label>
-                                        <input type="text" class="form-control" value="{{utente.Surname}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Email<sup>*</sup></label>
-                                <input type="text" class="form-control" value="{{utente.Email}}">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Sesso<sup>*</sup></label>
-                                        <select class="form-select" style="border: 1px solid #ced4da">
-                                            <option>{{utente.Gender}}</option>
-                                            <option {% if utente.Gender == 'M' %} hidden {% endif %}> M</option>
-                                            <option {% if utente.Gender == 'F' %} hidden {% endif %}> F</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Età<sup>*</sup></label>
-                                        <select class="form-select" style="border: 1px solid #ced4da">
-                                            <option>{{utente.Age}}</option>
-                                            {% for i in range(18,61) %}
-                                            <option> {{i}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Peso (kg)<sup>*</sup></label>
-                                        <input type="text" class="form-control" value="{{utente.Height}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="form-item w-100">
-                                        <label class="form-label my-3">Altezza (cm)<sup>*</sup></label>
-                                        <input type="text" class="form-control" value="{{utente.Weight}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Obiettivo<sup>*</sup></label>
-                                <select class="form-select" style="border: 1px solid #ced4da">
-                                    <option>{{utente.Goal}}</option>
-                                    <option {% if utente.Goal == 'Dimagrire' %} hidden {% endif %}> Dimagrire </option>
-                                    <option {% if utente.Goal == 'Mantenersi in forma' %} hidden {% endif %}> Mantenersi in forma </option>
-                                    <option {% if utente.Goal == 'Aumentare la massa muscolare' %} hidden {% endif %}> Aumentare la massa muscolare </option>
-                                </select>
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Livello di attività<sup>*</sup></label>
-                                <select class="form-select" style="border: 1px solid #ced4da">
-                                    <option>{{utente.activity_level}}</option>
-                                    <option {% if utente.activity_level == 'Sedentario' %} hidden {% endif %}> Sedentario </option>
-                                    <option {% if utente.activity_level == 'Leggermente attivo' %} hidden {% endif %}> Leggermente attivo </option>
-                                    <option {% if utente.activity_level == 'Moderatamente attivo' %} hidden {% endif %}> Moderatamente attivo </option>
-                                    <option {% if utente.activity_level == 'Molto Attivo' %} hidden {% endif %}> Molto Attivo </option>
-                                </select>
-                            </div>
-                            <br>
-                            <div class="accordion" id="accordionCategorie">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        Categorie preferite
-                                      </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionCategorie">
-                                      <div class="accordion-body">
-                                          <ul class="list-group">
-                                              {% for elem in categorie %}
-                                                <li class="list-group-item"><label><input type="checkbox" name="categoria1" value="{{elem}}" {% if elem in utente.Favorites %} checked {% endif %}>{{elem}}</label></li>
-                                              {% endfor %}
-                                        </ul>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                                <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Salva modifiche</button>
+<!-- Profile info Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Il mio profilo</h1>
+        <div class="row g-5">
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <form method="post">
+                    <div class="row">
+                        <div class="form-item">
+                        <label class="form-label my-3">Email<sup>*</sup></label>
+                        <input type="email" class="form-control" style="border: 1px solid #ced4da" value="{{utente.Email}}" name="email_profilo" required>
+                    </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Nome<sup>*</sup></label>
+                                <input type="text" name="nome_profilo" class="form-control" value="{{utente.Name}}" required>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-6 col-xl-5">
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="accordion" id="accordionExample">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                Prodotti preferiti
-                                              </button>
-                                            </h2>
-                                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                              <div class="accordion-body">
-                                                  <ul class="list-group">
-                                                      <li class="list-group-item">ciclo for</li>
-                                                    </ul>
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="form-check text-start my-3">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Payments-1" name="Payments" value="Payments">
-                                        <label class="form-check-label" for="Payments-1">Grafici</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="form-check text-start my-3">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1" name="Delivery" value="Delivery">
-                                        <label class="form-check-label" for="Delivery-1">Le mie ricette</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                                <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Cambio password</button>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Cognome<sup>*</sup></label>
+                                <input type="text" name="cognome_profilo" class="form-control"
+                                       value="{{utente.Surname}}" required>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Sesso<sup>*</sup></label>
+                                <select class="form-select" style="border: 1px solid #ced4da" name="genere_profilo">
+                                    <option>{{utente.Gender}}</option>
+                                    <option {% if utente.Gender==
+                                    'M' %} hidden {% endif %}> M</option>
+                                    <option {% if utente.Gender==
+                                    'F' %} hidden {% endif %}> F</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Età<sup>*</sup></label>
+                                <select class="form-select" style="border: 1px solid #ced4da" name="eta_profilo">
+                                    <option>{{utente.Age}}</option>
+                                    {% for i in range(18,61) %}
+                                    <option> {{i}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Peso (kg)<sup>*</sup></label>
+                                <input type="number" class="form-control" value="{{utente.Weight}}" name="peso_profilo" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Altezza (cm)<sup>*</sup></label>
+                                <input type="number" class="form-control" value="{{utente.Height}}"
+                                       name="altezza_profilo" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Obiettivo<sup>*</sup></label>
+                        <select class="form-select" style="border: 1px solid #ced4da" name="obiettivo_profilo">
+                            <option>{{utente.Goal}}</option>
+                            <option {% if utente.Goal==
+                            'Dimagrire' %} hidden {% endif %}> Dimagrire </option>
+                            <option {% if utente.Goal==
+                            'Mantenersi in forma' %} hidden {% endif %}> Mantenersi in forma </option>
+                            <option {% if utente.Goal==
+                            'Aumentare la massa muscolare' %} hidden {% endif %}> Aumentare la massa muscolare </option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Livello di attività<sup>*</sup></label>
+                        <select class="form-select" style="border: 1px solid #ced4da" name="livello_profilo">
+                            <option>{{utente.activity_level}}</option>
+                            <option {% if utente.activity_level==
+                            'Sedentario' %} hidden {% endif %}> Sedentario </option>
+                            <option {% if utente.activity_level==
+                            'Leggermente attivo' %} hidden {% endif %}> Leggermente attivo </option>
+                            <option {% if utente.activity_level==
+                            'Moderatamente attivo' %} hidden {% endif %}> Moderatamente attivo </option>
+                            <option {% if utente.activity_level==
+                            'Molto Attivo' %} hidden {% endif %}> Molto Attivo </option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="accordion" id="accordionCategorie">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    Categorie preferite
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse"
+                                 data-bs-parent="#accordionCategorie">
+                                <div class="accordion-body">
+                                    <ul class="list-group">
+                                        {% for elem in categorie %}
+                                        <li class="list-group-item"><label><input type="checkbox"
+                                                                                  name="categoria{{loop.index}}_profilo"
+                                                                                  value="{{elem}}" {% if elem in
+                                                                                  utente.Favorites %} checked {% endif
+                                                                                  %}>{{elem}}</label></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
+                            Salva modifiche
+                        </button>
+                    </div>
                 </form>
             </div>
+            <div class="col-md-12 col-lg-6 col-xl-5">
+                <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                    <div class="col-12">
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                        Prodotti preferiti
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <ul class="list-group">
+                                            {% if len(utente.products_favorites) > 0 %}
+                                            {% for elem in utente.products_favorites%}
+                                            <li class="list-group-item"><a href="/product/{{elem[0]}}">{{elem[1]}}</a></li>
+                                            {% endfor %}
+                                            {%else%}
+                                            <li class="list-group-item">Nessun prodotto inserito</li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                    <div class="col-12">
+                        <div class="form-check text-start my-3">
+                            <input type="checkbox" class="form-check-input bg-primary border-0" id="Payments-1"
+                                   name="Payments"
+                                   value="Payments">
+                            <label class="form-check-label" for="Payments-1">Grafici</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                    <div class="col-12">
+                        <div class="form-check text-start my-3">
+                            <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1"
+                                   name="Delivery"
+                                   value="Delivery">
+                            <label class="form-check-label" for="Delivery-1">Le mie ricette</label>
+                        </div>
+                    </div>
+                </div>
+                  <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary"
+                            data-bs-toggle="modal" data-bs-target="#passwordModal">
+                        Cambio password
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-verde-chiaro">
+                                    <h5 class="modal-title text-white" id="passwordModalLabel">Modifica Password</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body text-start">
+                                        <label class="form-label my-3 px-2 verde-scuro">Password
+                                            vecchia<sup>*</sup></label>
+                                        <input type="password" class="form-control" style="border: 1px solid #ced4da"
+                                               name="password_old" required>
+                                        <label class="form-label my-3 px-2 verde-scuro">Password
+                                            nuova<sup>*</sup></label>
+                                        <input type="password" class="form-control" style="border: 1px solid #ced4da"
+                                               name="password_new" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">chiude
+                                        </button>
+                                        <button type="submit" class="btn btn-secondary">cambia password</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Checkout Page End -->
+    </div>
+</div>
+
+<!-- Checkout Page End -->
 
 
 <!-- Footer Start -->
@@ -498,6 +624,6 @@
 
 <!-- Template Javascript -->
 <script src="static/js/main.js"></script>
-    </body>
+</body>
 
 </html>
