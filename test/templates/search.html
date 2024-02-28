@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Prodotti</title>
+    <title>Shop</title>
     <meta content="" name="keywords">
     <meta content="" name="description">
 
@@ -251,7 +251,7 @@
 <!-- Fruits Shop Start-->
 <div class="container-fluid fruite py-5">
     <div class="container py-5">
-        <h1 class="mb-4"> Tutti i prodotti </h1>
+        <h1 class="mb-4"> Risultati della ricerca "{{term}}" </h1>
         <div class="row g-4">
             <div class="col-lg-12">
                 <div class="row g-4">
@@ -259,13 +259,33 @@
                     <div class="col-6"></div>
                     <div class="col-xl-3">
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                            <label for="fruits">Default Sorting:</label>
-                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                    form="fruitform">
-                                <option value="volvo">Nothing</option>
-                                <option value="saab">Popularity</option>
-                                <option value="opel">Organic</option>
-                                <option value="audi">Fantastic</option>
+                            <label for="fruits">Filtro</label>
+                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3">
+                                {% if sortBy == None %}
+                                <option value="nothing" selected="selected"> Prodotti più ricercati </option>
+                                {% else %}
+                                <option value="nothing"> Prodotti più ricercati </option>
+                                {% endif %}
+                                {% if sortBy == 'no_popularity' %}
+                                <option value="no_popularity" selected="selected"> Prodotti meno ricercati </option>
+                                {% else %}
+                                <option value="no_popularity">Prodotti meno ricercati</option>
+                                {% endif %}
+                                {% if sortBy == 'a-z' %}
+                                <option value="a-z" selected="selected"> Ordine A-Z </option>
+                                {% else %}
+                                <option value="a-z">Ordine A-Z</option>
+                                {% endif %}
+                                {% if sortBy == 'nutriscore_up' %}
+                                <option value="nutriscore_up" selected="selected"> Nutriscore crescente </option>
+                                {% else %}
+                                <option value="nutriscore_up"> Nutriscore crescente </option>
+                                {% endif %}
+                                {% if sortBy == 'nutriscore_down' %}
+                                <option value="nutriscore_down" selected="selected"> Nutriscore decrescente </option>
+                                {% else %}
+                                <option value="nutriscore_down"> Nutriscore decrescente </option>
+                                {% endif %}
                             </select>
                         </div>
                     </div>
@@ -446,6 +466,11 @@
     function Gologin() {
       window.location.href="/login";
     }
+
+      document.getElementById('fruits').addEventListener('change', function() {
+        var sortBy = this.value;
+        window.location.href = '/search/{{term}}?page=1&sortBy=' + sortBy;
+    });
 </script>
 </body>
 

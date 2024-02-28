@@ -259,12 +259,33 @@
                     <div class="col-6"></div>
                     <div class="col-xl-3">
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                            <label for="fruits">Default Sorting:</label>
-                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                    form="fruitform">
-                                <option value="saab">Popularity</option>
-                                <option value="opel">Organic</option>
-                                <option value="audi">Fantastic</option>
+                            <label for="fruits">Filtro</label>
+                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3">
+                                {% if sortBy == None %}
+                                <option value="nothing" selected="selected"> Prodotti più ricercati </option>
+                                {% else %}
+                                <option value="nothing"> Prodotti più ricercati </option>
+                                {% endif %}
+                                {% if sortBy == 'no_popularity' %}
+                                <option value="no_popularity" selected="selected"> Prodotti meno ricercati </option>
+                                {% else %}
+                                <option value="no_popularity">Prodotti meno ricercati</option>
+                                {% endif %}
+                                {% if sortBy == 'a-z' %}
+                                <option value="a-z" selected="selected"> Ordine A-Z </option>
+                                {% else %}
+                                <option value="a-z">Ordine A-Z</option>
+                                {% endif %}
+                                {% if sortBy == 'nutriscore_up' %}
+                                <option value="nutriscore_up" selected="selected"> Nutriscore crescente </option>
+                                {% else %}
+                                <option value="nutriscore_up"> Nutriscore crescente </option>
+                                {% endif %}
+                                {% if sortBy == 'nutriscore_down' %}
+                                <option value="nutriscore_down" selected="selected"> Nutriscore decrescente </option>
+                                {% else %}
+                                <option value="nutriscore_down"> Nutriscore decrescente </option>
+                                {% endif %}
                             </select>
                         </div>
                     </div>
@@ -323,8 +344,10 @@
                             <div class="col-12">
                                 <div class="pagination d-flex justify-content-center mt-5">
                                     {% if current_page > 1 %}
-                                    <a href="/product?page=1" class="rounded"><i class="bi bi-arrow-return-left"></i></a>
-                                    <a href="/product?page={{ current_page - 1 }}" class="rounded"><i class="bi bi-arrow-left"></i></a>
+                                    <a href="/product?page=1" class="rounded"><i
+                                            class="bi bi-arrow-return-left"></i></a>
+                                    <a href="/product?page={{ current_page - 1 }}" class="rounded"><i
+                                            class="bi bi-arrow-left"></i></a>
                                     {% endif %}
                                     {% for page_num in range(max(1, current_page - 1), min(total_pages + 1, current_page
                                     + 10)) %}
@@ -333,8 +356,10 @@
                                         }}</a>
                                     {% endfor %}
                                     {% if current_page < total_pages %}
-                                    <a href="/product?page={{ current_page + 1 }}" class="rounded"><i class="bi bi-arrow-right"></i></a>
-                                    <a href="/product?page={{ total_pages }}" class="rounded"><i class="bi bi-arrow-return-right"></i></a>
+                                    <a href="/product?page={{ current_page + 1 }}" class="rounded"><i
+                                            class="bi bi-arrow-right"></i></a>
+                                    <a href="/product?page={{ total_pages }}" class="rounded"><i
+                                            class="bi bi-arrow-return-right"></i></a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -445,6 +470,11 @@
     function Gologin() {
       window.location.href="/login";
     }
+
+    document.getElementById('fruits').addEventListener('change', function() {
+        var sortBy = this.value;
+        window.location.href = '/product?page=1&sortBy=' + sortBy;
+    });
 </script>
 </body>
 

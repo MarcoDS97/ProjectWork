@@ -116,6 +116,17 @@ def search_term(term):
     else:
         products = list(
             prodotti.find({"product_name": {"$regex": f".*{term}.*", "$options": "i"}}).sort("unique_scans_n", -1))
+    sort_by = request.args.get('sortBy')
+    if sort_by == 'no_popularity':
+        products.sort(key=lambda x: x['unique_scans_n'])
+    elif sort_by == 'a-z':
+        products.sort(key=lambda x: x['product_name'])
+    elif sort_by == 'nutriscore_up':
+        products = [p for p in products if p['nutriscore_grade'] in ['a', 'b', 'c', 'd', 'e']]
+        products.sort(key=lambda x: x['nutriscore_grade'])
+    elif sort_by == 'nutriscore_down':
+        products = [p for p in products if p['nutriscore_grade'] in ['a', 'b', 'c', 'd', 'e']]
+        products.sort(key=lambda x: x['nutriscore_grade'], reverse=True)
     page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
     per_page = 8  # Numero di elementi per pagina
     total_products = len(products)  # Numero totale di prodotti
@@ -125,10 +136,10 @@ def search_term(term):
 
     if utente:
         return render_template("search.html", prodotto=products, utente=utente[0], flagLog=flagLog, term=term,
-                               current_page=page, total_pages=total_pages, max=max, min=min)
+                               current_page=page, total_pages=total_pages, max=max, min=min, sortBy=sort_by)
     else:
         return render_template("search.html", prodotto=products, flagLog=flagLog, current_page=page, term=term,
-                               total_pages=total_pages, max=max, min=min)
+                               total_pages=total_pages, max=max, min=min, sortBy=sort_by)
 
 
 @app.route("/product")
@@ -139,6 +150,17 @@ def product():
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
     prodotto = list(prodotti.find())
+    sort_by = request.args.get('sortBy')
+    if sort_by == 'no_popularity':
+        prodotto.sort(key=lambda x: x['unique_scans_n'])
+    elif sort_by == 'a-z':
+        prodotto.sort(key=lambda x: x['product_name'])
+    elif sort_by == 'nutriscore_up':
+        prodotto = [p for p in prodotto if p['nutriscore_grade'] in ['a', 'b', 'c', 'd', 'e']]
+        prodotto.sort(key=lambda x: x['nutriscore_grade'])
+    elif sort_by == 'nutriscore_down':
+        prodotto = [p for p in prodotto if p['nutriscore_grade'] in ['a', 'b', 'c', 'd', 'e']]
+        prodotto.sort(key=lambda x: x['nutriscore_grade'], reverse=True)
     page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
     per_page = 16  # Numero di elementi per pagina
     total_products = len(prodotto)  # Numero totale di prodotti
@@ -147,10 +169,10 @@ def product():
     products = prodotto[offset:offset + per_page]
     if utente:
         return render_template("products.html", prodotto=products, utente=utente[0], flagLog=flagLog, current_page=page,
-                               total_pages=total_pages, max=max, min=min)
+                               total_pages=total_pages, max=max, min=min, sortBy=sort_by)
     else:
         return render_template("products.html", prodotto=products, flagLog=flagLog, current_page=page,
-                               total_pages=total_pages, max=max, min=min)
+                               total_pages=total_pages, max=max, min=min, sortBy=sort_by)
 
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
@@ -169,9 +191,9 @@ def product_codice(codice):
     name = current_name.split()
     for n in name:
         related_products = list(prodotti.find({
-                "code": {"$ne": codice},
-                "product_name": {"$regex": f".*{n}.*", "$options": "i"}
-            }).sort("unique_scans_n", -1).limit(3))
+            "code": {"$ne": codice},
+            "product_name": {"$regex": f".*{n}.*", "$options": "i"}
+        }).sort("unique_scans_n", -1).limit(3))
         if len(related_products) >= 1:
             break
     if request.method == 'POST':
@@ -183,9 +205,11 @@ def product_codice(codice):
             return jsonify({'response': response})
         # return jsonify({'response': (prompt_ricetta, prompt_info)})
     if utente:
-        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len, related_products=related_products)
+        return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len,
+                               related_products=related_products)
     else:
-        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len, related_products=related_products)
+        return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len,
+                               related_products=related_products)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -233,9 +257,9 @@ def signup():
             nome = request.form.get('nome_signup')
             cognome = request.form.get('cognome_signup')
             sesso = request.form.get('genere_signup')
-            eta = request.form.get('eta_signup')
-            altezza = request.form.get('altezza_signup')
-            peso = request.form.get('peso_signup')
+            eta = int(request.form.get('eta_signup'))
+            altezza = float(request.form.get('altezza_signup'))
+            peso = float(request.form.get('peso_signup'))
             obiettivo = request.form.get('obiettivo_signup')
             livello_attivita = request.form.get('livello_attivita_signup')
             categorie = [request.form.get(f'categoria{i}') for i in range(8) if
@@ -320,13 +344,13 @@ def profilo():
                         "Surname": cognome,
                         "Email": email,
                         "Gender": sesso,
-                        "Age": eta,
-                        "Height": altezza,
-                        "Weight": peso,
+                        "Age": int(eta),
+                        "Height": float(altezza),
+                        "Weight": float(peso),
                         "Favorites": categorie,
                         "Goal": obiettivo,
                         "activity_level": livello_attivita,
-                        "TDEE": calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)}
+                        "TDEE": calculate_tdee(float(altezza), float(peso), int(eta), sesso, livello_attivita, obiettivo)}
 
             if new_data["Email"] != utente[0]["Email"]:
                 if len(list(users.find({'Email': email}))) > 0:
