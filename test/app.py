@@ -144,7 +144,7 @@ def search_term(term):
         products = [p for p in products if p['nutriscore_grade'] in ['a', 'b', 'c', 'd', 'e']]
         products.sort(key=lambda x: x['nutriscore_grade'], reverse=True)
     page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
-    per_page = 8  # Numero di elementi per pagina
+    per_page = 16  # Numero di elementi per pagina
     total_products = len(products)  # Numero totale di prodotti
     total_pages = (total_products + per_page - 1) // per_page
     offset = (page - 1) * per_page
