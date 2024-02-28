@@ -455,7 +455,13 @@
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <ul class="list-group">
-                                            <li class="list-group-item">ciclo for</li>
+                                            {% if len(utente.products_favorites) > 0 %}
+                                            {% for elem in utente.products_favorites%}
+                                            <li class="list-group-item"><a href="/product/{{elem[0]}}">{{elem[1]}}</a></li>
+                                            {% endfor %}
+                                            {%else%}
+                                            <li class="list-group-item">Nessun prodotto inserito</li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </div>

@@ -426,7 +426,7 @@
                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                         <form method="post">
                                         <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
-                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
+                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.product_name}}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
                                             <i class="fa fa-heart me-2 text-secondary"></i>
                                         </button>
                                             </form>
@@ -541,7 +541,7 @@
                             <div class="d-flex  flex-lg-wrap">
                                  <form method="post">
                                         <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
-                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
+                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.product_name}}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
                                             <i class="fa fa-heart me-2 text-secondary"></i>
                                         </button>
                                             </form>
@@ -667,7 +667,7 @@
                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                          <form method="post">
                                         <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
-                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
+                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.product_name}}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
                                             <i class="fa fa-heart me-2 text-secondary"></i>
                                         </button>
                                             </form>

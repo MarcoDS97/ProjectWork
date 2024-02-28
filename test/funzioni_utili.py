@@ -1,10 +1,21 @@
 import cv2
+import pymongo
 from pyzbar import pyzbar
 from openai import OpenAI
+import os
 
+# key = os.getenv("OPENAI_API_KEY")
+# print(key)
 
 def spesana_ia(prompt):
-    key = "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"
+    client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs.mongodb.net/")
+    db = client["SpeSana"]
+    chat = db["Chat.Ia"]
+    risultato = list(chat.find())
+    key = risultato[0]["key"]
+    print(key)
+    if key is None:
+        raise ValueError("L'API Key di OpenAI non è stata configurata correttamente.")
     client = OpenAI(api_key=key)
 
     chat_completion = client.chat.completions.create(
