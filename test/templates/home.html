@@ -58,17 +58,6 @@
                 });
             });
         });
-        $(document).ready(function() {
-            $('.fav-btn').on('click', function(event) {
-                event.preventDefault();
-                var buttonFav = $(this)
-                var buttonVal = $(this).val();
-
-            var csrftoken = Cookies.get('csrftoken');
-
-            $.ajaxSetup({
-                headers: { 'X-CSRFToken': csrftoken }
-            });
 
 
             var favProd = buttonVal;
@@ -78,7 +67,50 @@
                 data: {fav: favProd},
                 dataType: 'json',
                 success: function(data) {
-                buttonFav.addClass('btn-secondary');
+                buttonFav.addClass('btn-secondary selected');
+                buttonFav.removeClass('fav-btn');
+                    }
+                });
+            });
+         });
+
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.fav-btn').on('click', function(event) {
+                event.preventDefault();
+                var buttonFav = $(this)
+                var buttonVal = buttonFav.val();
+
+            var csrftoken = Cookies.get('csrftoken');
+
+            $.ajaxSetup({
+                headers: { 'X-CSRFToken': csrftoken }
+            });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.selected').on('click', function(event) {
+                event.preventDefault();
+                var buttonSel = $(this)
+                var buttonVal = buttonSel.val();
+
+            var csrftoken = Cookies.get('csrftoken');
+
+            $.ajaxSetup({
+                headers: { 'X-CSRFToken': csrftoken }
+            });
+
+
+            var remProd = buttonVal;
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: {remove: remProd},
+                dataType: 'json',
+                success: function(data) {
+                buttonFav.addClass('fav-btn');
+                buttonFav.removeClass('btn-secondary selected');
                     }
                 });
             });
@@ -227,6 +259,7 @@
                         </a>
                         <div class="dropdown-menu m-0 bg-secondary bianco rounded-0">
                             <a href="/profilo" class="dropdown-item">Il mio profilo</a>
+                            <a href="/profilo/ricette" class="dropdown-item">Le mie ricette</a>
                             <a href="/logout" class="dropdown-item">Logout</a>
                         </div>
                     </div>
@@ -341,7 +374,6 @@
         <div class="tab-class text-center">
             <div class="row g-4">
                 <div class="col-lg-4 text-start">
-                    <!--      LINK NUTRISCORE              -->
                     <h2><span class="text-secondary">Nutri il tuo benessere,</span> scopri Nutriscore</h2>
                 </div>
                 <div class="col-lg-8 text-end">
@@ -395,11 +427,18 @@
                                     <a class="h6 maxText" href="/product/{{elem.code}}">{{elem.product_name}}</a>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                         <form method="post">
-                                        <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2" name="fav"
-                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.product_name}}, {{elem.code}}" {% else %} onclick="Gologin()" {% endif %}>
-                                            <i class="fa fa-heart me-2 text-secondary"></i>
-                                        </button>
+                                            {% if flagLog %}
+                                        <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2
+                                        {% if elem.code in utente.products_favorites %}btn-secondary selected {% else %} fav-btn {% endif %}" name="fav"
+                                         value="{{elem.code}}" type="submit">
+                                            <i class="fa fa-heart me-2 text-secondary"></i></button>
                                             </form>
+                                            {% else %}
+                                            <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                    type="button" onclick="Gologin()">
+                                            <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                            {% endif %}
+
                                         <form method="post" class="ia_form">
                                             <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
                                                     type="submit" data-bs-toggle="modal" name="prompt"
