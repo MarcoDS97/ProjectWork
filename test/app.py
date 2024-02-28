@@ -140,7 +140,7 @@ def product():
         utente = list(users.find({'Email': session['name']}))
     prodotto = list(prodotti.find())
     page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
-    per_page = 8  # Numero di elementi per pagina
+    per_page = 16  # Numero di elementi per pagina
     total_products = len(prodotto)  # Numero totale di prodotti
     total_pages = (total_products + per_page - 1) // per_page
     offset = (page - 1) * per_page

@@ -271,35 +271,49 @@
                     </div>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-9">
-                        <div class="row g-4 justify-content-center">
+                    <div class="col-lg-11">
+                        <div class="row g-4 mx-auto justify-content-center text-center">
                             {% for elem in prodotto %}
                             <div class="col-md-6 col-lg-4 col-xl-3">
                                 <div class="rounded position-relative fruite-item d-flex flex-column">
-                                    <a class="fruite-img" style="text-align: center" href="/product/{{elem.code}}">
-                                        {% if "https" in elem.image_url %}
-                                        <img src="{{elem.image_url}}"
-                                             class="img-fluid rounded-top" alt="">
-                                        {% else %}
-                                        <img src="{{ url_for('static', filename='imgTest/img-not-found.jpg') }}"
-                                             class="img-fluid rounded-top" alt="">
-                                        {% endif %}
+                                    <a href="/product/{{elem.code}}">
+                                        <div class="fruite-img border border-secondary">
+                                            <img src="{{elem.image_url}}"
+                                                 class="img-fluid rounded-top" alt="">
+                                        </div>
                                     </a>
                                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                         style="top: 10px; left: 10px;">A
+                                         style="top: 10px; left: 10px;">{{elem.nutriscore_grade.upper()}}
                                     </div>
                                     <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
-                                        <a class="maxText h6" href="/product/{{elem.code}}">{{elem.product_name}}</a>
+                                        <a class="h6 maxText" href="/product/{{elem.code}}">{{elem.product_name}}</a>
                                         <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <a href="#"
-                                               class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2">
-                                                <i class="fa fa-heart me-2 text-secondary"></i>
-                                            </a>
-                                            <form method="post" id="ia_form">
-                                                <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
-                                                        id="prompt" type="submit" data-bs-toggle="modal" name="prompt"
+                                            <form method="post">
+                                                <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                        name="fav"
+                                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {%
+                                                        else %} onclick="Gologin()" {% endif %}>
+                                                    <i class="fa fa-heart me-2 text-secondary"></i>
+                                                </button>
+                                            </form>
+                                            <form method="post" class="ia_form">
+                                                <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
+                                                        type="submit" data-bs-toggle="modal" name="prompt"
                                                         data-bs-target="#chatModal"
-                                                        value="ID user, {{elem.code}}, ricetta/info"><i
+                                                        {% if flagLog %}
+                                                        value="{{ utente.Email }}, {{elem.code}}, ricetta"
+                                                        {% else %} onclick="Gologin()" {% endif %}><i
+                                                        class="fas fa-drumstick-bite"></i><i
+                                                        class="bi bi-stars me-2"></i></button>
+                                            </form>
+                                            <form method="post" class="ia_form">
+                                                <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
+                                                        type="submit" data-bs-toggle="modal" name="prompt"
+                                                        data-bs-target="#chatModal"
+                                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}, info"
+                                                        {%
+                                                        else %} onclick="Gologin()" {% endif %}><i
+                                                        class="bi bi-info-circle"></i><i
                                                         class="bi bi-stars me-2"></i></button>
                                             </form>
                                         </div>
@@ -310,16 +324,18 @@
                             <div class="col-12">
                                 <div class="pagination d-flex justify-content-center mt-5">
                                     {% if current_page > 1 %}
-                                    <a href="/product?page={{ current_page - 1 }}" class="rounded">&laquo;</a>
+                                    <a href="/product?page=1" class="rounded"><i class="bi bi-arrow-return-left"></i></a>
+                                    <a href="/product?page={{ current_page - 1 }}" class="rounded"><i class="bi bi-arrow-left"></i></a>
                                     {% endif %}
                                     {% for page_num in range(max(1, current_page - 1), min(total_pages + 1, current_page
-                                    + 2)) %}
+                                    + 10)) %}
                                     <a href="/product?page={{ page_num }}"
                                        class="rounded{% if page_num == current_page %} active{% endif %}">{{ page_num
                                         }}</a>
                                     {% endfor %}
                                     {% if current_page < total_pages %}
-                                    <a href="/product?page={{ current_page + 1 }}" class="rounded">&raquo;</a>
+                                    <a href="/product?page={{ current_page + 1 }}" class="rounded"><i class="bi bi-arrow-right"></i></a>
+                                    <a href="/product?page={{ total_pages }}" class="rounded"><i class="bi bi-arrow-return-right"></i></a>
                                     {% endif %}
                                 </div>
                             </div>
