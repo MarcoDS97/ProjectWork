@@ -140,7 +140,7 @@ def product():
         utente = list(users.find({'Email': session['name']}))
     prodotto = list(prodotti.find())
     page = int(request.args.get('page', 1))  # Ottiene il numero di pagina dalla query string, di default è 1
-    per_page = 8  # Numero di elementi per pagina
+    per_page = 16  # Numero di elementi per pagina
     total_products = len(prodotto)  # Numero totale di prodotti
     total_pages = (total_products + per_page - 1) // per_page
     offset = (page - 1) * per_page
@@ -233,9 +233,9 @@ def signup():
             nome = request.form.get('nome_signup')
             cognome = request.form.get('cognome_signup')
             sesso = request.form.get('genere_signup')
-            eta = int(request.form.get('eta_signup'))
-            altezza = float(request.form.get('altezza_signup'))
-            peso = float(request.form.get('peso_signup'))
+            eta = request.form.get('eta_signup')
+            altezza = request.form.get('altezza_signup')
+            peso = request.form.get('peso_signup')
             obiettivo = request.form.get('obiettivo_signup')
             livello_attivita = request.form.get('livello_attivita_signup')
             categorie = [request.form.get(f'categoria{i}') for i in range(8) if
@@ -280,45 +280,77 @@ def profilo():
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
-        print(utente[0])
+
+    cambio_password = None
+    cambio_dati = None
     if request.method == "POST":
+
+        password_old = request.form.get('password_old')
+        password_new = request.form.get('password_new')
+
         email = request.form.get('email_profilo')
         nome = request.form.get('nome_profilo')
         cognome = request.form.get('cognome_profilo')
         sesso = request.form.get('genere_profilo')
-        eta = int(request.form.get('eta_profilo'))
-        altezza = float(request.form.get('altezza_profilo'))
-        peso = float(request.form.get('peso_profilo'))
+        eta = request.form.get('eta_profilo')
+        altezza = request.form.get('altezza_profilo')
+        peso = request.form.get('peso_profilo')
         obiettivo = request.form.get('obiettivo_profilo')
         livello_attivita = request.form.get('livello_profilo')
         categorie = [request.form.get(f'categoria{i}_profilo') for i in range(8) if
                      request.form.get(f'categoria{i}_profilo') is not None]
 
-        new_data = {"Name": nome,
-                    "Surname": cognome,
-                    "Email": email,
-                    "Gender": sesso,
-                    "Age": eta,
-                    "Height": altezza,
-                    "Weight": peso,
-                    "Favorites": categorie,
-                    "Goal": obiettivo,
-                    "activity_level": livello_attivita,
-                    "TDEE": calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)}
-
         filtro = {"_id": utente[0]["_id"]}
-        for key in new_data.keys():
 
-            if utente[0][key] != new_data[key]:
-                aggiornamento = {"$set": {key: new_data[key]}}
+        if password_old and password_new:
+            password_verifica = bytes(password_old, 'utf-8')
+            password_db = utente[0]['Password']
+            print("ciao")
+            if bcrypt.checkpw(password=password_verifica, hashed_password=password_db):
+                password_new = bcrypt.hashpw(password_new.encode('utf-8'), bcrypt.gensalt())
+                aggiornamento = {"$set": {'Password': password_new}}
                 users.update_one(filtro, aggiornamento)
-        session["name"] = email
-        return redirect("/profilo")
+                cambio_password = True
+                print(True)
+            else:
+                cambio_password = False
+                print(False)
+        else:
+            new_data = {"Name": nome,
+                        "Surname": cognome,
+                        "Email": email,
+                        "Gender": sesso,
+                        "Age": eta,
+                        "Height": altezza,
+                        "Weight": peso,
+                        "Favorites": categorie,
+                        "Goal": obiettivo,
+                        "activity_level": livello_attivita,
+                        "TDEE": calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)}
+
+            if new_data["Email"] != utente[0]["Email"]:
+                if len(list(users.find({'Email': email}))) > 0:
+                    cambio_dati = False
+                else:
+                    for key in new_data.keys():
+                        if utente[0][key] != new_data[key]:
+                            aggiornamento = {"$set": {key: new_data[key]}}
+                            users.update_one(filtro, aggiornamento)
+                    session["name"] = email
+                    cambio_dati = True
+            else:
+                for key in new_data.keys():
+                    if utente[0][key] != new_data[key]:
+                        aggiornamento = {"$set": {key: new_data[key]}}
+                        users.update_one(filtro, aggiornamento)
+                session["name"] = email
+                cambio_dati = True
+
 
     categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
                  "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
     if utente:
-        return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie)
+        return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie, cambio_password=cambio_password, cambio_dati=cambio_dati)
     else:
         return redirect("/")
 
