@@ -165,11 +165,15 @@ def product_codice(codice):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
 
-    current_categories = p[0].get("categories", [])
-    related_products = prodotti.find({
-        "code": {"$ne": codice},
-        "categories": {"$in": current_categories}
-    }).sort("unique_scans_n", -1).limit(3)
+    current_name = p[0].get("product_name", "")
+    name = current_name.split()
+    for n in name:
+        related_products = list(prodotti.find({
+                "code": {"$ne": codice},
+                "product_name": {"$regex": f".*{n}.*", "$options": "i"}
+            }).sort("unique_scans_n", -1).limit(3))
+        if len(related_products) >= 1:
+            break
     if request.method == 'POST':
         if prompt_ricetta:
             response = f"Ho ricevuto dati per fare il prompt: {prompt_ricetta}"
