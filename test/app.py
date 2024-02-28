@@ -65,7 +65,7 @@ def homepage():
             else:
                 prompt = f"""
                 Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]} 
-                mi dici una ricetta corta per fare con {prodotto[0]["product_name"]}?
+                mi dici una ricetta corta da fare con {prodotto[0]["product_name"]}?
                 """
                 response = spesana_ia(prompt)
                 users.update_one(
