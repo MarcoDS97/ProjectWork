@@ -34,7 +34,7 @@ def homepage():
     categorie = [list(prodotti.find({"categories": n}).sort("unique_scans_n", -1).limit(10)) for n in nome]
 
     flagLog = False
-    utente = {}
+    utente = []
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
@@ -110,6 +110,22 @@ def search_term(term):
     else:
         return render_template("search.html", prodotto=risultato, flagLog=flagLog)
 
+
+@app.route("/product")
+def product():
+    flagLog = False
+    utente = {}
+    if session.get('name'):
+        flagLog = True
+        utente = list(users.find({'Email': session['name']}))
+
+    prodotto = list(prodotti.find({"brands": "Ferrero"}))
+    if utente:
+        return render_template("search.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
+    else:
+        return render_template("search.html", prodotto=prodotto, flagLog=flagLog)
+
+
 @app.route("/product/<codice>", methods=["POST", "GET"])
 def product_codice(codice):
     p = list(prodotti.find({"code": codice}))
@@ -138,30 +154,36 @@ def product_codice(codice):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+
+    signup_success = request.args.get("signup_success")
+    verifica = True
     flagLog = False
-    utente = {}
+    utente = []
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
 
     if request.method == "POST":
         email = request.form.get("email_login")
-        password = bcrypt.hashpw(request.form.get("password_login").encode('utf-8'), bcrypt.gensalt())
-        verifica = True
-        if users.find({"Email": email}) and users.find({"Password": password}):
-            session['name'] = email
-            return redirect("/")
-        else:
-            verifica = False
+        login_user = list(users.find({"Email": email}))
+        if login_user:
+            password_login = bytes(request.form.get("password_login"), 'utf-8')
+            password_db = login_user[0]['Password']
+            if bcrypt.checkpw(password=password_login, hashed_password=password_db):
+                session['name'] = email
+                return redirect("/")
+            else:
+                verifica = False
 
     if utente:
-        return render_template("login.html", utente=utente[0], flagLog=flagLog)
+        return render_template("login.html", utente=utente[0], flagLog=flagLog, signup_success=signup_success, verifica=verifica)
     else:
-        return render_template("login.html", flagLog=flagLog)
+        return render_template("login.html", flagLog=flagLog, signup_success=signup_success, verifica=verifica)
 
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
+    verifica = True
     flagLog = False
     utente = {}
     if session.get('name'):
@@ -183,8 +205,7 @@ def signup():
             categorie = [request.form.get(f'categoria{i}') for i in range(8) if
                          request.form.get(f'categoria{i}') is not None]
 
-            password_scoperta = request.form.get('password_signup')
-            password_coperta = bcrypt.hashpw(password_scoperta.encode('utf-8'), bcrypt.gensalt())
+            password_coperta = bcrypt.hashpw(request.form.get('password_signup').encode('utf-8'), bcrypt.gensalt())
 
             tdee = calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)
 
@@ -205,42 +226,18 @@ def signup():
                 'recipes': []
             }
             )
-            return redirect('/')
+            return redirect(url_for('login', signup_success=True))
         elif len(list(users.find({'Email': email}))) > 0:
-            response = "Email già esistente"
-            return jsonify({'response': response})
+            verifica = False
+            # response = "Email già esistente"
+            # return jsonify({'response': response})
     if utente:
-        return render_template("signup.html", utente=utente[0], flagLog=flagLog)
+        return render_template("signup.html", utente=utente[0], flagLog=flagLog, verifica=verifica)
     else:
-        return render_template("signup.html", flagLog=flagLog)
+        return render_template("signup.html", flagLog=flagLog, verifica=verifica)
 
 
-@app.route("/gpt", methods=["POST", "GET"])
-def gpt():
-    if request.method == 'POST':
-        prompt = request.form.get('prompt')
-        print(prompt)
-        response = "RISPOSTA"
-        return jsonify({'response': response})
-
-    return render_template('gpt-test.html')
-
-
-@app.route("/product")
-def product():
-    flagLog = False
-    utente = {}
-    if session.get('name'):
-        flagLog = True
-        utente = list(users.find({'Email': session['name']}))
-
-    prodotto = list(prodotti.find({"brands": "Ferrero"}))
-    if utente:
-        return render_template("search.html", prodotto=prodotto, utente=utente[0], flagLog=flagLog)
-    else:
-        return render_template("search.html", prodotto=prodotto, flagLog=flagLog)
-
-@app.route("/profilo")
+@app.route("/profilo", methods=["POST", "GET"])
 def profilo():
     flagLog = False
     utente = {}
@@ -248,11 +245,44 @@ def profilo():
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
 
+    if request.method == "POST":
+        nome = request.form.get('nome_profilo')
+        cognome = request.form.get('cognome_profilo')
+        sesso = request.form.get('genere_profilo')
+        eta = int(request.form.get('eta_profilo'))
+        altezza = float(request.form.get('altezza_profilo'))
+        peso = float(request.form.get('peso_profilo'))
+        obiettivo = request.form.get('obiettivo_profilo')
+        livello_attivita = request.form.get('livello_profilo')
+        categorie = [request.form.get(f'categoria{i}_profilo') for i in range(8) if request.form.get(f'categoria{i}_profilo') is not None]
+
+        new_data = {"Name": nome,
+                    "Surname": cognome,
+                    "Gender": sesso,
+                    "Age": eta,
+                    "Height": altezza,
+                    "Weight": peso,
+                    "Favorites": categorie,
+                    "Goal": obiettivo,
+                    "activity_level": livello_attivita,
+                    "TDEE": calculate_tdee(altezza, peso, eta, sesso, livello_attivita, obiettivo)}
+
+        filtro = {"Email": utente["Email"]}
+        for key in new_data.keys():
+
+            if utente[key] != new_data[key]:
+                aggiornamento = {"$set": {key: new_data[key]}}
+                users.update_one(filtro, aggiornamento)
+
+
+
+
+
     categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne", "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
     if utente:
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie)
     else:
-        return render_template("profilo.html", flagLog=flagLog, categorie=categorie)
+        return redirect("/")
 
 @app.route("/logout")
 def logout():
