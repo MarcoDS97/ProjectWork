@@ -401,7 +401,7 @@
                                         <ul class="list-group">
                                             {% if len(preferiti) > 0 %}
                                             {% for elem in preferiti %}
-                                            <li class="list-group-item"><a href="/product/{{elem.code}}">{{elem.product_name}}</a></li>
+                                            <li class="list-group-item"><a href="/product/{{elem[0]}}">{{elem[1]}}</a></li>
                                             {% endfor %}
                                             {%else%}
                                             <li class="list-group-item">Nessun prodotto inserito</li>

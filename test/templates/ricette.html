@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='imgTest/Carrello-icon.png') }}">
     <title>Ricette</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
@@ -214,6 +215,7 @@
 
 <!-- 404 Start -->
 <div class="container-fluid py-5">
+    <h1 style="text-align : center"> Le mie ricette </h1>
     <div class="container py-5 text-center">
         {% if len(ricette) > 0 %}
         <div class="accordion" id="accordionExample">
@@ -223,7 +225,7 @@
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{loop.index}}" aria-expanded="{% if loop.index == 1 %}true{% else %}false{% endif %}"
                             aria-controls="collapse{{loop.index}}">
-                        {{elem[2]}}
+                        Ricetta con {{elem[2]}}
                     </button>
                 </h1>
                 <div id="collapse{{loop.index}}" class="accordion-collapse collapse {% if loop.index == 1 %}show{% endif %}" aria-labelledby="heading{{loop.index}}"
@@ -236,7 +238,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <h1>Nessuna ricetta ancora :(</h1>
+        <h1>Nessuna ricetta</h1>
         {% endif %}
     </div>
 </div>
