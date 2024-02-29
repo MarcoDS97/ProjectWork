@@ -9,7 +9,7 @@ def spesana_ia(prompt):
     chat = db["Chat.Ia"]
     risultato = list(chat.find())
     key = risultato[0]["key"]
-    print(key)
+
     if key is None:
         raise ValueError("L'API Key di OpenAI non è stata configurata correttamente.")
     client = OpenAI(api_key=key)
@@ -61,3 +61,4 @@ def codice_img(file):
             return barcode_info
 
     return None
+

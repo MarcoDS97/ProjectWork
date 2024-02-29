@@ -1,7 +1,5 @@
-import json
 import os
 import bcrypt
-import mysql.connector
 import pymongo
 from funzioni_utili import *
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
@@ -17,7 +15,6 @@ client = pymongo.MongoClient("mongodb+srv://projectwork:daita12@cluster0.hqm86xs
 db = client["SpeSana"]
 prodotti = db["Products"]
 users = db["Users"]
-
 
 @app.route("/", methods=["POST", "GET"])
 def homepage():
@@ -70,24 +67,20 @@ def homepage():
                 response = spesana_ia(prompt)
                 users.update_one(
                     {'Email': utente[0]["Email"]},  # Filtra il documento in base all'ID
-                    {'$push': {'recipes': response}})
-
+                    {'$push': {'recipes': [response, prodotto[0]["code"], prodotto[0]["product_name"]]}})
 
             return jsonify({'response': response})
+
         elif favorites:
-            favorites = favorites.split(", ")
-            code = favorites[2]
-            name = favorites[1]
-            nuovo_elemento = [code, name]
-            # Nuovo elemento da inserire nell'array
-            # Utilizza il metodo update_one per aggiungere l'elemento all'array
-            users.update_one(
-                {'Email': favorites[0]},  # Filtra il documento in base all'ID
-                {'$push': {'products_favorites': nuovo_elemento}})
+            if favorites not in utente[0]['products_favorites']:
+                users.update_one(
+                    {'Email': utente[0]['Email']},  # Filtra il documento in base all'ID
+                    {'$push': {'products_favorites': favorites}})
+            else:
+                users.update_one(
+                    {'Email': utente[0]['Email']},  # Filtra il documento in base all'ID
+                    {'$pull': {'products_favorites': favorites}})
 
-            response = f"Ho aggiunto questo a i tuoi favoriti: {favorites}"
-            print(response)
-            return jsonify({'response': response})
         elif search_modal:
             return redirect(f"/search/{search_modal}")
         elif search_hero:
@@ -102,6 +95,7 @@ def homepage():
                     os.remove(codice.filename)
                     if codice_barre:
                         return redirect(f"/search/{codice_barre}")
+##########
                     else:
                         pass
         elif 'code_modal' in request.files:
@@ -110,8 +104,10 @@ def homepage():
                 if correct_file(codice.filename):
                     filename = secure_filename(codice.filename)
                     codice.save(filename)
-                    print(codice_img(codice.filename))
+                    codice_barre = codice_img(codice.filename)
                     os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
     if utente:
         return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0],
                                flagLog=flagLog, categorie=categorie)
@@ -120,7 +116,7 @@ def homepage():
                                categorie=categorie)
 
 
-@app.route("/search/<term>")
+@app.route("/search/<term>", methods=["POST", "GET"])
 def search_term(term):
     flagLog = False
     utente = {}
@@ -150,15 +146,57 @@ def search_term(term):
     offset = (page - 1) * per_page
     products = products[offset:offset + per_page]
 
+    fail = False
+    if request.method == 'POST':
+        search_modal = request.form.get('search_modal')
+        dati_prompt = request.form.get('prompt')
+
+        if search_modal:
+            return redirect(f"/search/{search_modal}")
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    codice_barre = codice_img(codice.filename)
+                    os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
+
+        elif dati_prompt:
+            dati_prompt = dati_prompt.split(", ")
+            prodotto = list(prodotti.find({"code": dati_prompt[1]}))
+            if dati_prompt[2] == "info":
+                prompt = f"""
+                        Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]}
+                        mi dici un vantaggio e uno svantaggio nel comprare questo prodotto: {prodotto[0]["product_name"]}?
+                        """
+                response = spesana_ia(prompt)
+            else:
+                prompt = f"""
+                        Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]} 
+                        mi dici una ricetta corta da fare con {prodotto[0]["product_name"]}?
+                        """
+                response = spesana_ia(prompt)
+                users.update_one(
+                    {'Email': utente[0]["Email"]},  # Filtra il documento in base all'ID
+                    {'$push': {'recipes': [response, prodotto[0]["code"], prodotto[0]["product_name"]]}})
+
+            return jsonify({'response': response})
+
     if utente:
         return render_template("search.html", prodotto=products, utente=utente[0], flagLog=flagLog, term=term,
-                               current_page=page, total_pages=total_pages, max=max, min=min, sortBy=sort_by)
+                               current_page=page, total_pages=total_pages, max=max, min=min, sortBy=sort_by, fail=fail)
     else:
         return render_template("search.html", prodotto=products, flagLog=flagLog, current_page=page, term=term,
-                               total_pages=total_pages, max=max, min=min, sortBy=sort_by)
+                               total_pages=total_pages, max=max, min=min, sortBy=sort_by, fail=fail)
 
 
-@app.route("/product")
+@app.route("/product", methods=["POST", "GET"])
 def product():
     flagLog = False
     utente = {}
@@ -183,19 +221,60 @@ def product():
     total_pages = (total_products + per_page - 1) // per_page
     offset = (page - 1) * per_page
     products = prodotto[offset:offset + per_page]
+
+    fail = False
+    if request.method == 'POST':
+        search_modal = request.form.get('search_modal')
+        dati_prompt = request.form.get('prompt')
+
+        if search_modal:
+            return redirect(f"/search/{search_modal}")
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    codice_barre = codice_img(codice.filename)
+                    os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
+
+        elif dati_prompt:
+            dati_prompt = dati_prompt.split(", ")
+            prodotto = list(prodotti.find({"code": dati_prompt[1]}))
+            if dati_prompt[2] == "info":
+                prompt = f"""
+                        Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]}
+                        mi dici un vantaggio e uno svantaggio nel comprare questo prodotto: {prodotto[0]["product_name"]}?
+                        """
+                response = spesana_ia(prompt)
+            else:
+                prompt = f"""
+                        Il mio obiettivo è {utente[0]["Goal"]} e il mio livello di attività è {utente[0]["activity_level"]} 
+                        mi dici una ricetta corta da fare con {prodotto[0]["product_name"]}?
+                        """
+                response = spesana_ia(prompt)
+                users.update_one(
+                    {'Email': utente[0]["Email"]},  # Filtra il documento in base all'ID
+                    {'$push': {'recipes': [response, prodotto[0]["code"], prodotto[0]["product_name"]]}})
+
+            return jsonify({'response': response})
+
     if utente:
         return render_template("products.html", prodotto=products, utente=utente[0], flagLog=flagLog, current_page=page,
-                               total_pages=total_pages, max=max, min=min, sortBy=sort_by)
+                               total_pages=total_pages, max=max, min=min, sortBy=sort_by, fail=fail)
     else:
         return render_template("products.html", prodotto=products, flagLog=flagLog, current_page=page,
-                               total_pages=total_pages, max=max, min=min, sortBy=sort_by)
+                               total_pages=total_pages, max=max, min=min, sortBy=sort_by, fail=fail)
 
 
 @app.route("/product/<codice>", methods=["POST", "GET"])
 def product_codice(codice):
     p = list(prodotti.find({"code": codice}))
-    prompt_ricetta = request.form.get('ricetta_p')
-    prompt_info = request.form.get('info_p')
 
     flagLog = False
     utente = {}
@@ -212,35 +291,48 @@ def product_codice(codice):
         }).sort("unique_scans_n", -1).limit(3))
         if len(related_products) >= 1:
             break
+
+    fail = False
+
     if request.method == 'POST':
-        if prompt_ricetta:
-            response = f"Ho ricevuto dati per fare il prompt: {prompt_ricetta}"
-            return jsonify({'response': response})
-        elif prompt_info:
-            response = f"Ho ricevuto dati per fare il prompt: {prompt_info}"
-            return jsonify({'response': response})
-        # return jsonify({'response': (prompt_ricetta, prompt_info)})
+        search_modal = request.form.get('search_modal')
+        if search_modal:
+            return redirect(f"/search/{search_modal}")
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    codice_barre = codice_img(codice.filename)
+                    os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
+
     if utente:
         return render_template("product-detail.html", prodotto=p[0], utente=utente[0], flagLog=flagLog, len=len,
-                               related_products=related_products)
+                               related_products=related_products, fail=fail)
     else:
         return render_template("product-detail.html", prodotto=p[0], flagLog=flagLog, len=len,
-                               related_products=related_products)
+                               related_products=related_products, fail=fail)
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     signup_success = request.args.get("signup_success")
     verifica = True
-    flagLog = False
-    utente = []
+    fail = False
     if session.get('name'):
-        flagLog = True
-        utente = list(users.find({'Email': session['name']}))
+        return redirect("/")
 
     if request.method == "POST":
         email = request.form.get("email_login")
         login_user = list(users.find({"Email": email}))
+        search_modal = request.form.get('search_modal')
+
         if login_user:
             password_login = bytes(request.form.get("password_login"), 'utf-8')
             password_db = login_user[0]['Password']
@@ -250,26 +342,38 @@ def login():
             else:
                 verifica = False
 
-    if utente:
-        return render_template("login.html", utente=utente[0], flagLog=flagLog, signup_success=signup_success,
-                               verifica=verifica)
-    else:
-        return render_template("login.html", flagLog=flagLog, signup_success=signup_success, verifica=verifica)
+        elif search_modal:
+            return redirect(f"/search/{search_modal}")
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    codice_barre = codice_img(codice.filename)
+                    os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
+
+    return render_template("login.html", signup_success=signup_success,
+                           verifica=verifica, fail=fail)
 
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     verifica = True
-    flagLog = False
-    utente = {}
+    fail = False
     if session.get('name'):
-        flagLog = True
-        utente = list(users.find({'Email': session['name']}))
+        return redirect("/")
 
     if request.method == "POST":
         email = request.form.get('email_signup')
+        search_modal = request.form.get('search_modal')
 
-        if len(list(users.find({'Email': email}))) == 0:
+        if email and len(list(users.find({'Email': email}))) == 0:
             nome = request.form.get('nome_signup')
             cognome = request.form.get('cognome_signup')
             sesso = request.form.get('genere_signup')
@@ -305,73 +409,122 @@ def signup():
             return redirect(url_for('login', signup_success=True))
         elif len(list(users.find({'Email': email}))) > 0:
             verifica = False
-            # response = "Email già esistente"
-            # return jsonify({'response': response})
-    if utente:
-        return render_template("signup.html", utente=utente[0], flagLog=flagLog, verifica=verifica)
-    else:
-        return render_template("signup.html", flagLog=flagLog, verifica=verifica)
+
+        elif search_modal:
+            return redirect(f"/search/{search_modal}")
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    codice_barre = codice_img(codice.filename)
+                    os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
+
+    return render_template("signup.html", fail=fail, verifica=verifica)
 
 
 @app.route("/profilo", methods=["POST", "GET"])
 def profilo():
-    flagLog = False
-    utente = {}
+
     if session.get('name'):
         flagLog = True
+        preferiti = []
         utente = list(users.find({'Email': session['name']}))
+        codici = utente[0]["products_favorites"]
+        for codice in codici:
+            prodotto = prodotti.find({"code": codice})
+            nome = prodotto[0]["product_name"]
+            preferiti.append([codice, nome])
+        # if utente[0]["products_favorites"]:
+        #     for codice in utente[0]["products_favorites"]:
+        #         preferiti.append(list(prodotti.find({"code": codice})))
+        # preferiti = [list(prodotti.find({"code": codice})) for codice in utente[0]["products_favorites"]][0]
 
-    cambio_password = None
-    cambio_dati = None
-    if request.method == "POST":
+        cambio_password = None
+        cambio_dati = None
+        fail = False
+        if request.method == "POST":
 
-        password_old = request.form.get('password_old')
-        password_new = request.form.get('password_new')
+            password_old = request.form.get('password_old')
+            password_new = request.form.get('password_new')
 
-        email = request.form.get('email_profilo')
-        nome = request.form.get('nome_profilo')
-        cognome = request.form.get('cognome_profilo')
-        sesso = request.form.get('genere_profilo')
-        eta = request.form.get('eta_profilo')
-        altezza = request.form.get('altezza_profilo')
-        peso = request.form.get('peso_profilo')
-        obiettivo = request.form.get('obiettivo_profilo')
-        livello_attivita = request.form.get('livello_profilo')
-        categorie = [request.form.get(f'categoria{i}_profilo') for i in range(8) if
-                     request.form.get(f'categoria{i}_profilo') is not None]
+            email = request.form.get('email_profilo')
+            nome = request.form.get('nome_profilo')
+            cognome = request.form.get('cognome_profilo')
+            sesso = request.form.get('genere_profilo')
+            eta = request.form.get('eta_profilo')
+            altezza = request.form.get('altezza_profilo')
+            peso = request.form.get('peso_profilo')
+            obiettivo = request.form.get('obiettivo_profilo')
+            livello_attivita = request.form.get('livello_profilo')
+            categorie = [request.form.get(f'categoria{i}_profilo') for i in range(8) if
+                         request.form.get(f'categoria{i}_profilo') is not None]
 
-        filtro = {"_id": utente[0]["_id"]}
+            filtro = {"_id": utente[0]["_id"]}
 
-        if password_old and password_new:
-            password_verifica = bytes(password_old, 'utf-8')
-            password_db = utente[0]['Password']
-            print("ciao")
-            if bcrypt.checkpw(password=password_verifica, hashed_password=password_db):
-                password_new = bcrypt.hashpw(password_new.encode('utf-8'), bcrypt.gensalt())
-                aggiornamento = {"$set": {'Password': password_new}}
-                users.update_one(filtro, aggiornamento)
-                cambio_password = True
-                print(True)
+            search_modal = request.form.get('search_modal')
+
+
+            if password_old and password_new:
+                password_verifica = bytes(password_old, 'utf-8')
+                password_db = utente[0]['Password']
+
+                if bcrypt.checkpw(password=password_verifica, hashed_password=password_db):
+                    password_new = bcrypt.hashpw(password_new.encode('utf-8'), bcrypt.gensalt())
+                    aggiornamento = {"$set": {'Password': password_new}}
+                    users.update_one(filtro, aggiornamento)
+                    cambio_password = True
+                    print(True)
+                else:
+                    cambio_password = False
+                    print(False)
+
+            elif search_modal:
+                return redirect(f"/search/{search_modal}")
+
+            elif 'code_modal' in request.files:
+                codice = request.files['code_modal']
+                if codice and codice != "":
+                    if correct_file(codice.filename):
+                        filename = secure_filename(codice.filename)
+                        codice.save(filename)
+                        codice_barre = codice_img(codice.filename)
+                        os.remove(codice.filename)
+                        if codice_barre:
+                            return redirect(f"/search/{codice_barre}")
+                        else:
+                            fail = True
+
             else:
-                cambio_password = False
-                print(False)
-        else:
-            new_data = {"Name": nome,
-                        "Surname": cognome,
-                        "Email": email,
-                        "Gender": sesso,
-                        "Age": int(eta),
-                        "Height": float(altezza),
-                        "Weight": float(peso),
-                        "Favorites": categorie,
-                        "Goal": obiettivo,
-                        "activity_level": livello_attivita,
-                        "TDEE": calculate_tdee(float(altezza), float(peso), int(eta), sesso, livello_attivita,
-                                               obiettivo)}
+                new_data = {"Name": nome,
+                            "Surname": cognome,
+                            "Email": email,
+                            "Gender": sesso,
+                            "Age": int(eta),
+                            "Height": float(altezza),
+                            "Weight": float(peso),
+                            "Favorites": categorie,
+                            "Goal": obiettivo,
+                            "activity_level": livello_attivita,
+                            "TDEE": calculate_tdee(float(altezza), float(peso), int(eta), sesso, livello_attivita,
+                                                   obiettivo)}
 
-            if new_data["Email"] != utente[0]["Email"]:
-                if len(list(users.find({'Email': email}))) > 0:
-                    cambio_dati = False
+                if new_data["Email"] != utente[0]["Email"]:
+                    if len(list(users.find({'Email': email}))) > 0:
+                        cambio_dati = False
+                    else:
+                        for key in new_data.keys():
+                            if utente[0][key] != new_data[key]:
+                                aggiornamento = {"$set": {key: new_data[key]}}
+                                users.update_one(filtro, aggiornamento)
+                        session["name"] = email
+                        cambio_dati = True
                 else:
                     for key in new_data.keys():
                         if utente[0][key] != new_data[key]:
@@ -379,20 +532,15 @@ def profilo():
                             users.update_one(filtro, aggiornamento)
                     session["name"] = email
                     cambio_dati = True
-            else:
-                for key in new_data.keys():
-                    if utente[0][key] != new_data[key]:
-                        aggiornamento = {"$set": {key: new_data[key]}}
-                        users.update_one(filtro, aggiornamento)
-                session["name"] = email
-                cambio_dati = True
 
-    categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
-                 "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
 
-    if utente:
+
+
+        categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
+                    "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
+
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie,
-                               cambio_password=cambio_password, cambio_dati=cambio_dati, len=len)
+                        cambio_password=cambio_password, cambio_dati=cambio_dati, len=len, preferiti=preferiti, fail=fail)
     else:
         return redirect("/")
 
@@ -403,18 +551,69 @@ def logout():
     return redirect("/")
 
 
-@app.route("/nutriscore")
+@app.route("/profilo/ricette", methods=["POST", "GET"])
+def profilo_ricette():
+
+    if session.get('name'):
+        flagLog = True
+        utente = list(users.find({'Email': session['name']}))
+        ricette = utente[0]["recipes"]
+        fail = False
+
+        if request.method == 'POST':
+            search_modal = request.form.get('search_modal')
+            if search_modal:
+                return redirect(f"/search/{search_modal}")
+
+            elif 'code_modal' in request.files:
+                codice = request.files['code_modal']
+                if codice and codice != "":
+                    if correct_file(codice.filename):
+                        filename = secure_filename(codice.filename)
+                        codice.save(filename)
+                        codice_barre = codice_img(codice.filename)
+                        os.remove(codice.filename)
+                        if codice_barre:
+                            return redirect(f"/search/{codice_barre}")
+                        else:
+                            fail = True
+
+        return render_template("ricette.html", utente=utente[0], flagLog=flagLog, ricette=ricette, len=len, fail=fail)
+    else:
+        return redirect("/login")
+
+
+@app.route("/nutriscore", methods=["POST", "GET"])
 def nutriscore():
     flagLog = False
+    fail = False
     utente = {}
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
 
+    if request.method == 'POST':
+        search_modal = request.form.get('search_modal')
+        if search_modal:
+            return redirect(f"/search/{search_modal}")
+
+        elif 'code_modal' in request.files:
+            codice = request.files['code_modal']
+            if codice and codice != "":
+                if correct_file(codice.filename):
+                    filename = secure_filename(codice.filename)
+                    codice.save(filename)
+                    codice_barre = codice_img(codice.filename)
+                    os.remove(codice.filename)
+                    if codice_barre:
+                        return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
+
     if utente:
-        return render_template("nutriscore.html", utente=utente[0], flagLog=flagLog)
+        return render_template("nutriscore.html", utente=utente[0], flagLog=flagLog, fail=fail)
     else:
-        return render_template("nutriscore.html", flagLog=flagLog)
+        return render_template("nutriscore.html", flagLog=flagLog, fail=fail)
 
 
 if __name__ == '__main__':
