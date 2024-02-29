@@ -34,33 +34,6 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#ia_form').on('submit', function(event) {
-                event.preventDefault();
-            // get the CSRF token from the cookie
-            var csrftoken = Cookies.get('csrftoken');
-
-            // set the CSRF token in the AJAX headers
-            $.ajaxSetup({
-                headers: { 'X-CSRFToken': csrftoken }
-            });
-                // Get the prompt
-                var prompt = $('#prompt').val();
-                var dateTime = new Date();
-                var time = dateTime.toLocaleTimeString();
-                $.ajax({
-                    url: '/',
-                    type: 'POST',
-                    data: {prompt: prompt},
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
-                        $('#response #GFG2').css({"color": "green"});
-                    }
-                });
-            });
-        });
-
         window.onload = (event) => {
         const toastLiveExample = document.getElementById('liveToast');
         const toast = new bootstrap.Toast(toastLiveExample);
@@ -131,51 +104,7 @@
 </div>
 <!-- Spinner End -->
 
-{% if flagLog == False %}
-<!-- Navbar start senza essere loggati -->
-<div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
-    <div class="container topbar bg-verde-medio d-none d-lg-block">
-        <div class="d-flex justify-content-center">
-            <h5 class="text-light">Siamo un marchio che ispira e guida le persone verso scelte alimentari migliori!
-                🌱🍎🥦</h5>
-        </div>
-    </div>
-
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-verde-scuro" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="/" class="nav-item nav-link">Home</a>
-                    <a href="/product" class="nav-item nav-link">Prodotti</a>
-                    <a href="/nutriscore" class="nav-item nav-link">Nutriscore</a>
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
-                            data-bs-toggle="modal" data-bs-target="#searchModal"><i
-                            class="fas fa-search verde-scuro"></i></button>
-                    <div class="nav-item dropdown">
-                        <a type="button" class="btn bg-verde-chiaro bianco dropdown-toggle" data-bs-toggle="dropdown"
-                           data-bs-display="static" aria-expanded="false">
-                            <i class="fas fa-user bianco fa-2x"></i>
-                        </a>
-                        <div class="dropdown-menu m-0 bg-secondary bianco rounded-0">
-                            <a href="/login" class="dropdown-item">Login</a>
-                            <a href="/signup" class="dropdown-item">Registrati</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- Navbar End -->
-{% else %}
-
+{% if flagLog %}
 <!-- Navbar start login -->
 <div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
     <div class="container topbar bg-verde-medio d-none d-lg-block">
@@ -194,7 +123,7 @@
             </button>
             <div class="collapse navbar-collapse bg-verde-scuro" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="/" class="nav-item nav-link active">Home</a>
                     <a href="/product" class="nav-item nav-link">Prodotti</a>
                     <a href="/nutriscore" class="nav-item nav-link">Nutriscore</a>
                 </div>
@@ -210,6 +139,7 @@
                         </a>
                         <div class="dropdown-menu m-0 bg-secondary bianco rounded-0">
                             <a href="/profilo" class="dropdown-item">Il mio profilo</a>
+                            <a href="/profilo/ricette" class="dropdown-item">Le mie ricette</a>
                             <a href="/logout" class="dropdown-item">Logout</a>
                         </div>
                     </div>
@@ -310,6 +240,19 @@
         </div>
         <div class="toast-body">
             <h6>Email già esistente, dati non aggiornati</h6>
+        </div>
+    </div>
+</div>
+{% elif fail %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">ricerca codice</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Codice non trovato sulla imagine </h6>
         </div>
     </div>
 </div>
@@ -456,9 +399,9 @@
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <ul class="list-group">
-                                            {% if len(utente.products_favorites) > 0 %}
-                                            {% for elem in utente.products_favorites%}
-                                            <li class="list-group-item"><a href="/product/{{elem[0]}}">{{elem[1]}}</a></li>
+                                            {% if len(preferiti) > 0 %}
+                                            {% for elem in preferiti %}
+                                            <li class="list-group-item"><a href="/product/{{elem.code}}">{{elem.product_name}}</a></li>
                                             {% endfor %}
                                             {%else%}
                                             <li class="list-group-item">Nessun prodotto inserito</li>
@@ -473,20 +416,7 @@
                 <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
                     <div class="col-12">
                         <div class="form-check text-start my-3">
-                            <input type="checkbox" class="form-check-input bg-primary border-0" id="Payments-1"
-                                   name="Payments"
-                                   value="Payments">
-                            <label class="form-check-label" for="Payments-1">Grafici</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                    <div class="col-12">
-                        <div class="form-check text-start my-3">
-                            <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1"
-                                   name="Delivery"
-                                   value="Delivery">
-                            <label class="form-check-label" for="Delivery-1">Le mie ricette</label>
+                            <a href="profilo/ricette"><h5 class="verde-scuro"><i class="fas fa-drumstick-bite"></i>Le mie ricette</h5></a>
                         </div>
                     </div>
                 </div>
@@ -531,13 +461,11 @@
         </div>
     </div>
 </div>
-
-<!-- Checkout Page End -->
+<!-- Profile Page End -->
 
 
 <!-- Footer Start -->
-
-<div class="container-fluid bg-verde-scuro text-white-50 footer pt-3 mt-5">
+<div class="container-fluid bg-verde-scuro text-white-50 footer mt-1">
     <div class="container">
         <div class="pb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
             <div class="row g-4">
@@ -555,11 +483,11 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="d-flex justify-content-end pt-3">
-                        <img src="static/imgTest/logo-generation.svg">
+                        <img src="/static/imgTest/logo-generation.svg">
                     </div>
                 </div>
             </div>
-            <h5 class="text-light mt-4 mb-3 text-center">Sviluppato da:</h5>
+            <h6 class="text-light mt-4 mb-3 text-center">Sviluppato con python, flask, mongodb e bootstrap da:</h6>
             <p class="mb-2 text-center"><a class="text-light text-decoration-underline"
                                            href="//www.linkedin.com/in/armando-izaguirre-la-rocca/"> Armando
                 Izaguirre </a>-
@@ -581,39 +509,11 @@
 <!-- Back to Top -->
 <div class="row">
     <div class="col">
-        <button type="button" class="btn btn-secondary border-3 border-secondary ia-button" data-bs-toggle="modal"
-                data-bs-target="#chatModal">
-            SpeSana.IA<i class="bi bi-stars"></i>
-        </button>
-    </div>
-    <div class="col">
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
                 class="fa fa-arrow-up"></i></a>
     </div>
 </div>
 
-
-<!--SpeSana.IA CHAT-->
-<div class="modal fade modal-bottom-right" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog position-fixed bottom-0 end-0 mb-5 me-3 modal-dialog-scrollable">
-        <div class="modal-content" style="width: 375px;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="chatModalLabel">SpeSana.IA</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <h6>Response:</h6>
-                    <div class="container border overflow-auto h-50" id="response"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudere</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- JavaScript Libraries -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

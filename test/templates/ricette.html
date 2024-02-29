@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="static/imgTest/Carrello-icon.png">
-    <title>Nutriscore</title>
+    <title>Ricette</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -32,7 +31,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
-
     <script>
         window.onload = (event) => {
         const toastLiveExample = document.getElementById('liveToast');
@@ -43,9 +41,10 @@
 
     <style>
 
-        .maxText {
-        height: 100px;
-        }
+        .px-search{
+            padding-right: 1.5rem !important;
+            padding-left: 4rem !important;
+            }
         .bg-verde-scuro {
         background: #014017
         }
@@ -109,51 +108,8 @@
 
 <body>
 
-{% if flagLog == False %}
-<!-- Navbar start senza essere loggati -->
-<div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
-    <div class="container topbar bg-verde-medio d-none d-lg-block">
-        <div class="d-flex justify-content-center">
-            <h5 class="text-light">Siamo un marchio che ispira e guida le persone verso scelte alimentari migliori!
-                🌱🍎🥦</h5>
-        </div>
-    </div>
 
-    <div class="container px-0">
-        <nav class="navbar navbar-light bg-verde-scuro navbar-expand-xl">
-            <a href="/" class="navbar-brand"><h1 class="bianco display-6">SpeSana</h1></a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse bg-verde-scuro" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="/" class="nav-item nav-link active">Home</a>
-                    <a href="/product" class="nav-item nav-link">Prodotti</a>
-                    <a href="/nutriscore" class="nav-item nav-link">Nutriscore</a>
-                </div>
-                <div class="d-flex m-3 me-0">
-                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
-                            data-bs-toggle="modal" data-bs-target="#searchModal"><i
-                            class="fas fa-search verde-scuro"></i></button>
-                    <div class="nav-item dropdown">
-                        <a type="button" class="btn bg-verde-chiaro bianco dropdown-toggle" data-bs-toggle="dropdown"
-                           data-bs-display="static" aria-expanded="false">
-                            <i class="fas fa-user bianco fa-2x"></i>
-                        </a>
-                        <div class="dropdown-menu m-0 bg-secondary bianco rounded-0">
-                            <a href="/login" class="dropdown-item">Login</a>
-                            <a href="/signup" class="dropdown-item">Registrati</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- Navbar End -->
-{% else %}
-
+{% if flagLog %}
 <!-- Navbar start login -->
 <div class="container-fluid fixed-top bg-bs-dark bg-verde-scuro">
     <div class="container topbar bg-verde-medio d-none d-lg-block">
@@ -230,6 +186,17 @@
 </div>
 <!-- Modal Search End -->
 
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Le mie ricette</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/profilo">profilo</a></li>
+        <li class="breadcrumb-item active text-white">ricette</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
 {% if fail %}
 <div class="toast-container position-absolute top-1 end-0">
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
@@ -245,50 +212,32 @@
 </div>
 {% endif %}
 
-<!-- Single Page Header start -->
-<div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Nutriscore</h1>
-    <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item active text-white">Nutriscore</li>
-    </ol>
-</div>
-<!-- Single Page Header End -->
-
 <!-- 404 Start -->
 <div class="container-fluid py-5">
     <div class="container py-5 text-center">
-        <!--        <div class="row justify-content-center">-->
-        <!--            <div class="col-lg-6">-->
-        <h2>CHE COS'È IL NUTRI-SCORE</h2>
-        <p> Nutri-Score è un sistema di etichettatura nutrizionale supplementare rispetto alla dichiarazione
-            nutrizionale obbligatoria presente nell’etichetta dei prodotti alimentari. Il sistema è stato
-            elaborato dall’Agenzia Nazionale della Sanità Pubblica francese e, oltre che in Francia, è diffuso
-            anche in altri paesi europei (Belgio, Spagna, Germania, Olanda, Lussemburgo e Svizzera). Nutri-Score
-            è applicabile dai produttori di alimenti su base volontaria.
-            Il sistema Nutri-Score esprime una valutazione della quantità nutrizionale complessiva
-            dell’alimento, riferito a 100g o 100ml dell’alimento stesso, sulla base del profilo nutrizionale,
-            tenendo conto della presenza di elementi sfavorevoli (calorie, zuccheri acidi grassi saturi, sale,)
-            ed elementi favorevoli (fibre, proteine, frutta, verdura, ecc.). </p>
-        <br>
-        <h2>CALCOLO DEL PUNTEGGIO NUTRIZIONALE NUTRI-SCORE</h2>
-        <p> Il calcolo del punteggio nutrizionale Nutri-Score viene determinato in questo modo:
-            Punteggio nutrizionale = Componente N – Componente P
-            - La Componente N tiene conto degli elementi nutrizionali il cui consumo dovrebbe essere limitato
-            (calorie, acidi grassi saturi, zuccheri semplici, sodio) per 100 g di prodotto.
-            - La Componente P tiene conto degli elementi nutrizionali il cui consumo dovrebbe essere maggiore
-            (fibre, proteine, frutta, verdura, legumi, noci e olio di semi di colza, di noci e di oliva). </p>
-        <br>
-        <img src="/static/imgTest/tabelle1.jpg">
-        <p>Sono previsti, inoltre, dei meccanismi correttivi del punteggio nutrizionale per alcune categorie particolari
-            di alimenti: formaggi, bevande e sostanze grasse aggiunte. </p>
-        <br>
-        <h2> CLASSIFICAZIONE DEL PRODOTTO ALIMENTARE </h2>
-        <p> Il punteggio nutrizionale assegnato ad un prodotto alimentare è convertito in una scala con cinque livelli
-            cromatici e lettere: </p>
-        <img src="/static/imgTest/tabelle2.jpg">
-        <!--            </div>-->
-        <!--        </div>-->
+        {% if len(ricette) > 0 %}
+        <div class="accordion" id="accordionExample">
+            {% for elem in ricette %}
+            <div class="accordion-item">
+                <h1 class="accordion-header" id="heading{{loop.index}}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{loop.index}}" aria-expanded="{% if loop.index == 1 %}true{% else %}false{% endif %}"
+                            aria-controls="collapse{{loop.index}}">
+                        {{elem[2]}}
+                    </button>
+                </h1>
+                <div id="collapse{{loop.index}}" class="accordion-collapse collapse {% if loop.index == 1 %}show{% endif %}" aria-labelledby="heading{{loop.index}}"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {{elem[0]}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h1>Nessuna ricetta ancora :(</h1>
+        {% endif %}
     </div>
 </div>
 <!-- 404 End -->
@@ -357,11 +306,6 @@
 <!-- Template Javascript -->
 <link rel="stylesheet" href="{{ url_for('static', filename='js/main.js') }}">
 
-<script>
-    function Gologin() {
-      window.location.href="/login";
-    }
-</script>
 </body>
 
 </html>
