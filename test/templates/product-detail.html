@@ -293,6 +293,21 @@
 </div>
 <!-- Single Page Header End -->
 
+{% if fail %}
+<div class="toast-container position-absolute top-1 end-0">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="liveToast">
+        <div class="toast-header bg-verde-scuro">
+            <strong class="me-auto text-white">NOTIFICA</strong>
+            <small class="text-white">ricerca codice</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+            <h6>Codice non trovato sulla imagine </h6>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <!-- Single Product Start -->
         <div class="container-fluid mt-5">
             <div class="container pt-5">

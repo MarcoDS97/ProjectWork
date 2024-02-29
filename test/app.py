@@ -39,6 +39,7 @@ def homepage():
     categorie = [list(prodotti.find({"categories": n}).sort("unique_scans_n", -1).limit(10)) for n in nome]
 
     flagLog = False
+    fail = False
     utente = []
     if session.get('name'):
         flagLog = True
@@ -95,9 +96,9 @@ def homepage():
                     os.remove(codice.filename)
                     if codice_barre:
                         return redirect(f"/search/{codice_barre}")
-##########
                     else:
-                        pass
+                        fail = True
+
         elif 'code_modal' in request.files:
             codice = request.files['code_modal']
             if codice and codice != "":
@@ -108,12 +109,14 @@ def homepage():
                     os.remove(codice.filename)
                     if codice_barre:
                         return redirect(f"/search/{codice_barre}")
+                    else:
+                        fail = True
     if utente:
         return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, utente=utente[0],
-                               flagLog=flagLog, categorie=categorie)
+                               flagLog=flagLog, categorie=categorie, fail=fail)
     else:
         return render_template("home.html", lista_nutriscore=nutriscore_home, best=best, flagLog=flagLog,
-                               categorie=categorie)
+                               categorie=categorie, fail=fail)
 
 
 @app.route("/search/<term>", methods=["POST", "GET"])
