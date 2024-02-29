@@ -288,7 +288,7 @@
     <h1 class="text-center text-white display-6">Prodotti</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/prodotti">Prodotti</a></li>
+        <li class="breadcrumb-item"><a href="/product">Prodotti</a></li>
         <li class="breadcrumb-item active text-white">{{prodotto.product_name}}</li>
     </ol>
 </div>
@@ -339,7 +339,7 @@
                                         {% if flagLog %}
                                         <form method="post">
                                             <button onclick="cambioBottone(event, this, fav_{{prodotto.code}})" id="fav_{{prodotto.code}}"
-                                                    class="{% if prodotto.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
+                                                    class="{% if prodotto.code in utente.products_favorites %} bg-verde-scuro {% endif %}
                                                 btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
                                                     name="fav"
                                                     value="{{prodotto.code}}" type="submit">

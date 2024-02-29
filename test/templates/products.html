@@ -335,7 +335,7 @@
                                         <div class="d-flex justify-content-between flex-lg-wrap">
                                             {% if flagLog %}
                                         <form method="post">
-                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
+                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %} bg-verde-scuro {% endif %}
                                                 btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
                                                     name="fav"
                                                     value="{{elem.code}}" type="submit">
