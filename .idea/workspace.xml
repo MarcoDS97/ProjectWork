@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b77487a4-f0ca-45c2-88b3-1ab78444d9e9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webapp/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webapp/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webapp/flask_session/ab86b0c064233ceebdd666e37820c6b0" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/flask_session/ab86b0c064233ceebdd666e37820c6b0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webapp/templates/ricette.html" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/templates/ricette.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webapp/templates/profilo.html" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/templates/profilo.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

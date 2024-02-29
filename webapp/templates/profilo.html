@@ -252,7 +252,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
         </div>
         <div class="toast-body">
-            <h6>Codice non trovato sulla imagine </h6>
+            <h6>Codice non trovato sulla immagine </h6>
         </div>
     </div>
 </div>
@@ -290,9 +290,9 @@
                                 <label class="form-label my-3">Sesso<sup>*</sup></label>
                                 <select class="form-select" style="border: 1px solid #ced4da" name="genere_profilo">
                                     <option>{{utente.Gender}}</option>
-                                    <option {% if utente.Gender==
+                                    <option> {% if utente.Gender==
                                     'M' %} hidden {% endif %}> M</option>
-                                    <option {% if utente.Gender==
+                                    <option> {% if utente.Gender==
                                     'F' %} hidden {% endif %}> F</option>
                                 </select>
                             </div>
@@ -328,11 +328,11 @@
                         <label class="form-label my-3">Obiettivo<sup>*</sup></label>
                         <select class="form-select" style="border: 1px solid #ced4da" name="obiettivo_profilo">
                             <option>{{utente.Goal}}</option>
-                            <option {% if utente.Goal==
+                            <option> {% if utente.Goal==
                             'Dimagrire' %} hidden {% endif %}> Dimagrire </option>
-                            <option {% if utente.Goal==
+                            <option> {% if utente.Goal==
                             'Mantenersi in forma' %} hidden {% endif %}> Mantenersi in forma </option>
-                            <option {% if utente.Goal==
+                            <option> {% if utente.Goal==
                             'Aumentare la massa muscolare' %} hidden {% endif %}> Aumentare la massa muscolare </option>
                         </select>
                     </div>
@@ -340,13 +340,13 @@
                         <label class="form-label my-3">Livello di attività<sup>*</sup></label>
                         <select class="form-select" style="border: 1px solid #ced4da" name="livello_profilo">
                             <option>{{utente.activity_level}}</option>
-                            <option {% if utente.activity_level==
+                            <option> {% if utente.activity_level==
                             'Sedentario' %} hidden {% endif %}> Sedentario </option>
-                            <option {% if utente.activity_level==
+                            <option> {% if utente.activity_level==
                             'Leggermente attivo' %} hidden {% endif %}> Leggermente attivo </option>
-                            <option {% if utente.activity_level==
+                            <option> {% if utente.activity_level==
                             'Moderatamente attivo' %} hidden {% endif %}> Moderatamente attivo </option>
-                            <option {% if utente.activity_level==
+                            <option> {% if utente.activity_level==
                             'Molto Attivo' %} hidden {% endif %}> Molto Attivo </option>
                         </select>
                     </div>
@@ -366,7 +366,7 @@
                                         {% for elem in categorie %}
                                         <li class="list-group-item"><label><input type="checkbox"
                                                                                   name="categoria{{loop.index}}_profilo"
-                                                                                  value="{{elem}}" {% if elem in
+                                                                                  value="{{elem}}"> {% if elem in
                                                                                   utente.Favorites %} checked {% endif
                                                                                   %}>{{elem}}</label></li>
                                         {% endfor %}

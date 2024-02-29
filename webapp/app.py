@@ -16,6 +16,7 @@ db = client["SpeSana"]
 prodotti = db["Products"]
 users = db["Users"]
 
+
 @app.route("/favorites", methods=["POST"])
 def favorites():
     if session.get('name'):
@@ -32,7 +33,6 @@ def favorites():
             users.update_one(
                 {'Email': utente[0]['Email']},  # Filtra il documento in base all'ID
                 {'$pull': {'products_favorites': favorites}})
-
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -454,7 +454,6 @@ def signup():
 
 @app.route("/profilo", methods=["POST", "GET"])
 def profilo():
-
     if session.get('name'):
         flagLog = True
         preferiti = []
@@ -464,16 +463,8 @@ def profilo():
             prodotto = prodotti.find({"code": codice})
             nome = prodotto[0]["product_name"]
             preferiti.append([codice, nome])
-        # if utente[0]["products_favorites"]:
-        #     for codice in utente[0]["products_favorites"]:
-        #         preferiti.append(list(prodotti.find({"code": codice})))
-        # preferiti = [list(prodotti.find({"code": codice})) for codice in utente[0]["products_favorites"]][0]
-
-        cambio_password = None
-        cambio_dati = None
         fail = False
         if request.method == "POST":
-
             password_old = request.form.get('password_old')
             password_new = request.form.get('password_new')
 
@@ -493,7 +484,6 @@ def profilo():
 
             search_modal = request.form.get('search_modal')
 
-
             if password_old and password_new:
                 password_verifica = bytes(password_old, 'utf-8')
                 password_db = utente[0]['Password']
@@ -504,9 +494,13 @@ def profilo():
                     users.update_one(filtro, aggiornamento)
                     cambio_password = True
                     print(True)
+                    session["cambio_password"] = cambio_password
+                    return redirect("/profilo")
                 else:
                     cambio_password = False
                     print(False)
+                    session["cambio_password"] = cambio_password
+                    return redirect("/profilo")
 
             elif search_modal:
                 return redirect(f"/search/{search_modal}")
@@ -537,7 +531,6 @@ def profilo():
                             "activity_level": livello_attivita,
                             "TDEE": calculate_tdee(float(altezza), float(peso), int(eta), sesso, livello_attivita,
                                                    obiettivo)}
-
                 if new_data["Email"] != utente[0]["Email"]:
                     if len(list(users.find({'Email': email}))) > 0:
                         cambio_dati = False
@@ -555,15 +548,16 @@ def profilo():
                             users.update_one(filtro, aggiornamento)
                     session["name"] = email
                     cambio_dati = True
-
-
-
+            session["cambio_dati"] = cambio_dati
+            return redirect('/profilo')
 
         categorie = ["Cereali e patate", "Legumi", "Formaggi", "Prodotti A Base Di Carne",
-                    "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
-
+                     "Cibi A Base Di Frutta E Verdura", "Latticini", "Biscotti", "Cibi E Bevande A Base Vegetale"]
+        cambio_dati = session.pop("cambio_dati", None)
+        cambio_password = session.pop("cambio_password", None)
         return render_template("profilo.html", utente=utente[0], flagLog=flagLog, categorie=categorie,
-                        cambio_password=cambio_password, cambio_dati=cambio_dati, len=len, preferiti=preferiti, fail=fail)
+                               cambio_password=cambio_password, cambio_dati=cambio_dati, len=len, preferiti=preferiti,
+                               fail=fail)
     else:
         return redirect("/")
 
@@ -576,7 +570,6 @@ def logout():
 
 @app.route("/profilo/ricette", methods=["POST", "GET"])
 def profilo_ricette():
-
     if session.get('name'):
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
