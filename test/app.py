@@ -16,6 +16,25 @@ db = client["SpeSana"]
 prodotti = db["Products"]
 users = db["Users"]
 
+@app.route("/favorites", methods=["POST"])
+def favorites():
+    if session.get('name'):
+        utente = list(users.find({'Email': session['name']}))
+    if request.method == 'POST':
+        data = request.json
+        favorites = data["fav"]
+        print(favorites)
+        if favorites not in utente[0]['products_favorites']:
+            users.update_one(
+                {'Email': utente[0]['Email']},  # Filtra il documento in base all'ID
+                {'$push': {'products_favorites': favorites}})
+        else:
+            users.update_one(
+                {'Email': utente[0]['Email']},  # Filtra il documento in base all'ID
+                {'$pull': {'products_favorites': favorites}})
+
+
+
 @app.route("/", methods=["POST", "GET"])
 def homepage():
     a = list(
@@ -207,6 +226,7 @@ def product():
         flagLog = True
         utente = list(users.find({'Email': session['name']}))
     prodotto = list(prodotti.find())
+    prodotto.sort(key=lambda x: x['unique_scans_n'], reverse=True)
     sort_by = request.args.get('sortBy')
     if sort_by == 'no_popularity':
         prodotto.sort(key=lambda x: x['unique_scans_n'])
