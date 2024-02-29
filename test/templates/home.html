@@ -392,7 +392,7 @@
                                     <div class="d-flex justify-content-between flex-lg-wrap btn-div">
                                         {% if flagLog %}
                                         <form method="post">
-                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %}btn-secondary selected {% else %} fav-btn {% endif %}
+                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
                                                 btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
                                                     name="fav"
                                                     value="{{elem.code}}" type="submit">
@@ -511,15 +511,19 @@
                             <h6 class="mb-3">{{elem.brands}}</h6>
 
                             <div class="d-flex  flex-lg-wrap">
-                                <form method="post">
-                                    <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
-                                            name="fav"
-                                            {% if flagLog %}
-                                            value="{{ utente.Email }}, {{elem.product_name}}, {{elem.code}}" {% else %}
-                                            onclick="Gologin()" {% endif %}>
-                                        <i class="fa fa-heart me-2 text-secondary"></i>
-                                    </button>
-                                </form>
+                                {% if flagLog %}
+                                        <form method="post">
+                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
+                                                btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                    name="fav"
+                                                    value="{{elem.code}}" type="submit">
+                                                <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        </form>
+                                        {% else %}
+                                        <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                type="button" onclick="Gologin()">
+                                            <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        {% endif %}
                                 <form method="post" class="ia_form">
                                     <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-0 my-2"
                                             type="submit" name="prompt"
@@ -640,15 +644,19 @@
                                 <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
                                     <a class="h6 maxText" href="/product/{{elem.code}}">{{elem.product_name}}</a>
                                     <div class="d-flex justify-content-between flex-lg-wrap">
+                                        {% if flagLog %}
                                         <form method="post">
-                                            <button class="fav-btn btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
+                                                btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
                                                     name="fav"
-                                                    {% if flagLog %}
-                                                    value="{{ utente.Email }}, {{elem.product_name}}, {{elem.code}}" {%
-                                                    else %} onclick="Gologin()" {% endif %}>
-                                                <i class="fa fa-heart me-2 text-secondary"></i>
-                                            </button>
+                                                    value="{{elem.code}}" type="submit">
+                                                <i class="fa fa-heart me-2 text-secondary"></i></button>
                                         </form>
+                                        {% else %}
+                                        <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                type="button" onclick="Gologin()">
+                                            <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        {% endif %}
                                         <form method="post" class="ia_form">
                                             <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
                                                     type="submit" name="prompt"
