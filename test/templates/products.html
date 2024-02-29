@@ -323,7 +323,7 @@
                                 <div class="rounded position-relative fruite-item d-flex flex-column">
                                     <a href="/product/{{elem.code}}">
                                         <div class="fruite-img border border-secondary">
-                                            <img src="{{elem.image_url}}"
+                                            <img src="{%if 'https' not in elem.image_url%} {{ url_for('static', filename='imgTest/img-not-found.jpg') }} {% else %} {{elem.image_url}} {% endif %}"
                                                  class="img-fluid rounded-top" alt="">
                                         </div>
                                     </a>
@@ -368,21 +368,21 @@
                             <div class="col-12">
                                 <div class="pagination d-flex justify-content-center mt-5">
                                     {% if current_page > 1 %}
-                                    <a href="/product?page=1" class="rounded"><i
+                                    <a href="/product?page=1&sortBy={{sortBy}}" class="rounded"><i
                                             class="bi bi-arrow-return-left"></i></a>
-                                    <a href="/product?page={{ current_page - 1 }}" class="rounded"><i
+                                    <a href="/product?page={{ current_page - 1 }}&sortBy={{sortBy}}" class="rounded"><i
                                             class="bi bi-arrow-left"></i></a>
                                     {% endif %}
                                     {% for page_num in range(max(1, current_page - 1), min(total_pages + 1, current_page
                                     + 10)) %}
-                                    <a href="/product?page={{ page_num }}"
+                                    <a href="/product?page={{ page_num }}&sortBy={{sortBy}}"
                                        class="rounded{% if page_num == current_page %} active{% endif %}">{{ page_num
                                         }}</a>
                                     {% endfor %}
                                     {% if current_page < total_pages %}
-                                    <a href="/product?page={{ current_page + 1 }}" class="rounded"><i
+                                    <a href="/product?page={{ current_page + 1 }}&sortBy={{sortBy}}" class="rounded"><i
                                             class="bi bi-arrow-right"></i></a>
-                                    <a href="/product?page={{ total_pages }}" class="rounded"><i
+                                    <a href="/product?page={{ total_pages }}&sortBy={{sortBy}}" class="rounded"><i
                                             class="bi bi-arrow-return-right"></i></a>
                                     {% endif %}
                                 </div>

@@ -380,7 +380,7 @@
                             <div class="rounded position-relative fruite-item d-flex flex-column">
                                 <a href="/product/{{elem.code}}">
                                     <div class="fruite-img border border-secondary">
-                                        <img src="{{elem.image_url}}"
+                                        <img src="{%if 'https' not in elem.image_url%} {{ url_for('static', filename='imgTest/img-not-found.jpg') }} {% else %} {{elem.image_url}} {% endif %}"
                                              class="img-fluid rounded-top" alt="">
                                     </div>
                                 </a>
@@ -502,7 +502,7 @@
                     <div class="row align-items-center p-3">
                         <div class="col-6">
                             <a href="product/{{elem.code}}">
-                                <img src="{{elem.image_url}}" class="img-best rounded-top"
+                                <img src="{%if 'https' not in elem.image_url%} {{ url_for('static', filename='imgTest/img-not-found.jpg') }} {% else %} {{elem.image_url}} {% endif %}" class="img-best rounded-top"
                                      alt="">
                             </a>
                         </div>
@@ -630,7 +630,7 @@
                             <div class="rounded position-relative fruite-item d-flex flex-column">
                                 <a href="/product/{{elem.code}}">
                                     <div class="fruite-img border border-secondary">
-                                        <img src="{{elem.image_url}}"
+                                        <img src="{%if 'https' not in elem.image_url%} {{ url_for('static', filename='imgTest/img-not-found.jpg') }} {% else %} {{elem.image_url}} {% endif %}"
                                              class="img-fluid rounded-top" alt="">
                                     </div>
                                 </a>
