@@ -31,7 +31,7 @@ for e in data1:
             numero_float = round(float(numero_stringa.replace(",", ".")), 2)
             e[string] = numero_float
     if isinstance(e["image_url"], float):
-        e["image_url"] = "static/imgTest/img-not-found.jpg"
+        e["image_url"] = "static/imgTest/imgTest-not-found.jpg"
 if "Products" in db.list_collection_names():
     collection.drop()
 collection.insert_many(data1)
