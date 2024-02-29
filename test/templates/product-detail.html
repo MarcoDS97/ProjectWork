@@ -119,6 +119,7 @@
                     success: function(data) {
                         $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
                         $('#response #GFG2').css({"color": "green"});
+                        $('#chatModal').modal('show');
                     }
                 });
             });
@@ -148,6 +149,7 @@
                     success: function(data) {
                         $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
                         $('#response #GFG2').css({"color": "green"});
+                        $('#chatModal').modal('show');
                     }
                 });
             });
@@ -322,13 +324,13 @@
                                     </div>
                                     <div class="p-1">
                                         <form method="post" id="f_ricetta">
-                                        <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="ricetta_p" type="submit" data-bs-toggle="modal" name="prompt" data-bs-target="#chatModal"
+                                        <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="ricetta_p" type="submit" name="prompt"
                                                 {% if flagLog %} value="{{ utente.Email }}, {{prodotto.code}}, ricetta" {% else %} onclick="Gologin()" {% endif %}>Ricetta per te<i class="bi bi-stars me-2"></i></button>
                                         </form>
                                     </div>
                                     <div class="p-1">
                                         <form method="post" id="f_info">
-                                        <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="info_p" type="submit" data-bs-toggle="modal" name="prompt" data-bs-target="#chatModal"
+                                        <button class="btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2" id="info_p" type="submit" name="prompt"
                                                 {% if flagLog %} value="{{ utente.Email }}, {{prodotto.code}}, info" {% else %} onclick="Gologin()" {% endif %}>info<i class="bi bi-stars me-2"></i></button>
                                         </form>
                                     </div>

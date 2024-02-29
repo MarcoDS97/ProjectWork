@@ -33,27 +33,28 @@
 
     <script>
         $(document).ready(function() {
-            $('#ia_form').on('submit', function(event) {
+            $('.ia-btn').on('click', function(event) {
                 event.preventDefault();
-            // get the CSRF token from the cookie
+                var buttonVal = $(this).val();
+
             var csrftoken = Cookies.get('csrftoken');
 
-            // set the CSRF token in the AJAX headers
             $.ajaxSetup({
                 headers: { 'X-CSRFToken': csrftoken }
             });
-                // Get the prompt
-                var prompt = $('#prompt').val();
-                var dateTime = new Date();
-                var time = dateTime.toLocaleTimeString();
-                $.ajax({
-                    url: '/',
-                    type: 'POST',
-                    data: {prompt: prompt},
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
-                        $('#response #GFG2').css({"color": "green"});
+
+
+            var prompt = buttonVal;
+
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: {prompt: prompt},
+                dataType: 'json',
+                success: function(data) {
+                    $('#response').append('<p id="GFG2">Spesana.IA<i class="bi bi-stars"></i>: ' + data.response + '</p>');
+                    $('#response #GFG2').css({"color": "green"});
+                    $('#chatModal').modal('show');
                     }
                 });
             });
@@ -351,8 +352,7 @@
                                             </form>
                                             <form method="post" class="ia_form">
                                                 <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
-                                                        type="submit" data-bs-toggle="modal" name="prompt"
-                                                        data-bs-target="#chatModal"
+                                                        type="submit" name="prompt"
                                                         {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}, info"
                                                         {%
                                                         else %} onclick="Gologin()" {% endif %}><i
