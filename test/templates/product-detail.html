@@ -336,7 +336,20 @@
                                 <p class="mb-4">{{prodotto.ingredients_text}}</p>
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="p-1">
-                                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 text-primary"><i class="fa fa-heart me-2 text-primary"></i></a>
+                                        {% if flagLog %}
+                                        <form method="post">
+                                            <button onclick="cambioBottone(event, this, fav_{{prodotto.code}})" id="fav_{{prodotto.code}}"
+                                                    class="{% if prodotto.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
+                                                btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                    name="fav"
+                                                    value="{{prodotto.code}}" type="submit">
+                                                <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        </form>
+                                        {% else %}
+                                        <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                type="button" onclick="Gologin()">
+                                            <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        {% endif %}
                                     </div>
                                     <div class="p-1">
                                         <form method="post" id="f_ricetta">
@@ -574,11 +587,6 @@
 <!-- Template Javascript -->
 <link rel="stylesheet" href="{{ url_for('static', filename='js/main.js') }}">
 
-<script>
-  function Gologin() {
-    window.location.href="/login";
-  }
-</script>
  <script>
         window.onload = (event) => {
         const toastLiveExample = document.getElementById('liveToast');
@@ -586,6 +594,49 @@
         toast.show();
         };
     </script>
+<script>
+    function Gologin() {
+      window.location.href="/login";
+    }
+
+     function cambioBottone(event, element, codice){
+        event.preventDefault();
+        const elem = document.getElementById(element.id);
+        console.log(elem.classList);
+        if (elem.classList.contains("bg-verde-scuro")) {
+            elem.classList.remove("bg-verde-scuro");
+            console.log("Rimosso");
+            console.log(elem.classList);
+        }
+        else {
+            elem.classList.add("bg-verde-scuro");
+            console.log("Aggiunto");
+            console.log(elem.classList);
+        }
+        const postData = {
+            fav: element.value
+        };
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData) // Converti i dati JSON in stringa
+            }
+        const url = 'http://127.0.0.1:5000/favorites';
+
+        // Effettua la richiesta POST utilizzando l'API Fetch
+        fetch(url, options)
+            .then(response => {
+                // Gestisci la risposta della richiesta
+                if (response.ok) {
+                    console.log('Dati ricevuti') // Converte la risposta in JSON
+
+                }
+            });
+    }
+
+</script>
 </body>
 
 </html>
