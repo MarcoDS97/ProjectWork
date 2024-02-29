@@ -333,14 +333,19 @@
                                     <div class="p-2 border border-secondary border-top-0 rounded-bottom d-flex flex-column align-items-center h-300">
                                         <a class="h6 maxText" href="/product/{{elem.code}}">{{elem.product_name}}</a>
                                         <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <form method="post">
-                                                <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
-                                                        name="fav"
-                                                        {% if flagLog %} value="{{ utente.Email }}, {{elem.code}}" {%
-                                                        else %} onclick="Gologin()" {% endif %}>
-                                                    <i class="fa fa-heart me-2 text-secondary"></i>
-                                                </button>
-                                            </form>
+                                            {% if flagLog %}
+                                        <form method="post">
+                                            <button onclick="cambioBottone(event, this, fav_{{elem.code}})" id="fav_{{elem.code}}" class="{% if elem.code in utente.products_favorites %}btn-secondary{% else %} fav-btn {% endif %}
+                                                btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                    name="fav"
+                                                    value="{{elem.code}}" type="submit">
+                                                <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        </form>
+                                        {% else %}
+                                        <button class="btn border border-secondary rounded-pill px-3 text-primary mx-1 my-2"
+                                                type="button" onclick="Gologin()">
+                                            <i class="fa fa-heart me-2 text-secondary"></i></button>
+                                        {% endif %}
                                             <form method="post" class="ia_form">
                                                 <button class="ia-btn btn btn-secondary border-secondary rounded-pill px-3 text-light mx-1 my-2"
                                                         type="submit" data-bs-toggle="modal" name="prompt"
@@ -498,6 +503,49 @@
         var sortBy = this.value;
         window.location.href = '/product?page=1&sortBy=' + sortBy;
     });
+</script>
+<script>
+    function Gologin() {
+      window.location.href="/login";
+    }
+
+     function cambioBottone(event, element, codice){
+        event.preventDefault();
+        const elem = document.getElementById(element.id);
+        console.log(elem.classList);
+        if (elem.classList.contains("bg-verde-scuro")) {
+            elem.classList.remove("bg-verde-scuro");
+            console.log("Rimosso");
+            console.log(elem.classList);
+        }
+        else {
+            elem.classList.add("bg-verde-scuro");
+            console.log("Aggiunto");
+            console.log(elem.classList);
+        }
+        const postData = {
+            fav: element.value
+        };
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData) // Converti i dati JSON in stringa
+            }
+        const url = 'http://127.0.0.1:5000/favorites';
+
+        // Effettua la richiesta POST utilizzando l'API Fetch
+        fetch(url, options)
+            .then(response => {
+                // Gestisci la risposta della richiesta
+                if (response.ok) {
+                    console.log('Dati ricevuti') // Converte la risposta in JSON
+
+                }
+            });
+    }
+
 </script>
 </body>
 
