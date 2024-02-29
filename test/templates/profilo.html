@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="static/imgTest/Carrello-icon.png">
     <title>Profilo</title>
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -400,7 +401,7 @@
                                         <ul class="list-group">
                                             {% if len(preferiti) > 0 %}
                                             {% for elem in preferiti %}
-                                            <li class="list-group-item"><a href="/product/{{elem.code}}">{{elem.product_name}}</a></li>
+                                            <li class="list-group-item"><a href="/product/{{elem[0]}}">{{elem[1]}}</a></li>
                                             {% endfor %}
                                             {%else%}
                                             <li class="list-group-item">Nessun prodotto inserito</li>

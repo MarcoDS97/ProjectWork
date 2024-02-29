@@ -437,10 +437,16 @@ def profilo():
 
     if session.get('name'):
         flagLog = True
-        utente = list(users.find({'Email': session['name']}))
         preferiti = []
-        for codice in utente[0]["products_favorites"]:
-            preferiti.append(list(prodotti.find({"code": codice}))[0])
+        utente = list(users.find({'Email': session['name']}))
+        codici = utente[0]["products_favorites"]
+        for codice in codici:
+            prodotto = prodotti.find({"code": codice})
+            nome = prodotto[0]["product_name"]
+            preferiti.append([codice, nome])
+        # if utente[0]["products_favorites"]:
+        #     for codice in utente[0]["products_favorites"]:
+        #         preferiti.append(list(prodotti.find({"code": codice})))
         # preferiti = [list(prodotti.find({"code": codice})) for codice in utente[0]["products_favorites"]][0]
 
         cambio_password = None
