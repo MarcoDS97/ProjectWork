@@ -373,9 +373,9 @@
                                         {% for elem in categorie %}
                                         <li class="list-group-item"><label><input type="checkbox"
                                                                                   name="categoria{{loop.index}}_profilo"
-                                                                                  value="{{elem}}"> {% if elem in
-                                                                                  utente.Favorites %} checked {% endif
-                                                                                  %}>{{elem}}</label></li>
+                                                                                  value="{{elem}}" {% if elem in
+                                                                                  utente.Favorites %} checked {% endif %}>
+                                                                                    {{elem}} </label></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
