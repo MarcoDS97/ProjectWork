@@ -635,5 +635,3 @@ def nutriscore():
 if __name__ == '__main__':
     app.run(debug=True)
 
-def runspesana():
-    app.run()

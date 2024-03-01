@@ -1,3 +1,5 @@
-from app import runspesana
+from app import app
 
-runspesana()
+
+if __name__ == '__main__':
+    app.run()
