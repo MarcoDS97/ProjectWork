@@ -47,7 +47,7 @@ def calculate_tdee(height, weight, age, gender, activity_level, goal):
 
 
 def correct_file(filename):
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'gif'}
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
