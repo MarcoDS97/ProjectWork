@@ -5,8 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b77487a4-f0ca-45c2-88b3-1ab78444d9e9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/create_db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/csv/prodotti.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/csv/prodotti2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/csv/prodotti_in_pulizia.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/csv/traduzione_categories.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/csv/utenti.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/prove_query.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/traduzione/traduzione_categories.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/traduzione/traduzione_categories.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/traduzione/traduzione_categories.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/webapp/funzioni_utili.py" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/funzioni_utili.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webapp/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/webapp/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webapp/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

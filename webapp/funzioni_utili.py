@@ -53,11 +53,6 @@ def correct_file(filename):
 
 def codice_img(file):
     img = cv2.imread(file)
-    # barcodes = pyzbar.decode(img)
-    # for barcode in barcodes:
-    #     barcode_info = barcode.data.decode('utf-8')
-    #     if barcode_info.isdigit():
-    #         return barcode_info
 
     return "This function is not working right now :("
 
