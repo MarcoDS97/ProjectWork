@@ -1,6 +1,5 @@
 import cv2
 import pymongo
-from pyzbar import pyzbar
 from openai import OpenAI
 
 def spesana_ia(prompt):
@@ -54,11 +53,11 @@ def correct_file(filename):
 
 def codice_img(file):
     img = cv2.imread(file)
-    barcodes = pyzbar.decode(img)
-    for barcode in barcodes:
-        barcode_info = barcode.data.decode('utf-8')
-        if barcode_info.isdigit():
-            return barcode_info
+    # barcodes = pyzbar.decode(img)
+    # for barcode in barcodes:
+    #     barcode_info = barcode.data.decode('utf-8')
+    #     if barcode_info.isdigit():
+    #         return barcode_info
 
-    return None
+    return "This function is not working right now :("
 
