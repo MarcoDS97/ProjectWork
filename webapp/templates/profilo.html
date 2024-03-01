@@ -252,7 +252,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
         </div>
         <div class="toast-body">
-            <h6>Codice non trovato sulla imagine </h6>
+            <h6>Codice non trovato sulla immagine </h6>
         </div>
     </div>
 </div>
@@ -290,9 +290,9 @@
                                 <label class="form-label my-3">Sesso<sup>*</sup></label>
                                 <select class="form-select" style="border: 1px solid #ced4da" name="genere_profilo">
                                     <option>{{utente.Gender}}</option>
-                                    <option {% if utente.Gender==
+                                    <option> {% if utente.Gender==
                                     'M' %} hidden {% endif %}> M</option>
-                                    <option {% if utente.Gender==
+                                    <option> {% if utente.Gender==
                                     'F' %} hidden {% endif %}> F</option>
                                 </select>
                             </div>
@@ -327,27 +327,34 @@
                     <div class="form-item">
                         <label class="form-label my-3">Obiettivo<sup>*</sup></label>
                         <select class="form-select" style="border: 1px solid #ced4da" name="obiettivo_profilo">
-                            <option>{{utente.Goal}}</option>
-                            <option {% if utente.Goal==
-                            'Dimagrire' %} hidden {% endif %}> Dimagrire </option>
-                            <option {% if utente.Goal==
-                            'Mantenersi in forma' %} hidden {% endif %}> Mantenersi in forma </option>
-                            <option {% if utente.Goal==
-                            'Aumentare la massa muscolare' %} hidden {% endif %}> Aumentare la massa muscolare </option>
+                            <option> {{utente.Goal}} </option>
+                            {% if utente.Goal != 'Dimagrire' %}
+                            <option> Dimagrire </option>
+                            {% endif %}
+                            {% if utente.Goal != 'Mantenersi in forma' %}
+                            <option> Mantenersi in forma </option>
+                            {% endif %}
+                            {% if utente.Goal != 'Aumentare la massa muscolare' %}
+                            <option> Aumentare la massa muscolare </option>
+                            {% endif %}
                         </select>
                     </div>
                     <div class="form-item">
                         <label class="form-label my-3">Livello di attività<sup>*</sup></label>
                         <select class="form-select" style="border: 1px solid #ced4da" name="livello_profilo">
                             <option>{{utente.activity_level}}</option>
-                            <option {% if utente.activity_level==
-                            'Sedentario' %} hidden {% endif %}> Sedentario </option>
-                            <option {% if utente.activity_level==
-                            'Leggermente attivo' %} hidden {% endif %}> Leggermente attivo </option>
-                            <option {% if utente.activity_level==
-                            'Moderatamente attivo' %} hidden {% endif %}> Moderatamente attivo </option>
-                            <option {% if utente.activity_level==
-                            'Molto Attivo' %} hidden {% endif %}> Molto Attivo </option>
+                            {% if utente.activity_level != 'Sedentario' %}
+                            <option> Sedentario </option>
+                            {% endif %}
+                            {% if utente.activity_level != 'Leggermente attivo' %}
+                            <option> Leggermente attivo </option>
+                            {% endif %}
+                            {% if utente.activity_level != 'Moderatamente attivo' %}
+                            <option> Moderatamente attivo </option>
+                            {% endif %}
+                            {% if utente.activity_level != 'Molto Attivo' %}
+                            <option> Molto Attivo </option>
+                            {% endif %}
                         </select>
                     </div>
                     <br>
@@ -366,7 +373,7 @@
                                         {% for elem in categorie %}
                                         <li class="list-group-item"><label><input type="checkbox"
                                                                                   name="categoria{{loop.index}}_profilo"
-                                                                                  value="{{elem}}" {% if elem in
+                                                                                  value="{{elem}}"> {% if elem in
                                                                                   utente.Favorites %} checked {% endif
                                                                                   %}>{{elem}}</label></li>
                                         {% endfor %}
@@ -384,6 +391,7 @@
                 </form>
             </div>
             <div class="col-md-12 col-lg-6 col-xl-5">
+                <h3> Il tuo TDEE è: <span>{{utente.TDEE}} </span> </h3>
                 <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
                     <div class="col-12">
                         <div class="accordion" id="accordionExample">
